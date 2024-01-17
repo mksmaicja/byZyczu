@@ -1,0 +1,13 @@
+E:\projects\byZyczu\byZyczu\bin\Release\byZyczu.exe.config
+E:\projects\byZyczu\byZyczu\bin\Release\byZyczu.exe
+E:\projects\byZyczu\byZyczu\bin\Release\byZyczu.pdb
+E:\projects\byZyczu\byZyczu\obj\Release\byZyczu.csproj.AssemblyReference.cache
+E:\projects\byZyczu\byZyczu\obj\Release\byZyczu.Form1.resources
+E:\projects\byZyczu\byZyczu\obj\Release\byZyczu.Properties.Resources.resources
+E:\projects\byZyczu\byZyczu\obj\Release\byZyczu.csproj.GenerateResource.cache
+E:\projects\byZyczu\byZyczu\obj\Release\byZyczu.csproj.CoreCompileInputs.cache
+E:\projects\byZyczu\byZyczu\obj\Release\byZyczu.exe
+E:\projects\byZyczu\byZyczu\obj\Release\byZyczu.pdb
+E:\projects\byZyczu\byZyczu\bin\Release\DiscordRPC.dll
+E:\projects\byZyczu\byZyczu\bin\Release\Newtonsoft.Json.dll
+E:\projects\byZyczu\byZyczu\obj\Release\byZyczu.csproj.CopyComplete
