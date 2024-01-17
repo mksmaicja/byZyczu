@@ -51,12 +51,37 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.paneldownload = new System.Windows.Forms.Panel();
-            this.label9 = new System.Windows.Forms.Label();
-            this.downloadlabel = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.downloadlabel = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.panelmodsmain = new System.Windows.Forms.Panel();
+            this.buttonclosemods = new System.Windows.Forms.Button();
+            this.comboBoxmodpacks = new System.Windows.Forms.ComboBox();
+            this.panelmodpacks = new System.Windows.Forms.Panel();
+            this.buttonmodpacks = new System.Windows.Forms.Button();
+            this.buttonmanagemods = new System.Windows.Forms.Button();
+            this.label16 = new System.Windows.Forms.Label();
+            this.textBoxmodsmcversion = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.textboxmodpackname = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.panelcreatenewmodpack = new System.Windows.Forms.Panel();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.label15 = new System.Windows.Forms.Label();
+            this.comboBoxmodpackcreate = new System.Windows.Forms.ComboBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.textBoxpackcreatename = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panelsettings.SuspendLayout();
             this.paneldownload.SuspendLayout();
+            this.panelmodsmain.SuspendLayout();
+            this.panelmodpacks.SuspendLayout();
+            this.panelcreatenewmodpack.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -145,6 +170,7 @@
             this.buttonownmods.TabIndex = 1;
             this.buttonownmods.Text = "Własne mody";
             this.buttonownmods.UseVisualStyleBackColor = true;
+            this.buttonownmods.Click += new System.EventHandler(this.buttonownmods_Click);
             // 
             // buttonlaunch
             // 
@@ -179,7 +205,7 @@
             this.panelsettings.Controls.Add(this.buttonsavechanges);
             this.panelsettings.Controls.Add(this.label6);
             this.panelsettings.Controls.Add(this.label5);
-            this.panelsettings.Location = new System.Drawing.Point(10, 474);
+            this.panelsettings.Location = new System.Drawing.Point(831, 231);
             this.panelsettings.Name = "panelsettings";
             this.panelsettings.Size = new System.Drawing.Size(806, 405);
             this.panelsettings.TabIndex = 2;
@@ -297,29 +323,10 @@
             this.paneldownload.Controls.Add(this.progressBar1);
             this.paneldownload.Controls.Add(this.downloadlabel);
             this.paneldownload.Controls.Add(this.label9);
-            this.paneldownload.Location = new System.Drawing.Point(767, 66);
+            this.paneldownload.Location = new System.Drawing.Point(25, 66);
             this.paneldownload.Name = "paneldownload";
             this.paneldownload.Size = new System.Drawing.Size(806, 405);
             this.paneldownload.TabIndex = 10;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("MinecraftZyczu", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(274, 11);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(285, 23);
-            this.label9.TabIndex = 0;
-            this.label9.Text = "Trwa instalacja modów...";
-            // 
-            // downloadlabel
-            // 
-            this.downloadlabel.AutoSize = true;
-            this.downloadlabel.Location = new System.Drawing.Point(350, 44);
-            this.downloadlabel.Name = "downloadlabel";
-            this.downloadlabel.Size = new System.Drawing.Size(114, 13);
-            this.downloadlabel.TabIndex = 1;
-            this.downloadlabel.Text = "Ukończono 69 % ";
             // 
             // progressBar1
             // 
@@ -328,6 +335,259 @@
             this.progressBar1.Size = new System.Drawing.Size(773, 17);
             this.progressBar1.TabIndex = 2;
             // 
+            // downloadlabel
+            // 
+            this.downloadlabel.AutoSize = true;
+            this.downloadlabel.BackColor = System.Drawing.Color.Transparent;
+            this.downloadlabel.Location = new System.Drawing.Point(350, 44);
+            this.downloadlabel.Name = "downloadlabel";
+            this.downloadlabel.Size = new System.Drawing.Size(114, 13);
+            this.downloadlabel.TabIndex = 1;
+            this.downloadlabel.Text = "Ukończono 69 % ";
+            this.downloadlabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.BackColor = System.Drawing.Color.Transparent;
+            this.label9.Font = new System.Drawing.Font("MinecraftZyczu", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(274, 11);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(285, 23);
+            this.label9.TabIndex = 0;
+            this.label9.Text = "Trwa instalacja modów...";
+            // 
+            // panelmodsmain
+            // 
+            this.panelmodsmain.Controls.Add(this.buttonclosemods);
+            this.panelmodsmain.Controls.Add(this.comboBoxmodpacks);
+            this.panelmodsmain.Controls.Add(this.panelmodpacks);
+            this.panelmodsmain.Controls.Add(this.buttonmodpacks);
+            this.panelmodsmain.Controls.Add(this.buttonmanagemods);
+            this.panelmodsmain.Controls.Add(this.label16);
+            this.panelmodsmain.Location = new System.Drawing.Point(19, 399);
+            this.panelmodsmain.Name = "panelmodsmain";
+            this.panelmodsmain.Size = new System.Drawing.Size(806, 405);
+            this.panelmodsmain.TabIndex = 10;
+            // 
+            // buttonclosemods
+            // 
+            this.buttonclosemods.BackColor = System.Drawing.Color.Transparent;
+            this.buttonclosemods.BackgroundImage = global::byZyczu.Properties.Resources.zamknij;
+            this.buttonclosemods.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.buttonclosemods.Location = new System.Drawing.Point(766, 42);
+            this.buttonclosemods.Name = "buttonclosemods";
+            this.buttonclosemods.Size = new System.Drawing.Size(26, 26);
+            this.buttonclosemods.TabIndex = 6;
+            this.buttonclosemods.UseVisualStyleBackColor = false;
+            this.buttonclosemods.Click += new System.EventHandler(this.buttonclosemods_Click);
+            // 
+            // comboBoxmodpacks
+            // 
+            this.comboBoxmodpacks.Font = new System.Drawing.Font("MinecraftZyczu", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxmodpacks.FormattingEnabled = true;
+            this.comboBoxmodpacks.Location = new System.Drawing.Point(395, 45);
+            this.comboBoxmodpacks.Name = "comboBoxmodpacks";
+            this.comboBoxmodpacks.Size = new System.Drawing.Size(367, 21);
+            this.comboBoxmodpacks.TabIndex = 5;
+            this.comboBoxmodpacks.SelectionChangeCommitted += new System.EventHandler(this.comboBoxmodpacks_SelectionChangeCommitted);
+            // 
+            // panelmodpacks
+            // 
+            this.panelmodpacks.Controls.Add(this.button3);
+            this.panelmodpacks.Controls.Add(this.button2);
+            this.panelmodpacks.Controls.Add(this.button1);
+            this.panelmodpacks.Controls.Add(this.textboxmodpackname);
+            this.panelmodpacks.Controls.Add(this.label12);
+            this.panelmodpacks.Controls.Add(this.textBoxmodsmcversion);
+            this.panelmodpacks.Location = new System.Drawing.Point(13, 72);
+            this.panelmodpacks.Name = "panelmodpacks";
+            this.panelmodpacks.Size = new System.Drawing.Size(779, 329);
+            this.panelmodpacks.TabIndex = 2;
+            // 
+            // buttonmodpacks
+            // 
+            this.buttonmodpacks.Location = new System.Drawing.Point(13, 53);
+            this.buttonmodpacks.Name = "buttonmodpacks";
+            this.buttonmodpacks.Size = new System.Drawing.Size(102, 23);
+            this.buttonmodpacks.TabIndex = 3;
+            this.buttonmodpacks.Text = "Paczki modów";
+            this.buttonmodpacks.UseVisualStyleBackColor = true;
+            // 
+            // buttonmanagemods
+            // 
+            this.buttonmanagemods.Location = new System.Drawing.Point(121, 53);
+            this.buttonmanagemods.Name = "buttonmanagemods";
+            this.buttonmanagemods.Size = new System.Drawing.Size(139, 23);
+            this.buttonmanagemods.TabIndex = 4;
+            this.buttonmanagemods.Text = "Zarządzaj modami";
+            this.buttonmanagemods.UseVisualStyleBackColor = true;
+            this.buttonmanagemods.Click += new System.EventHandler(this.buttonmanagemods_Click);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.BackColor = System.Drawing.Color.Transparent;
+            this.label16.Font = new System.Drawing.Font("MinecraftZyczu", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(266, 15);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(256, 23);
+            this.label16.TabIndex = 1;
+            this.label16.Text = "Stwórz paczkę modów";
+            // 
+            // textBoxmodsmcversion
+            // 
+            this.textBoxmodsmcversion.Enabled = false;
+            this.textBoxmodsmcversion.Location = new System.Drawing.Point(15, 11);
+            this.textBoxmodsmcversion.Name = "textBoxmodsmcversion";
+            this.textBoxmodsmcversion.Size = new System.Drawing.Size(179, 21);
+            this.textBoxmodsmcversion.TabIndex = 0;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("MinecraftZyczu", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(197, 9);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(20, 19);
+            this.label12.TabIndex = 1;
+            this.label12.Text = "-";
+            // 
+            // textboxmodpackname
+            // 
+            this.textboxmodpackname.Location = new System.Drawing.Point(219, 11);
+            this.textboxmodpackname.Name = "textboxmodpackname";
+            this.textboxmodpackname.Size = new System.Drawing.Size(273, 21);
+            this.textboxmodpackname.TabIndex = 2;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(498, 11);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(102, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Zmień nazwę";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(606, 11);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(55, 23);
+            this.button2.TabIndex = 4;
+            this.button2.Text = "Usuń";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(667, 11);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(98, 23);
+            this.button3.TabIndex = 5;
+            this.button3.Text = "Nowa paczka";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // panelcreatenewmodpack
+            // 
+            this.panelcreatenewmodpack.Controls.Add(this.textBoxpackcreatename);
+            this.panelcreatenewmodpack.Controls.Add(this.label17);
+            this.panelcreatenewmodpack.Controls.Add(this.comboBoxmodpackcreate);
+            this.panelcreatenewmodpack.Controls.Add(this.label15);
+            this.panelcreatenewmodpack.Controls.Add(this.button5);
+            this.panelcreatenewmodpack.Controls.Add(this.button4);
+            this.panelcreatenewmodpack.Controls.Add(this.label13);
+            this.panelcreatenewmodpack.Controls.Add(this.label14);
+            this.panelcreatenewmodpack.Location = new System.Drawing.Point(5, 426);
+            this.panelcreatenewmodpack.Name = "panelcreatenewmodpack";
+            this.panelcreatenewmodpack.Size = new System.Drawing.Size(806, 405);
+            this.panelcreatenewmodpack.TabIndex = 11;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.BackColor = System.Drawing.Color.Transparent;
+            this.label14.Font = new System.Drawing.Font("MinecraftZyczu", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(217, 13);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(361, 23);
+            this.label14.TabIndex = 1;
+            this.label14.Text = "Tworzenie nowej paczki modów";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.BackColor = System.Drawing.Color.Transparent;
+            this.label13.Font = new System.Drawing.Font("MinecraftZyczu", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(17, 57);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(779, 304);
+            this.label13.TabIndex = 2;
+            this.label13.Text = resources.GetString("label13.Text");
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(24, 375);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 3;
+            this.button4.Text = "Anuluj";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(710, 375);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 4;
+            this.button5.Text = "Dalej";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.BackColor = System.Drawing.Color.Transparent;
+            this.label15.Font = new System.Drawing.Font("MinecraftZyczu", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(31, 206);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(194, 19);
+            this.label15.TabIndex = 5;
+            this.label15.Text = "Wybierz wersję gry:";
+            // 
+            // comboBoxmodpackcreate
+            // 
+            this.comboBoxmodpackcreate.Font = new System.Drawing.Font("MinecraftZyczu", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxmodpackcreate.FormattingEnabled = true;
+            this.comboBoxmodpackcreate.Location = new System.Drawing.Point(231, 205);
+            this.comboBoxmodpackcreate.Name = "comboBoxmodpackcreate";
+            this.comboBoxmodpackcreate.Size = new System.Drawing.Size(347, 24);
+            this.comboBoxmodpackcreate.TabIndex = 6;
+            this.comboBoxmodpackcreate.SelectedIndexChanged += new System.EventHandler(this.comboBoxmodpackcreate_SelectedIndexChanged);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.BackColor = System.Drawing.Color.Transparent;
+            this.label17.Font = new System.Drawing.Font("MinecraftZyczu", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(90, 308);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(131, 19);
+            this.label17.TabIndex = 7;
+            this.label17.Text = "Nazwa paczki:";
+            // 
+            // textBoxpackcreatename
+            // 
+            this.textBoxpackcreatename.Font = new System.Drawing.Font("MinecraftZyczu", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxpackcreatename.Location = new System.Drawing.Point(231, 308);
+            this.textBoxpackcreatename.Name = "textBoxpackcreatename";
+            this.textBoxpackcreatename.Size = new System.Drawing.Size(347, 22);
+            this.textBoxpackcreatename.TabIndex = 8;
+            this.textBoxpackcreatename.Text = "Moja paczka modów";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 13F);
@@ -335,6 +595,8 @@
             this.BackgroundImage = global::byZyczu.Properties.Resources.nowetlo;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(854, 478);
+            this.Controls.Add(this.panelcreatenewmodpack);
+            this.Controls.Add(this.panelmodsmain);
             this.Controls.Add(this.paneldownload);
             this.Controls.Add(this.panelsettings);
             this.Controls.Add(this.label1);
@@ -353,6 +615,12 @@
             this.panelsettings.PerformLayout();
             this.paneldownload.ResumeLayout(false);
             this.paneldownload.PerformLayout();
+            this.panelmodsmain.ResumeLayout(false);
+            this.panelmodsmain.PerformLayout();
+            this.panelmodpacks.ResumeLayout(false);
+            this.panelmodpacks.PerformLayout();
+            this.panelcreatenewmodpack.ResumeLayout(false);
+            this.panelcreatenewmodpack.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -385,6 +653,28 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label downloadlabel;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Panel panelmodsmain;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Panel panelmodpacks;
+        private System.Windows.Forms.Button buttonmodpacks;
+        private System.Windows.Forms.Button buttonclosemods;
+        private System.Windows.Forms.ComboBox comboBoxmodpacks;
+        private System.Windows.Forms.Button buttonmanagemods;
+        private System.Windows.Forms.TextBox textboxmodpackname;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox textBoxmodsmcversion;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Panel panelcreatenewmodpack;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.TextBox textBoxpackcreatename;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.ComboBox comboBoxmodpackcreate;
+        private System.Windows.Forms.Label label15;
     }
 }
 

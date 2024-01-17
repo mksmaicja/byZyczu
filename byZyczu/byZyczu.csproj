@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+    <None Include="Resources\zamknij.png" />
     <None Include="Resources\package_settings.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
