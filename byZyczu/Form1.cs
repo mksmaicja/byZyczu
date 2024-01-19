@@ -1,14 +1,18 @@
-﻿using System;
+﻿using byZyczu.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Runtime.ConstrainedExecution;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,13 +29,12 @@ namespace byZyczu
         public static string url = "mksteam.ovh";
         public static string launcherdir = "C:\\maicjadir\\byzyczu";
         public static string configsdir = "C:\\maicjadir\\byzyczu\\configs";
+        
         public Form1()
         {
             InitializeComponent();
-            if (!Directory.Exists(launcherdir))
-            {
-                Directory.CreateDirectory(launcherdir);
-            }
+            
+            
             if (!Directory.Exists(configsdir))
             {
                 Directory.CreateDirectory(configsdir);
@@ -61,17 +64,22 @@ namespace byZyczu
             comboBoxRAM.Items.Add("6144M");
             comboBoxRAM.Items.Add("7164M");
             comboBoxRAM.Items.Add("8192M");
+            comboBoxRAM.Items.Add("9216M");
+            comboBoxRAM.Items.Add("10240M");
+            comboBoxRAM.Items.Add("11264M");
+            comboBoxRAM.Items.Add("12288M");
             try
             {
                 webClientmks.DownloadString("http://" + url + "/index.html");
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message + "\r\nPrzełączam na lokalny serwer...", "BŁĄD POŁĄCZENIA");
                 url = "dev.mksteam.ovh";
             }
-
+            
             depsurl = "http://" + url + "/minecraft/deps/";
+            
         }
 
         public static string depsurl = "";
@@ -176,6 +184,34 @@ namespace byZyczu
                         {
                             versionargsp1 = "-noverify " + versionargsp1;
                         }
+                        
+
+                            if (File.Exists(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391"))
+                            {
+                                string ddd = File.ReadAllText(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391");
+                                if (ddd.Contains("LAUNCHERPATH"))
+                                {
+                                    string fixedfor1122optifine = launcherdir + "\\" + versionzip.Split('.')[0];
+                                    fixedfor1122optifine = fixedfor1122optifine.Replace("\\", "\\\\");
+                                    ddd = ddd.Replace("LAUNCHERPATH", fixedfor1122optifine);
+
+                                    File.WriteAllText(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391", ddd);
+                                }
+                                else
+                                {
+                                    string libspath = ddd.Replace("{\"repositoryRoot\":\"absolute:", "").Replace("\",\"modRef\":[\"optifine:OptiFine:1.12.2_HD_U_G5\"]}", "");
+                                    if (!Directory.Exists(libspath))
+                                    {
+                                        ddd = ddd.Replace(libspath, "LAUNCHERPATH" + "\\game\\libraries");
+                                        string fixedfor1122optifine = launcherdir + "\\" + versionzip.Split('.')[0];
+                                        fixedfor1122optifine = fixedfor1122optifine.Replace("\\", "\\\\");
+                                        ddd = ddd.Replace("LAUNCHERPATH", fixedfor1122optifine);
+                                        File.WriteAllText(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391", ddd);
+                                    }
+                                }
+                            }
+                        
+
                         System.Diagnostics.ProcessStartInfo startinfo = new System.Diagnostics.ProcessStartInfo
                         {
                             FileName = javapath,
@@ -267,6 +303,14 @@ namespace byZyczu
         private async void Form1_Load(object sender, EventArgs e)
         {
             await Task.Delay(500);
+            if (!File.Exists(launcherdir + "\\usermodpacks.mks"))
+            {
+                using (FileStream fs = File.Create(launcherdir + "\\usermodpacks.mks"))
+                {
+                    byte[] info = new UTF8Encoding(true).GetBytes(" ");
+                    fs.Write(info, 0, info.Length);
+                }
+            }
             label1.Text = version + " C# version by maicja";
             if (File.Exists(configsdir + "\\lastversion.mks"))
             {
@@ -306,10 +350,12 @@ namespace byZyczu
             {
                 discordaviable = true;
             }
+            await Task.Delay(10);
             while (!discordaviable)
             {
                 await Task.Delay(100);
             }
+            await Task.Delay(10);
             if (!File.Exists(".\\Newtonsoft.Json.dll"))
             {
                 DownloadFile("http://" + url + "/minecraft/Newtonsoft.Json.dll", ".\\Newtonsoft.Json.dll");
@@ -319,26 +365,12 @@ namespace byZyczu
             {
                 newtowsonaviable = true;
             }
+            await Task.Delay(10);
             while (!newtowsonaviable)
             {
                 await Task.Delay(100);
             }
-            if (!File.Exists(launcherdir + "\\usermodpacks.mks"))
-            {
-                using (FileStream fs = File.Create(launcherdir + "\\usermodpacks.mks"))
-                {
-                    byte[] info = new UTF8Encoding(true).GetBytes(" ");
-                    fs.Write(info, 0, info.Length);
-                }
-            }
-            else
-            {
-                newtowsonaviable = true;
-            }
-            while (!newtowsonaviable)
-            {
-                await Task.Delay(100);
-            }
+            await Task.Delay(10);
             Modules.DiscordPresence.initializediscord("W Launcherze");
             if (File.Exists(configsdir + "\\settings.mks"))
             {
@@ -365,13 +397,35 @@ namespace byZyczu
                     }
                 }
                 comboBoxRAM.Text = ram;
-                checkBoxnoverify.Checked = noverify;            }
+                checkBoxnoverify.Checked = noverify;            
+            }
+
+
+            
+
+
         }
+        public static PrivateFontCollection fr = new PrivateFontCollection();
         public static bool mclaunched = false;
         private async void buttonlaunch_Click(object sender, EventArgs e)
         {
             try
             {
+                int rel = rand.Next(0, 3);
+                switch (rel)
+                {
+                    case 0:
+                        webBrowserdownload.Url = new Uri("http://minecraft.zyczu.pl/");
+                        break;
+                    case 1:
+                        webBrowserdownload.Url = new Uri("https://classic.minecraft.net/");
+                        break;
+                    case 2:
+                        webBrowserdownload.Url = new Uri("https://kypello.itch.io/kill-the-ice-age-baby-adventure-the-game/");
+                        break;
+
+                }
+                
                 string versionselected = comboBox1.Text;
                 if (!File.Exists(configsdir + "\\lastversion.mks"))
                 {
@@ -427,6 +481,31 @@ namespace byZyczu
                                 versionargsp1 = versionargsp1.Replace("LAUNCHERPATH", launcherdir + "\\" + versionzip.Split('.')[0]);
                                 versionargsp2 = versionargsp2.Replace("LAUNCHERPATH", launcherdir + "\\" + versionzip.Split('.')[0]);
                                 versionargsp2 = versionargsp2.Replace("USERNAMEMOD", textBoxnick.Text);
+                                
+                                if (File.Exists(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391"))
+                                {
+                                    string ddd = File.ReadAllText(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391");
+                                    if (ddd.Contains("LAUNCHERPATH"))
+                                    {
+                                        string fixedfor1122optifine = launcherdir + "\\" + versionzip.Split('.')[0];
+                                        fixedfor1122optifine = fixedfor1122optifine.Replace("\\", "\\\\");
+                                        ddd = ddd.Replace("LAUNCHERPATH", fixedfor1122optifine);
+
+                                        File.WriteAllText(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391", ddd);
+                                    }
+                                    else
+                                    {
+                                        string libspath = ddd.Replace("{\"repositoryRoot\":\"absolute:", "").Replace("\",\"modRef\":[\"optifine:OptiFine:1.12.2_HD_U_G5\"]}", "");
+                                        if (!Directory.Exists(libspath))
+                                        {
+                                            ddd = ddd.Replace(libspath, "LAUNCHERPATH" + "\\game\\libraries");
+                                            string fixedfor1122optifine = launcherdir + "\\" + versionzip.Split('.')[0];
+                                            fixedfor1122optifine = fixedfor1122optifine.Replace("\\", "\\\\");
+                                            ddd = ddd.Replace("LAUNCHERPATH", fixedfor1122optifine);
+                                            File.WriteAllText(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391", ddd);
+                                        }
+                                    }
+                                }
                                 string uuid = "mks";
                                 string token = "mks";
                                 for (int i = 3; i < 32; i++)
@@ -453,7 +532,6 @@ namespace byZyczu
                                 string name = line.Split(';')[0];
                                 if (name == comboBox1.Text)
                                 {
-
                                     versionname = name;
                                     versionzip = line.Split(';')[1];
                                     string argsfile = "unset";
@@ -472,6 +550,30 @@ namespace byZyczu
                                     versionargsp1 = versionargsp1.Replace("LAUNCHERPATH", launcherdir + "\\" + versionzip);
                                     versionargsp2 = versionargsp2.Replace("LAUNCHERPATH", launcherdir + "\\" + versionzip);
                                     versionargsp2 = versionargsp2.Replace("USERNAMEMOD", textBoxnick.Text);
+                                    if (File.Exists(launcherdir + "\\" + versionzip + "\\game\\tempModList-1703628101391"))
+                                    {
+                                        string ddd = File.ReadAllText(launcherdir + "\\" + versionzip + "\\game\\tempModList-1703628101391");
+                                        if (ddd.Contains("LAUNCHERPATH"))
+                                        {
+                                            string fixedfor1122optifine = launcherdir + "\\" + versionzip;
+                                            fixedfor1122optifine = fixedfor1122optifine.Replace("\\", "\\\\");
+                                            ddd = ddd.Replace("LAUNCHERPATH", fixedfor1122optifine);
+                                            
+                                            File.WriteAllText(launcherdir + "\\" + versionzip + "\\game\\tempModList-1703628101391", ddd);
+                                        }
+                                        else
+                                        {
+                                            string libspath = ddd.Replace("{\"repositoryRoot\":\"absolute:", "").Replace("\",\"modRef\":[\"optifine:OptiFine:1.12.2_HD_U_G5\"]}", "");
+                                            if (!Directory.Exists(libspath))
+                                            {
+                                                ddd = ddd.Replace(libspath, "LAUNCHERPATH" + "\\game\\libraries");
+                                                string fixedfor1122optifine = launcherdir + "\\" + versionzip;
+                                                fixedfor1122optifine = fixedfor1122optifine.Replace("\\", "\\\\");
+                                                ddd = ddd.Replace("LAUNCHERPATH", fixedfor1122optifine);
+                                                File.WriteAllText(launcherdir + "\\" + versionzip + "\\game\\tempModList-1703628101391", ddd);
+                                            }
+                                        }
+                                    }
                                     string uuid = "mks";
                                     string token = "mks";
                                     for (int i = 3; i < 32; i++)
@@ -542,6 +644,7 @@ namespace byZyczu
 
                         if (downloaded)
                         {
+                            
                             string wersjaczycosnwm = versionzip.Split('.')[0];
                             if (iscustom)
                             {
@@ -601,6 +704,7 @@ namespace byZyczu
             }
             catch (Exception ex)
             {
+                deatach = true;
                 MessageBox.Show("Paczka z którą chcesz włączyć grę prawdopodobnie została przez ciebie usunięta! Jeżeli uważasz, że gre wywala z winy programu wyślij screena tego błędu na naszego discorda!\r\nSzczegółowy błąd: " + ex.Message, "BŁĄD PODCZAS WŁĄCZANIA GRY!");
                 Modules.DiscordPresence.SetPresence("W Launcherze");
                 paneldownload.Visible = false;
@@ -660,35 +764,39 @@ namespace byZyczu
             textboxmodpackname.Text = mcver;
         }
 
-        private async void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e) //zmiana nazwy
         {
-            comboBoxmodpacks.Items.Clear();
-            string newfile = "";
-            foreach (string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
+            try
             {
-                string fr;
-                if (line.Contains(comboBoxmodpacks.Text))
+                comboBoxmodpacks.Items.Clear();
+                string newfile = "";
+                foreach (string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
                 {
-                    string args = line.Split(';')[2];
-                    string mcver = line.Split(';')[0];
-                    string tomove = mcver;
-                    mcver = mcver.Split('-')[1];
-                    string modpackname = textboxmodpackname.Text;
-                    fr = modpackname + "-" + mcver + ";" + modpackname + "-" + mcver + ";" + args;
-                    Directory.Move(launcherdir + "\\" + tomove, launcherdir + "\\" + modpackname + "-" + mcver);
+                    string fr;
+                    if (line.Contains(comboBoxmodpacks.Text))
+                    {
+                        string args = line.Split(';')[2];
+                        string mcver = line.Split(';')[0];
+                        string tomove = mcver;
+                        mcver = mcver.Split('-')[1];
+                        string modpackname = textboxmodpackname.Text;
+                        fr = modpackname + "-" + mcver + ";" + modpackname + "-" + mcver + ";" + args;
+                        Directory.Move(launcherdir + "\\" + tomove, launcherdir + "\\" + modpackname + "-" + mcver);
+                    }
+                    else
+                    {
+                        fr = line;
+                    }
+                    newfile = newfile + "\r\n" + fr;
                 }
-                else
-                {
-                    fr = line;
-                }
-                newfile = newfile + "\r\n" + fr;
+                File.WriteAllText(launcherdir + "\\usermodpacks.mks", newfile);
+                await Task.Delay(100);
+                updateusermodpacks();
             }
-            File.WriteAllText(launcherdir + "\\usermodpacks.mks", newfile);
-            await Task.Delay(100);
-            updateusermodpacks();
+            catch (Exception) { }
         }
 
-        private async void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e) //chyba delete modpack 
         {
             comboBoxmodpacks.Items.Clear();
             string newfile = "";
@@ -697,6 +805,7 @@ namespace byZyczu
                 string fr;
                 if (line.Contains(comboBoxmodpacks.Text))
                 {
+                    
                     Directory.Delete(launcherdir + "\\" + line.Split(';')[0], true);
                 }
                 else
@@ -706,8 +815,11 @@ namespace byZyczu
                 }
             }
             File.WriteAllText(launcherdir + "\\usermodpacks.mks", newfile);
-            
-            await Task.Delay(100);
+            if (comboBox1.Text == comboBoxmodpacks.Text)
+            {
+                comboBox1.Text = "";
+            }
+            comboBoxmodpacks.Text = "";
             updateusermodpacks();
         }
 
@@ -717,7 +829,7 @@ namespace byZyczu
             panelmodsmain.Visible = true;
         }
 
-        private async void button5_Click(object sender, EventArgs e)
+        private async void button5_Click(object sender, EventArgs e) //dalej w tworzeniu modpacka
         {
             string modpackver = comboBoxmodpackcreate.Text;
             string modpackname = textBoxpackcreatename.Text;
@@ -763,13 +875,10 @@ namespace byZyczu
         }
         private static void CopyDirectory(string sourcePath, string targetPath)
         {
-            //Now Create all of the directories
             foreach (string dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
             {
                 Directory.CreateDirectory(dirPath.Replace(sourcePath, targetPath));
             }
-
-            //Copy all the files & Replaces any files with the same name
             foreach (string newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
             {
                 File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
@@ -782,7 +891,7 @@ namespace byZyczu
             comboBoxmodpackcreate.Items.Clear();
             foreach (string line in File.ReadAllLines(launcherdir + "\\relases.list"))
             {
-                if (line.Contains("Forge") || line.Contains("Fabric"))
+                if (line.Contains("Forge") || line.Contains("Fabric") || line.Contains("mods"))
                 {
                     if (Directory.Exists(launcherdir + "\\" + line.Split(';')[1].Replace(".zip", "")))
                     {
@@ -805,7 +914,7 @@ namespace byZyczu
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Nie wybrałeś paczki modów! Pełny błąd:\r\n" + ex.Message, "BŁĄD");
             }
         }
     }
