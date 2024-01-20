@@ -102,7 +102,7 @@ namespace byZyczu
         Random rand = new Random();
         bool downloaded = false;
         public static bool premiumlaunchwait = true;
-        public static string version = "1.4";
+        public static string version = "1.4.1";
 
         public void DownloadFile(string urlAddress, string location)
         {
@@ -887,7 +887,7 @@ namespace byZyczu
                 }
                 else
                 {
-                    comboBoxmodpacks.Items.Clear();
+                    
                     string newfile = "";
                     foreach (string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
                     {
