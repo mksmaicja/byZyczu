@@ -54,6 +54,8 @@ namespace byZyczu
             panelmodsmain.Location = new Point(22, 66);
             panelmodsmain.BackColor = Color.FromArgb(150, Color.White);
             panelmodpacks.BackColor = Color.FromArgb(180, Color.White);
+            panelmanageversions.BackColor = Color.FromArgb(180, Color.White);
+            panelmanageversions.Visible = false;
             panelcreatenewmodpack.BackColor = Color.FromArgb(180, Color.White);
             panelcreatenewmodpack.Location = new Point(22, 66);
             panelcreatenewmodpack.Visible = false;
@@ -69,6 +71,12 @@ namespace byZyczu
             comboBoxRAM.Items.Add("10240M");
             comboBoxRAM.Items.Add("11264M");
             comboBoxRAM.Items.Add("12288M");
+            comboBoxmodpackcreate.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxmodpacks.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxRAM.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxmanageversions.DropDownStyle = ComboBoxStyle.DropDownList;
+
             try
             {
                 webClientmks.DownloadString("http://" + url + "/index.html");
@@ -94,7 +102,7 @@ namespace byZyczu
         Random rand = new Random();
         bool downloaded = false;
         public static bool premiumlaunchwait = true;
-        public static string version = "1.3";
+        public static string version = "1.4";
 
         public void DownloadFile(string urlAddress, string location)
         {
@@ -236,12 +244,11 @@ namespace byZyczu
                             });
                             while (!deatach)
                             {
-                                //jak kloce wlaczone
                                 if (!myProcess.HasExited)
                                 {
+                                    mclaunched = true;
                                     myProcess.Refresh();
 
-                                    
                                 }
                                 else
                                 {
@@ -252,6 +259,7 @@ namespace byZyczu
                         }
                         //TU PO DEATACH/EXIT
                         Modules.DiscordPresence.SetPresence("W Launcherze");
+                        mclaunched = false;
                         buttonlaunch.Text = "Uruchom grę";
                     }
                     else if (File.Exists(launcherdir + "\\tempjava.zip"))
@@ -325,9 +333,10 @@ namespace byZyczu
                 }
             }
             label1.Text = version + " C# version by maicja";
+            
             if (File.Exists(configsdir + "\\lastversion.mks"))
             {
-                comboBox1.Text = File.ReadAllText(configsdir + "\\lastversion.mks").Split(';')[0];
+                comboBox1.SelectedItem = File.ReadAllText(configsdir + "\\lastversion.mks").Split(';')[0];
                 await Task.Delay(100);
                 textBoxnick.Text = File.ReadAllText(configsdir + "\\lastversion.mks").Split(';')[1];
             }
@@ -409,13 +418,13 @@ namespace byZyczu
                         }
                     }
                 }
-                comboBoxRAM.Text = ram;
+                comboBoxRAM.SelectedItem = ram;
                 checkBoxnoverify.Checked = noverify;            
             }
 
 
-            
 
+            comboBox1.SelectedItem = File.ReadAllText(configsdir + "\\lastversion.mks").Split(';')[0];
             while (true)
             {
                 if (mclaunched)
@@ -468,7 +477,7 @@ namespace byZyczu
 
                 }
                 
-                string versionselected = comboBox1.Text;
+                string versionselected = comboBox1.SelectedItem.ToString();
                 if (!File.Exists(configsdir + "\\lastversion.mks"))
                 {
                     using (FileStream fs = File.Create(configsdir + "\\lastversion.mks"))
@@ -510,14 +519,14 @@ namespace byZyczu
                         foreach (var line in File.ReadLines(launcherdir + "\\relases.list"))
                         {
                             string name = line.Split(';')[0];
-                            if (name == comboBox1.Text)
+                            if (name == comboBox1.SelectedItem.ToString())
                             {
                                 iscustom = false;
                                 versionname = name;
                                 versionzip = line.Split(';')[1];
                                 versionargsp1 = webClientmks.DownloadString(depsurl + line.Split(';')[2]).Replace("--username", "&").Split('&')[0];
                                 versionargsp2 = "--username" + webClientmks.DownloadString(depsurl + line.Split(';')[2]).Replace("--username", "&").Split('&')[1];
-                                string ram = comboBoxRAM.Text.ToString().Replace("M", "");
+                                string ram = comboBoxRAM.SelectedItem.ToString().Replace("M", "");
                                 versionargsp1 = versionargsp1.Replace("RAMMB", ram);
                                 versionargsp1 = versionargsp1.Replace("LAUNCHERPATHJAVA", launcherdir);
                                 versionargsp1 = versionargsp1.Replace("LAUNCHERPATH", launcherdir + "\\" + versionzip.Split('.')[0]);
@@ -572,7 +581,7 @@ namespace byZyczu
                             foreach (var line in File.ReadLines(launcherdir + "\\usermodpacks.mks"))
                             {
                                 string name = line.Split(';')[0];
-                                if (name == comboBox1.Text)
+                                if (name == comboBox1.SelectedItem.ToString())
                                 {
                                     versionname = name;
                                     versionzip = line.Split(';')[1];
@@ -586,7 +595,7 @@ namespace byZyczu
                                     }
                                     versionargsp1 = webClientmks.DownloadString(depsurl + argsfile).Replace("--username", "&").Split('&')[0];
                                     versionargsp2 = "--username" + webClientmks.DownloadString(depsurl + argsfile).Replace("--username", "&").Split('&')[1];
-                                    string ram = comboBoxRAM.Text.ToString().Replace("M", "");
+                                    string ram = comboBoxRAM.SelectedItem.ToString().Replace("M", "");
                                     versionargsp1 = versionargsp1.Replace("RAMMB", ram);
                                     versionargsp1 = versionargsp1.Replace("LAUNCHERPATHJAVA", launcherdir);
                                     versionargsp1 = versionargsp1.Replace("LAUNCHERPATH", launcherdir + "\\" + versionzip);
@@ -768,7 +777,6 @@ namespace byZyczu
                     while (!stream.EndOfStream)
                     {
                         stream2 = stream2 + "\r\n" + stream.ReadLine();
-                        
                     }
                 }
                 catch (Exception) { }
@@ -777,6 +785,34 @@ namespace byZyczu
         public static string stream2 = "LOGI GRY:";
         public async void updateusermodpacks()
         {
+            if (File.Exists(configsdir + "\\lastmodpack.mks"))
+            {
+                try
+                { 
+                if (comboBoxmodpacks.SelectedItem.ToString().Length > 1)
+                {
+                    File.WriteAllText(configsdir + "\\lastmodpack.mks", comboBoxmodpacks.SelectedItem.ToString());
+                }
+                }
+                catch (Exception) { }
+            }
+            else
+            {
+                try
+                {
+                    if (comboBoxmodpacks.SelectedItem.ToString().Length > 1)
+                    {
+                        using (FileStream fs = File.Create(configsdir + "\\lastmodpack.mks"))
+                        {
+
+                            byte[] info = new UTF8Encoding(true).GetBytes(comboBoxmodpacks.SelectedItem.ToString());
+                            // Add some information to the file.
+                            fs.Write(info, 0, info.Length);
+                        }
+                    }
+                }
+                catch (Exception) { }
+            }
             await Task.Delay(50);
             comboBoxmodpacks.Items.Clear();
             foreach (string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
@@ -802,6 +838,19 @@ namespace byZyczu
                     comboBox1.Items.Add(name);
                 }
             }
+            try
+            {
+                comboBox1.SelectedItem = File.ReadAllText(configsdir + "\\lastversion.mks").Split(';')[0];
+                if (File.Exists(configsdir + "\\lastmodpack.mks"))
+                {
+                    comboBoxmodpacks.SelectedItem = File.ReadAllText(configsdir + "\\lastmodpack.mks");
+                    string mcver = comboBoxmodpacks.SelectedItem.ToString().Split('-')[0];
+                    string modpackname = comboBoxmodpacks.SelectedItem.ToString().Split('-')[1];
+                    textBoxmodsmcversion.Text = modpackname;
+                    textboxmodpackname.Text = mcver;
+                }
+            }
+            catch (Exception){ }
         }
 
         private void buttonownmods_Click(object sender, EventArgs e)
@@ -817,12 +866,7 @@ namespace byZyczu
 
         private void comboBoxmodpacks_SelectionChangeCommitted(object sender, EventArgs e)
         {
-
-            string mcver = comboBoxmodpacks.SelectedItem.ToString().Split('-')[0];
-
-            string modpackname = comboBoxmodpacks.SelectedItem.ToString().Split('-')[1];
-            textBoxmodsmcversion.Text = modpackname;
-            textboxmodpackname.Text = mcver;
+            updateusermodpacks();
         }
 
         private async void button1_Click(object sender, EventArgs e) //zmiana nazwy
@@ -848,7 +892,7 @@ namespace byZyczu
                     foreach (string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
                     {
                         string fr;
-                        if (line.Split(';')[0] == comboBoxmodpacks.Text)
+                        if (line.Split(';')[0] == comboBoxmodpacks.SelectedItem.ToString())
                         {
                             string args = line.Split(';')[2];
                             string mcver2 = line.Split(';')[1];
@@ -878,14 +922,13 @@ namespace byZyczu
 
         private async void button2_Click(object sender, EventArgs e) //chyba delete modpack 
         {
-            comboBoxmodpacks.Items.Clear();
+            
             string newfile = "";
             foreach (string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
             {
                 string fr;
-                if (line.Contains(comboBoxmodpacks.Text))
+                if (line.Split(';')[0] == comboBoxmodpacks.SelectedItem.ToString())
                 {
-                    
                     Directory.Delete(launcherdir + "\\" + line.Split(';')[1], true);
                 }
                 else
@@ -894,12 +937,10 @@ namespace byZyczu
                     newfile = newfile + "\r\n" + fr;
                 }
             }
+            
             File.WriteAllText(launcherdir + "\\usermodpacks.mks", newfile);
-            if (comboBox1.Text == comboBoxmodpacks.Text)
-            {
-                comboBox1.Text = "";
-            }
-            comboBoxmodpacks.Text = "";
+
+            comboBoxmodpacks.Items.Clear();
             updateusermodpacks();
         }
 
@@ -911,7 +952,7 @@ namespace byZyczu
 
         private async void button5_Click(object sender, EventArgs e) //dalej w tworzeniu modpacka
         {
-            string modpackver = comboBoxmodpackcreate.Text;
+            string modpackver = comboBoxmodpackcreate.SelectedItem.ToString();
             string modpackname = textBoxpackcreatename.Text;
             if (modpackname.StartsWith(" "))
             {
@@ -993,7 +1034,7 @@ namespace byZyczu
             {
                 foreach(string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
                 {
-                    if (line.Split(';')[0] == comboBoxmodpacks.Text)
+                    if (line.Split(';')[0] == comboBoxmodpacks.SelectedItem.ToString())
                     {
                         Process.Start(launcherdir + "\\" + line.Split(';')[1] + "\\game\\mods");
                     }
@@ -1002,6 +1043,100 @@ namespace byZyczu
             catch (Exception ex)
             {
                 MessageBox.Show("Nie wybrałeś paczki modów! Pełny błąd:\r\n" + ex.Message, "BŁĄD");
+            }
+        }
+
+        private void comboBox1_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            string versionselected = comboBox1.SelectedItem.ToString();
+            if (!File.Exists(configsdir + "\\lastversion.mks"))
+            {
+                using (FileStream fs = File.Create(configsdir + "\\lastversion.mks"))
+                {
+                    byte[] info = new UTF8Encoding(true).GetBytes(versionselected + ";" + textBoxnick.Text);
+                    // Add some information to the file.
+                    fs.Write(info, 0, info.Length);
+                }
+            }
+            else
+            {
+                File.WriteAllText(configsdir + "\\lastversion.mks", versionselected + ";" + textBoxnick.Text);
+            }
+        }
+
+        private void buttonmodpacks_Click(object sender, EventArgs e)
+        {
+            panelmodpacks.Visible = true;
+            panelmanageversions.Visible = false;
+            comboBoxmodpacks.Visible = true;
+            buttonmanagemods.Visible = true;
+        }
+
+        private void buttonmanageversions_Click(object sender, EventArgs e)
+        {
+            panelmanageversions.Visible = true;
+            panelmodpacks.Visible = false;
+            comboBoxmodpacks.Visible = false;
+            buttonmanagemods.Visible = false;
+            comboBoxmanageversions.Items.Clear();
+            foreach (var line in File.ReadLines(launcherdir + "\\relases.list"))
+            {
+                string name = line.Split(';')[0];
+                string folder = line.Split(';')[1].Replace(".zip", "");
+
+                if (Directory.Exists(launcherdir + "\\" + folder))
+                {
+                    comboBoxmanageversions.Items.Add(name);
+                }
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            foreach (var line in File.ReadLines(launcherdir + "\\relases.list"))
+            {
+                if (line.Split(';')[0] == comboBoxmanageversions.SelectedItem.ToString())
+                {
+                    string name = line.Split(';')[0];
+                    string folder = line.Split(';')[1].Replace(".zip", "");
+                    if (Directory.Exists(launcherdir + "\\" + folder))
+                    {
+                        string[] allfolders = Directory.GetDirectories(launcherdir);
+                        bool shoulddel = true;
+                        for (int i = 0; i < allfolders.Length; i++)
+                        {
+                            if (allfolders[i].Contains("-" + folder + ".zip"))
+                            {
+                                shoulddel = false;
+                                DialogResult dialogResult = MessageBox.Show("Masz jedną lub więcej paczek modów powiązanych z tą wersją gry. Jeżeli ją usuniesz mogą one przestać działać! Czy na pewno chcesz usunąć tą wersję?", "OSTRZEŻENIE!", MessageBoxButtons.YesNo);
+                                if (dialogResult == DialogResult.Yes)
+                                {
+                                    shoulddel = true;
+                                }
+                                else if (dialogResult == DialogResult.No)
+                                {
+                                    shoulddel = false;
+                                    return;
+                                }
+                            }
+                            
+                        }
+                        if (shoulddel)
+                        {
+                            Directory.Delete(launcherdir + "\\" + folder, true);
+                        }
+                    }
+                }
+            }
+            comboBoxmanageversions.Items.Clear();
+            foreach (var line in File.ReadLines(launcherdir + "\\relases.list"))
+            {
+                string name = line.Split(';')[0];
+                string folder = line.Split(';')[1].Replace(".zip", "");
+                if (Directory.Exists(launcherdir + "\\" + folder))
+                {
+                    comboBoxmanageversions.Items.Add(name);
+                }
             }
         }
     }

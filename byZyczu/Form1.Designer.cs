@@ -87,6 +87,9 @@ namespace byZyczu
             this.downloadlabel = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.panelmodsmain = new System.Windows.Forms.Panel();
+            this.panelmanageversions = new System.Windows.Forms.Panel();
+            this.comboBoxmanageversions = new System.Windows.Forms.ComboBox();
+            this.button7 = new System.Windows.Forms.Button();
             this.buttonclosemods = new System.Windows.Forms.Button();
             this.comboBoxmodpacks = new System.Windows.Forms.ComboBox();
             this.panelmodpacks = new System.Windows.Forms.Panel();
@@ -96,6 +99,7 @@ namespace byZyczu
             this.textboxmodpackname = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.textBoxmodsmcversion = new System.Windows.Forms.TextBox();
+            this.buttonmanageversions = new System.Windows.Forms.Button();
             this.buttonmodpacks = new System.Windows.Forms.Button();
             this.buttonmanagemods = new System.Windows.Forms.Button();
             this.label16 = new System.Windows.Forms.Label();
@@ -116,10 +120,7 @@ namespace byZyczu
 
 
 
-
             fr.AddFontFile(launcherdir + "\\minecraftzyczu.ttf");
-
-
 
 
 
@@ -129,6 +130,7 @@ namespace byZyczu
             this.panelsettings.SuspendLayout();
             this.paneldownload.SuspendLayout();
             this.panelmodsmain.SuspendLayout();
+            this.panelmanageversions.SuspendLayout();
             this.panelmodpacks.SuspendLayout();
             this.panelcreatenewmodpack.SuspendLayout();
             this.panelconsole.SuspendLayout();
@@ -160,6 +162,7 @@ namespace byZyczu
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(273, 23);
             this.comboBox1.TabIndex = 7;
+            this.comboBox1.SelectionChangeCommitted += new System.EventHandler(this.comboBox1_SelectionChangeCommitted);
             // 
             // textBoxnick
             // 
@@ -266,7 +269,7 @@ namespace byZyczu
             this.panelsettings.Controls.Add(this.buttonsavechanges);
             this.panelsettings.Controls.Add(this.label6);
             this.panelsettings.Controls.Add(this.label5);
-            this.panelsettings.Location = new System.Drawing.Point(680, 64);
+            this.panelsettings.Location = new System.Drawing.Point(824, 66);
             this.panelsettings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelsettings.Name = "panelsettings";
             this.panelsettings.Size = new System.Drawing.Size(805, 405);
@@ -396,7 +399,7 @@ namespace byZyczu
             this.paneldownload.Controls.Add(this.progressBar1);
             this.paneldownload.Controls.Add(this.downloadlabel);
             this.paneldownload.Controls.Add(this.label9);
-            this.paneldownload.Location = new System.Drawing.Point(809, 70);
+            this.paneldownload.Location = new System.Drawing.Point(836, 55);
             this.paneldownload.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.paneldownload.Name = "paneldownload";
             this.paneldownload.Size = new System.Drawing.Size(805, 405);
@@ -422,9 +425,12 @@ namespace byZyczu
             // 
             // downloadlabel
             // 
+            this.downloadlabel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.downloadlabel.AutoSize = true;
             this.downloadlabel.BackColor = System.Drawing.Color.Transparent;
-            this.downloadlabel.Location = new System.Drawing.Point(349, 44);
+            this.downloadlabel.Location = new System.Drawing.Point(328, 44);
             this.downloadlabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.downloadlabel.Name = "downloadlabel";
             this.downloadlabel.Size = new System.Drawing.Size(91, 13);
@@ -446,17 +452,50 @@ namespace byZyczu
             // 
             // panelmodsmain
             // 
+            this.panelmodsmain.Controls.Add(this.panelmanageversions);
             this.panelmodsmain.Controls.Add(this.buttonclosemods);
             this.panelmodsmain.Controls.Add(this.comboBoxmodpacks);
             this.panelmodsmain.Controls.Add(this.panelmodpacks);
+            this.panelmodsmain.Controls.Add(this.buttonmanageversions);
             this.panelmodsmain.Controls.Add(this.buttonmodpacks);
             this.panelmodsmain.Controls.Add(this.buttonmanagemods);
             this.panelmodsmain.Controls.Add(this.label16);
-            this.panelmodsmain.Location = new System.Drawing.Point(709, 21);
+            this.panelmodsmain.Location = new System.Drawing.Point(13, 36);
             this.panelmodsmain.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelmodsmain.Name = "panelmodsmain";
             this.panelmodsmain.Size = new System.Drawing.Size(805, 405);
             this.panelmodsmain.TabIndex = 10;
+            // 
+            // panelmanageversions
+            // 
+            this.panelmanageversions.Controls.Add(this.comboBoxmanageversions);
+            this.panelmanageversions.Controls.Add(this.button7);
+            this.panelmanageversions.Location = new System.Drawing.Point(12, 72);
+            this.panelmanageversions.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.panelmanageversions.Name = "panelmanageversions";
+            this.panelmanageversions.Size = new System.Drawing.Size(780, 329);
+            this.panelmanageversions.TabIndex = 8;
+            // 
+            // comboBoxmanageversions
+            // 
+            this.comboBoxmanageversions.Font = new System.Drawing.Font(fr.Families[0], 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxmanageversions.FormattingEnabled = true;
+            this.comboBoxmanageversions.Location = new System.Drawing.Point(24, 12);
+            this.comboBoxmanageversions.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.comboBoxmanageversions.Name = "comboBoxmanageversions";
+            this.comboBoxmanageversions.Size = new System.Drawing.Size(623, 21);
+            this.comboBoxmanageversions.TabIndex = 6;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(655, 11);
+            this.button7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(103, 23);
+            this.button7.TabIndex = 4;
+            this.button7.Text = "Usuń";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // buttonclosemods
             // 
@@ -475,10 +514,10 @@ namespace byZyczu
             // 
             this.comboBoxmodpacks.Font = new System.Drawing.Font(fr.Families[0], 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxmodpacks.FormattingEnabled = true;
-            this.comboBoxmodpacks.Location = new System.Drawing.Point(396, 45);
+            this.comboBoxmodpacks.Location = new System.Drawing.Point(439, 45);
             this.comboBoxmodpacks.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.comboBoxmodpacks.Name = "comboBoxmodpacks";
-            this.comboBoxmodpacks.Size = new System.Drawing.Size(368, 21);
+            this.comboBoxmodpacks.Size = new System.Drawing.Size(325, 21);
             this.comboBoxmodpacks.TabIndex = 5;
             this.comboBoxmodpacks.SelectionChangeCommitted += new System.EventHandler(this.comboBoxmodpacks_SelectionChangeCommitted);
             // 
@@ -557,6 +596,17 @@ namespace byZyczu
             this.textBoxmodsmcversion.Size = new System.Drawing.Size(180, 20);
             this.textBoxmodsmcversion.TabIndex = 0;
             // 
+            // buttonmanageversions
+            // 
+            this.buttonmanageversions.Location = new System.Drawing.Point(261, 53);
+            this.buttonmanageversions.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.buttonmanageversions.Name = "buttonmanageversions";
+            this.buttonmanageversions.Size = new System.Drawing.Size(170, 23);
+            this.buttonmanageversions.TabIndex = 7;
+            this.buttonmanageversions.Text = "Zarządzaj wersjami";
+            this.buttonmanageversions.UseVisualStyleBackColor = true;
+            this.buttonmanageversions.Click += new System.EventHandler(this.buttonmanageversions_Click);
+            // 
             // buttonmodpacks
             // 
             this.buttonmodpacks.Location = new System.Drawing.Point(12, 53);
@@ -566,10 +616,11 @@ namespace byZyczu
             this.buttonmodpacks.TabIndex = 3;
             this.buttonmodpacks.Text = "Paczki modów";
             this.buttonmodpacks.UseVisualStyleBackColor = true;
+            this.buttonmodpacks.Click += new System.EventHandler(this.buttonmodpacks_Click);
             // 
             // buttonmanagemods
             // 
-            this.buttonmanagemods.Location = new System.Drawing.Point(120, 53);
+            this.buttonmanagemods.Location = new System.Drawing.Point(117, 53);
             this.buttonmanagemods.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonmanagemods.Name = "buttonmanagemods";
             this.buttonmanagemods.Size = new System.Drawing.Size(140, 23);
@@ -600,7 +651,7 @@ namespace byZyczu
             this.panelcreatenewmodpack.Controls.Add(this.button4);
             this.panelcreatenewmodpack.Controls.Add(this.label13);
             this.panelcreatenewmodpack.Controls.Add(this.label14);
-            this.panelcreatenewmodpack.Location = new System.Drawing.Point(624, 24);
+            this.panelcreatenewmodpack.Location = new System.Drawing.Point(817, 76);
             this.panelcreatenewmodpack.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelcreatenewmodpack.Name = "panelcreatenewmodpack";
             this.panelcreatenewmodpack.Size = new System.Drawing.Size(805, 405);
@@ -722,13 +773,13 @@ namespace byZyczu
             this.BackgroundImage = global::byZyczu.Properties.Resources.nowetlo;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(853, 478);
-            this.Controls.Add(this.panelconsole);
+            this.Controls.Add(this.paneldownload);
             this.Controls.Add(this.panelcreatenewmodpack);
             this.Controls.Add(this.panelmodsmain);
-            this.Controls.Add(this.paneldownload);
             this.Controls.Add(this.panelsettings);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelconsole);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font(fr.Families[0], 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -745,6 +796,7 @@ namespace byZyczu
             this.paneldownload.PerformLayout();
             this.panelmodsmain.ResumeLayout(false);
             this.panelmodsmain.PerformLayout();
+            this.panelmanageversions.ResumeLayout(false);
             this.panelmodpacks.ResumeLayout(false);
             this.panelmodpacks.PerformLayout();
             this.panelcreatenewmodpack.ResumeLayout(false);
@@ -807,6 +859,10 @@ namespace byZyczu
         private System.Windows.Forms.WebBrowser webBrowserdownload;
         private System.Windows.Forms.Panel panelconsole;
         private System.Windows.Forms.RichTextBox richTextBoxconsole;
+        private System.Windows.Forms.Button buttonmanageversions;
+        private System.Windows.Forms.Panel panelmanageversions;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.ComboBox comboBoxmanageversions;
     }
 }
 
