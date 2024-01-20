@@ -55,6 +55,9 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DiscordRPC">
       <HintPath>C:\Users\kubaszma120lvl\Desktop\NM\DiscordRPC.dll</HintPath>

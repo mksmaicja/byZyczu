@@ -40,6 +40,7 @@ namespace byZyczu
                 Directory.CreateDirectory(configsdir);
             }
             panel1.BackColor = Color.FromArgb(180, Color.White);
+            panelconsole.BackColor = Color.FromArgb(160, Color.White);
             panelsettings.BackColor = Color.FromArgb(150, Color.White);
             buttonownmods.BackColor = Color.FromArgb(5, Color.White);
             buttonlaunch.BackColor = Color.FromArgb(5, Color.White);
@@ -93,7 +94,7 @@ namespace byZyczu
         Random rand = new Random();
         bool downloaded = false;
         public static bool premiumlaunchwait = true;
-        public static string version = "1.1";
+        public static string version = "1.3";
 
         public void DownloadFile(string urlAddress, string location)
         {
@@ -217,28 +218,36 @@ namespace byZyczu
                             FileName = javapath,
                             Arguments = versionargsp1 + versionargsp2,
                             ErrorDialog = true,
+                            RedirectStandardError = true,
+                            RedirectStandardOutput = true,
                             UseShellExecute = false,
                             WorkingDirectory = launcherdir + "\\" + versionzip.Split('.')[0]
+
                         };
                         using (Process myProcess = Process.Start(startinfo))
                         {
+                            stream = myProcess.StandardOutput;
+
                             Modules.DiscordPresence.SetPresence("Gra w " + versionname);
                             paneldownload.Visible = false;
+                            buttonlaunch.Text = "Gra uruchomiona!";
+                            Task.Run(() => {
+                                readstream();
+                            });
                             while (!deatach)
                             {
                                 //jak kloce wlaczone
                                 if (!myProcess.HasExited)
                                 {
                                     myProcess.Refresh();
-                                    await Task.Delay(1000);
-                                    buttonlaunch.Text = "Gra uruchomiona!";
+
+                                    
                                 }
                                 else
                                 {
                                     deatach = true;
                                 }
                                 await Task.Delay(1000);
-                                buttonlaunch.Text = "Kliknij aby odpiąć!";
                             }
                         }
                         //TU PO DEATACH/EXIT
@@ -256,8 +265,12 @@ namespace byZyczu
                 }
             }
         }
-
-        public static bool javadwnld = false; public static bool deatach = false;
+        static void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
+        {
+            Console.WriteLine(outLine.Data);
+        }
+        public static bool javadwnld = false; 
+        public static bool deatach = false;
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
@@ -403,7 +416,36 @@ namespace byZyczu
 
             
 
+            while (true)
+            {
+                if (mclaunched)
+                {
+                    if (stream2 == " ")
+                    {
 
+                    }
+                    else
+                    {
+                        if (richTextBoxconsole.Text.Length > 2147480647)
+                        {
+                            richTextBoxconsole.Text = "LOGI GRY:";
+                        }
+                        panelconsole.Visible = true;
+                        richTextBoxconsole.Text = richTextBoxconsole.Text + "\r\n" + stream2;
+                        stream2 = " ";
+                        richTextBoxconsole.SelectionStart = richTextBoxconsole.TextLength;
+                        richTextBoxconsole.ScrollToCaret();
+                    }
+                    
+                }
+                else
+                {
+                    panelconsole.Visible = false;
+                    stream2 = "LOGI GRY:";
+                    richTextBoxconsole.Text = "";
+                }
+                await Task.Delay(1000);
+            }
         }
         public static PrivateFontCollection fr = new PrivateFontCollection();
         public static bool mclaunched = false;
@@ -506,7 +548,7 @@ namespace byZyczu
                                         }
                                     }
                                 }
-                                string uuid = "mks";
+                                string uuid = "892";
                                 string token = "mks";
                                 for (int i = 3; i < 32; i++)
                                 {
@@ -574,7 +616,7 @@ namespace byZyczu
                                             }
                                         }
                                     }
-                                    string uuid = "mks";
+                                    string uuid = "892";
                                     string token = "mks";
                                     for (int i = 3; i < 32; i++)
                                     {
@@ -667,31 +709,35 @@ namespace byZyczu
                                 FileName = javapath,
                                 Arguments = versionargsp1 + versionargsp2,
                                 ErrorDialog = true,
+                                RedirectStandardError = true,
+                                RedirectStandardOutput = true,
                                 UseShellExecute = false,
 
                                 WorkingDirectory = launcherdir + "\\" + wersjaczycosnwm
                             };
                             using (Process myProcess = Process.Start(startinfo))
                             {
-
+                                stream = myProcess.StandardOutput;
 
                                 Modules.DiscordPresence.SetPresence("Gra w " + versionname);
                                 paneldownload.Visible = false;
+                                buttonlaunch.Text = "Gra uruchomiona!";
+                                Task.Run(() => {
+                                    readstream();
+                                });
                                 while (!deatach)
                                 {
                                     if (!myProcess.HasExited)
                                     {
                                         mclaunched = true;
                                         myProcess.Refresh();
-                                        await Task.Delay(1000);
-                                        buttonlaunch.Text = "Gra uruchomiona!";
+                                        
                                     }
                                     else
                                     {
                                         deatach = true;
                                     }
                                     await Task.Delay(1000);
-                                    buttonlaunch.Text = "Kliknij aby odpiąć!";
                                 }
                             }
                             //TU PO DEATACH/EXIT
@@ -712,7 +758,23 @@ namespace byZyczu
                 buttonlaunch.Text = "Uruchom grę";
             }
         }
-
+        public static StreamReader stream;
+        public static async void readstream()
+        {
+            while (!deatach)
+            {
+                try
+                {
+                    while (!stream.EndOfStream)
+                    {
+                        stream2 = stream2 + "\r\n" + stream.ReadLine();
+                        
+                    }
+                }
+                catch (Exception) { }
+            }
+        }
+        public static string stream2 = "LOGI GRY:";
         public async void updateusermodpacks()
         {
             await Task.Delay(50);
@@ -721,8 +783,7 @@ namespace byZyczu
             {
                 if (line.Contains(';'))
                 {
-                    string mcver = line.Split(';')[0];
-                    string modpackname = line.Split(';')[1];
+                    string modpackname = line.Split(';')[0];
                     comboBoxmodpacks.Items.Add(modpackname);
                 }
             }
@@ -768,30 +829,49 @@ namespace byZyczu
         {
             try
             {
-                comboBoxmodpacks.Items.Clear();
-                string newfile = "";
-                foreach (string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
+                if (textboxmodpackname.Text.StartsWith(" "))
                 {
-                    string fr;
-                    if (line.Contains(comboBoxmodpacks.Text))
-                    {
-                        string args = line.Split(';')[2];
-                        string mcver = line.Split(';')[0];
-                        string tomove = mcver;
-                        mcver = mcver.Split('-')[1];
-                        string modpackname = textboxmodpackname.Text;
-                        fr = modpackname + "-" + mcver + ";" + modpackname + "-" + mcver + ";" + args;
-                        Directory.Move(launcherdir + "\\" + tomove, launcherdir + "\\" + modpackname + "-" + mcver);
-                    }
-                    else
-                    {
-                        fr = line;
-                    }
-                    newfile = newfile + "\r\n" + fr;
+                    MessageBox.Show("Nazwa paczki nie może zaczynać się spacją!");
                 }
-                File.WriteAllText(launcherdir + "\\usermodpacks.mks", newfile);
-                await Task.Delay(100);
-                updateusermodpacks();
+                else if (textboxmodpackname.Text.EndsWith(" "))
+                {
+                    MessageBox.Show("Nazwa paczki nie może kończyć się spacją!");
+                }
+                else if (textboxmodpackname.Text.Contains('\\') || textboxmodpackname.Text.Contains('/') || textboxmodpackname.Text.Contains(':') || textboxmodpackname.Text.Contains('*') || textboxmodpackname.Text.Contains('?') || textboxmodpackname.Text.Contains('"') || textboxmodpackname.Text.Contains('<') || textboxmodpackname.Text.Contains('>') || textboxmodpackname.Text.Contains('|') || textboxmodpackname.Text.Contains('-'))
+                {
+                    MessageBox.Show("Nazwa paczki zawiera niedozwolone znaki!");
+                }
+                else
+                {
+                    comboBoxmodpacks.Items.Clear();
+                    string newfile = "";
+                    foreach (string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
+                    {
+                        string fr;
+                        if (line.Split(';')[0] == comboBoxmodpacks.Text)
+                        {
+                            string args = line.Split(';')[2];
+                            string mcver2 = line.Split(';')[1];
+                            string mcver = line.Split(';')[0];
+                            string tomove = mcver2;
+                            mcver = mcver.Split('-')[1];
+                            string modpackname = textboxmodpackname.Text;
+                            string modpacknamemyslnik = modpackname.Replace(" ", "-");
+                            fr = modpackname + "-" + mcver + ";" + modpacknamemyslnik + "-" + mcver.Replace(" ", "-") + ";" + args;
+                            Directory.Move(launcherdir + "\\" + tomove, launcherdir + "\\" + modpacknamemyslnik + "-" + mcver.Replace(" ", "-"));
+                            newfile = newfile + "\r\n" + fr;
+                        }
+                        else if (line.Contains('-'))
+                        {
+                            fr = line;
+                            newfile = newfile + "\r\n" + fr;
+                        }
+
+                    }
+                    File.WriteAllText(launcherdir + "\\usermodpacks.mks", newfile);
+                    await Task.Delay(100);
+                    updateusermodpacks();
+                }
             }
             catch (Exception) { }
         }
@@ -806,7 +886,7 @@ namespace byZyczu
                 if (line.Contains(comboBoxmodpacks.Text))
                 {
                     
-                    Directory.Delete(launcherdir + "\\" + line.Split(';')[0], true);
+                    Directory.Delete(launcherdir + "\\" + line.Split(';')[1], true);
                 }
                 else
                 {
@@ -853,15 +933,16 @@ namespace byZyczu
                 {
                     if (line.Contains(modpackver + ";"))
                     {
-                        if (Directory.Exists(launcherdir + "\\" + modpackname + "-" + modpackver))
+                        if (Directory.Exists(launcherdir + "\\" + modpackname + "-" + line.Split(';')[1]))
                         {
                             MessageBox.Show("Paczka modów z taką nazwą już istnieje!");
                         }
                         else
                         {
-                            CopyDirectory(launcherdir + "\\" + line.Split(';')[1].Replace(".zip", ""), launcherdir + "\\" + modpackname + "-" + modpackver);
+                            modpackname = modpackname.Replace(" ", "-");
+                            CopyDirectory(launcherdir + "\\" + line.Split(';')[1].Replace(".zip", ""), launcherdir + "\\" + modpackname + "-" + line.Split(';')[1]);
                             string userversions = File.ReadAllText(launcherdir + "\\usermodpacks.mks");
-                            userversions = userversions + "\r\n" + modpackname + "-" + modpackver + ";" + modpackname + "-" + modpackver + ";" + line.Split(';')[2];
+                            userversions = userversions + "\r\n" + modpackname.Replace("-", " ") + "-" + modpackver + ";" + modpackname + "-" + line.Split(';')[1] + ";" + line.Split(';')[2];
                             await Task.Delay(100);
                             File.WriteAllText(launcherdir + "\\usermodpacks.mks", userversions);
                         }
@@ -910,7 +991,13 @@ namespace byZyczu
         {
             try
             {
-                Process.Start(launcherdir + "\\" + comboBoxmodpacks.Text + "\\game\\mods");
+                foreach(string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
+                {
+                    if (line.Split(';')[0] == comboBoxmodpacks.Text)
+                    {
+                        Process.Start(launcherdir + "\\" + line.Split(';')[1] + "\\game\\mods");
+                    }
+                }
             }
             catch (Exception ex)
             {
