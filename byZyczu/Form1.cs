@@ -10,9 +10,11 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -76,18 +78,7 @@ namespace byZyczu
             comboBoxmodpacks.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxRAM.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxmanageversions.DropDownStyle = ComboBoxStyle.DropDownList;
-
-            try
-            {
-                webClientmks.DownloadString("http://" + url + "/index.html");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "\r\nPrzełączam na lokalny serwer...", "BŁĄD POŁĄCZENIA");
-                url = "dev.mksteam.ovh";
-            }
             
-            depsurl = "http://" + url + "/minecraft/deps/";
             
         }
 
@@ -102,7 +93,7 @@ namespace byZyczu
         Random rand = new Random();
         bool downloaded = false;
         public static bool premiumlaunchwait = true;
-        public static string version = "1.4.1";
+        public static string version = "1.5";
 
         public void DownloadFile(string urlAddress, string location)
         {
@@ -112,15 +103,13 @@ namespace byZyczu
                 webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
                 webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
 
-                // The variable that will be holding the url address (making sure it starts with http://)
                 Uri URL = urlAddress.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ? new Uri(urlAddress) : new Uri("http://" + urlAddress);
 
-                // Start the stopwatch which we will be using to calculate the download speed
+
                 sw.Start();
 
                 try
                 {
-                    // Start downloading the file
                     webClient.DownloadFileAsync(URL, location);
                 }
                 catch (Exception ex)
@@ -176,8 +165,12 @@ namespace byZyczu
                     Thread.Sleep(100);
                     if (File.Exists(launcherdir + "\\temp.zip"))
                     {
-                        await Task.Run(() => ZipFile.ExtractToDirectory(launcherdir + "\\temp.zip", launcherdir));
-                        await Task.Delay(100);
+                        try
+                        {
+                            await Task.Run(() => ZipFile.ExtractToDirectory(launcherdir + "\\temp.zip", launcherdir));
+                            await Task.Delay(100);
+                        }
+                        catch (Exception) { }
                         File.Delete(launcherdir + "\\temp.zip");
                         downloadlabel.Text = "";
                         downloaded = true;
@@ -323,137 +316,198 @@ namespace byZyczu
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            await Task.Delay(500);
-            if (!File.Exists(launcherdir + "\\usermodpacks.mks"))
+            HttpClient clienthttp = new HttpClient();
+
+            try
             {
-                using (FileStream fs = File.Create(launcherdir + "\\usermodpacks.mks"))
+                clienthttp.Timeout = TimeSpan.FromSeconds(2);
+                await clienthttp.GetAsync("http://" + url + "/index.html");
+            }
+            catch (Exception ex)
+            {
+                url = "dev.mksteam.ovh";
+                try
                 {
-                    byte[] info = new UTF8Encoding(true).GetBytes(" ");
-                    fs.Write(info, 0, info.Length);
+                    await clienthttp.GetAsync("http://" + url + "/index.html");
+                }
+                catch (Exception ex2)
+                {
+                    MessageBox.Show(ex2.Message + "\r\nLauncher spróbuje uruchomić się w trybie offline", "BŁĄD POŁĄCZENIA");
+                    url = "offline";
                 }
             }
-            label1.Text = version + " C# version by maicja";
-            
-            if (File.Exists(configsdir + "\\lastversion.mks"))
+            try
             {
-                comboBox1.SelectedItem = File.ReadAllText(configsdir + "\\lastversion.mks").Split(';')[0];
-                await Task.Delay(100);
-                textBoxnick.Text = File.ReadAllText(configsdir + "\\lastversion.mks").Split(';')[1];
-            }
-            comboBox1.Items.Clear();
-            webClientmks.DownloadFile(depsurl + "relases.txt", launcherdir + "\\relases.list");
-            foreach (var line in File.ReadLines(launcherdir + "\\relases.list"))
-            {
-                string name = line.Split(';')[0];
-                comboBox1.Items.Add(name);
-            }
-            foreach (var line in File.ReadLines(launcherdir + "\\usermodpacks.mks"))
-            {
-                if (line.Contains("-"))
-                {
-                    string name = line.Split(';')[0];
-                    comboBox1.Items.Add(name);
-                }
-            }
-            if (File.Exists(launcherdir + "\\custom\\versions.list"))
-            {
-                foreach (var line in File.ReadLines(launcherdir + "\\custom\\versions.list"))
-                {
-                    string name = line.Split(';')[0];
-                    comboBox1.Items.Add(name);
-                }
-            }
-            if (!File.Exists(".\\DiscordRPC.dll"))
-            {
-                DownloadFile("http://" + url + "/minecraft/DiscordRPC.dll", ".\\DiscordRPC.dll");
+                depsurl = "http://" + url + "/minecraft/deps/";
                 await Task.Delay(500);
-            }
-            else
-            {
-                discordaviable = true;
-            }
-            await Task.Delay(10);
-            while (!discordaviable)
-            {
-                await Task.Delay(100);
-            }
-            await Task.Delay(10);
-            if (!File.Exists(".\\Newtonsoft.Json.dll"))
-            {
-                DownloadFile("http://" + url + "/minecraft/Newtonsoft.Json.dll", ".\\Newtonsoft.Json.dll");
-                await Task.Delay(500);
-            }
-            else
-            {
-                newtowsonaviable = true;
-            }
-            await Task.Delay(10);
-            while (!newtowsonaviable)
-            {
-                await Task.Delay(100);
-            }
-            await Task.Delay(10);
-            Modules.DiscordPresence.initializediscord("W Launcherze");
-            if (File.Exists(configsdir + "\\settings.mks"))
-            {
-                string ram = "UNSET0";
-                bool noverify = false;
-                foreach (string s in File.ReadAllLines(configsdir + "\\settings.mks"))
+                if (!File.Exists(launcherdir + "\\usermodpacks.mks"))
                 {
-                    if (s.Contains("RAM"))
+                    using (FileStream fs = File.Create(launcherdir + "\\usermodpacks.mks"))
                     {
-                        string state = s.Split(';')[1];
-                        ram = state;
+                        byte[] info = new UTF8Encoding(true).GetBytes(" ");
+                        fs.Write(info, 0, info.Length);
                     }
-                    else if (s.Contains("noverify"))
+                }
+                label1.Text = version + " C# version by maicja";
+
+                if (File.Exists(configsdir + "\\lastversion.mks"))
+                {
+                    comboBox1.SelectedItem = File.ReadAllText(configsdir + "\\lastversion.mks").Split(';')[0];
+                    await Task.Delay(100);
+                    textBoxnick.Text = File.ReadAllText(configsdir + "\\lastversion.mks").Split(';')[1];
+                }
+                comboBox1.Items.Clear();
+                if (url != "offline")
+                {
+                    webClientmks.DownloadFile(depsurl + "relases.txt", launcherdir + "\\relases.list");
+                }
+                foreach (var line in File.ReadLines(launcherdir + "\\relases.list"))
+                {
+                    if (url == "offline")
                     {
-                        string state = s.Split(';')[1];
-                        if (state == "true")
+                        if (File.Exists(launcherdir + "\\" + line.Split(';')[2]))
                         {
-                            noverify = true;
+                            string name = line.Split(';')[0];
+                            comboBox1.Items.Add(name);
+                        }
+                    }
+                    else
+                    {
+                        string name = line.Split(';')[0];
+                        comboBox1.Items.Add(name);
+                    }
+                    
+                }
+                foreach (var line in File.ReadLines(launcherdir + "\\usermodpacks.mks"))
+                {
+                    if (line.Contains("-"))
+                    {
+                        if (line.Contains(';'))
+                        {
+                            if (url == "offline")
+                            {
+                                if (File.Exists(launcherdir + "\\" + line.Split(';')[2]))
+                                {
+                                    string modpackname = line.Split(';')[0];
+                                    comboBox1.Items.Add(modpackname);
+                                }
+                            }
+                            else
+                            {
+                                string modpackname = line.Split(';')[0];
+                                comboBox1.Items.Add(modpackname);
+                            }
+
+                        }
+                    }
+                }
+                if (File.Exists(launcherdir + "\\custom\\versions.list"))
+                {
+                    foreach (var line in File.ReadLines(launcherdir + "\\custom\\versions.list"))
+                    {
+                        string name = line.Split(';')[0];
+                        comboBox1.Items.Add(name);
+                    }
+                }
+                if (!File.Exists(".\\DiscordRPC.dll"))
+                {
+                    DownloadFile("http://" + url + "/minecraft/DiscordRPC.dll", ".\\DiscordRPC.dll");
+                    await Task.Delay(500);
+                }
+                else
+                {
+                    discordaviable = true;
+                }
+                await Task.Delay(10);
+                while (!discordaviable)
+                {
+                    await Task.Delay(100);
+                }
+                await Task.Delay(10);
+                if (!File.Exists(".\\Newtonsoft.Json.dll"))
+                {
+                    DownloadFile("http://" + url + "/minecraft/Newtonsoft.Json.dll", ".\\Newtonsoft.Json.dll");
+                    await Task.Delay(500);
+                }
+                else
+                {
+                    newtowsonaviable = true;
+                }
+                await Task.Delay(10);
+                while (!newtowsonaviable)
+                {
+                    await Task.Delay(100);
+                }
+                await Task.Delay(10);
+                Modules.DiscordPresence.initializediscord("W Launcherze");
+                if (File.Exists(configsdir + "\\settings.mks"))
+                {
+                    string ram = "UNSET0";
+                    bool noverify = false;
+                    foreach (string s in File.ReadAllLines(configsdir + "\\settings.mks"))
+                    {
+                        if (s.Contains("RAM"))
+                        {
+                            string state = s.Split(';')[1];
+                            ram = state;
+                        }
+                        else if (s.Contains("noverify"))
+                        {
+                            string state = s.Split(';')[1];
+                            if (state == "true")
+                            {
+                                noverify = true;
+                            }
+                            else
+                            {
+                                noverify = false;
+                            }
+                        }
+                    }
+                    comboBoxRAM.SelectedItem = ram;
+                    checkBoxnoverify.Checked = noverify;
+                }
+
+
+
+                comboBox1.SelectedItem = File.ReadAllText(configsdir + "\\lastversion.mks").Split(';')[0];
+                while (true)
+                {
+                    if (mclaunched)
+                    {
+                        if (stream2 == " ")
+                        {
+
                         }
                         else
                         {
-                            noverify = false;
+                            if (richTextBoxconsole.Text.Length > 2147480647)
+                            {
+                                richTextBoxconsole.Text = "LOGI GRY:";
+                            }
+                            panelconsole.Visible = true;
+                            richTextBoxconsole.Text = richTextBoxconsole.Text + "\r\n" + stream2;
+                            stream2 = " ";
+                            richTextBoxconsole.SelectionStart = richTextBoxconsole.TextLength;
+                            richTextBoxconsole.ScrollToCaret();
                         }
-                    }
-                }
-                comboBoxRAM.SelectedItem = ram;
-                checkBoxnoverify.Checked = noverify;            
-            }
-
-
-
-            comboBox1.SelectedItem = File.ReadAllText(configsdir + "\\lastversion.mks").Split(';')[0];
-            while (true)
-            {
-                if (mclaunched)
-                {
-                    if (stream2 == " ")
-                    {
 
                     }
                     else
                     {
-                        if (richTextBoxconsole.Text.Length > 2147480647)
-                        {
-                            richTextBoxconsole.Text = "LOGI GRY:";
-                        }
-                        panelconsole.Visible = true;
-                        richTextBoxconsole.Text = richTextBoxconsole.Text + "\r\n" + stream2;
-                        stream2 = " ";
-                        richTextBoxconsole.SelectionStart = richTextBoxconsole.TextLength;
-                        richTextBoxconsole.ScrollToCaret();
+                        panelconsole.Visible = false;
+                        stream2 = "LOGI GRY:";
+                        richTextBoxconsole.Text = "";
                     }
-                    
+                    await Task.Delay(1000);
                 }
-                else
+            }
+            catch (Exception ex)
+            {
+                if (url == "offline")
                 {
-                    panelconsole.Visible = false;
-                    stream2 = "LOGI GRY:";
-                    richTextBoxconsole.Text = "";
+                    MessageBox.Show(ex.Message + "\r\nLauncher nie będzie działać, ponieważ nie ma pobranych wymaganych bibliotek! Aby je pobrać włącz launcher z dostępem do internetu", "BŁĄD OFFLINE!");
                 }
-                await Task.Delay(1000);
             }
         }
         public static PrivateFontCollection fr = new PrivateFontCollection();
@@ -462,20 +516,29 @@ namespace byZyczu
         {
             try
             {
-                int rel = rand.Next(0, 3);
-                switch (rel)
+                bool offline = false;
+                if (url == "offline")
                 {
-                    case 0:
-                        webBrowserdownload.Url = new Uri("http://minecraft.zyczu.pl/");
-                        break;
-                    case 1:
-                        webBrowserdownload.Url = new Uri("https://classic.minecraft.net/");
-                        break;
-                    case 2:
-                        webBrowserdownload.Url = new Uri("https://kypello.itch.io/kill-the-ice-age-baby-adventure-the-game/");
-                        break;
-
+                    offline = true;
                 }
+                if (!offline)
+                {
+                    int rel = rand.Next(0, 3);
+                    switch (rel)
+                    {
+                        case 0:
+                            webBrowserdownload.Url = new Uri("http://minecraft.zyczu.pl/");
+                            break;
+                        case 1:
+                            webBrowserdownload.Url = new Uri("https://classic.minecraft.net/");
+                            break;
+                        case 2:
+                            webBrowserdownload.Url = new Uri("https://kypello.itch.io/kill-the-ice-age-baby-adventure-the-game/");
+                            break;
+
+                    }
+                }
+                
                 
                 string versionselected = comboBox1.SelectedItem.ToString();
                 if (!File.Exists(configsdir + "\\lastversion.mks"))
@@ -516,16 +579,20 @@ namespace byZyczu
 
                         bool iscustom = true;
 
-                        foreach (var line in File.ReadLines(launcherdir + "\\relases.list"))
+                        foreach (var line in File.ReadAllLines(launcherdir + "\\relases.list"))
                         {
                             string name = line.Split(';')[0];
                             if (name == comboBox1.SelectedItem.ToString())
                             {
+                                if (!offline)
+                                {
+                                    webClientmks.DownloadFile(depsurl + line.Split(';')[2], launcherdir + "\\" + line.Split(';')[2]);
+                                }
                                 iscustom = false;
                                 versionname = name;
                                 versionzip = line.Split(';')[1];
-                                versionargsp1 = webClientmks.DownloadString(depsurl + line.Split(';')[2]).Replace("--username", "&").Split('&')[0];
-                                versionargsp2 = "--username" + webClientmks.DownloadString(depsurl + line.Split(';')[2]).Replace("--username", "&").Split('&')[1];
+                                versionargsp1 = File.ReadAllText(launcherdir + "\\" + line.Split(';')[2]).Replace("--username", "&").Split('&')[0];
+                                versionargsp2 = "--username" + File.ReadAllText(launcherdir + "\\" + line.Split(';')[2]).Replace("--username", "&").Split('&')[1];
                                 string ram = comboBoxRAM.SelectedItem.ToString().Replace("M", "");
                                 versionargsp1 = versionargsp1.Replace("RAMMB", ram);
                                 versionargsp1 = versionargsp1.Replace("LAUNCHERPATHJAVA", launcherdir);
@@ -593,8 +660,18 @@ namespace byZyczu
                                             argsfile = line2.Split(';')[2];
                                         }
                                     }
-                                    versionargsp1 = webClientmks.DownloadString(depsurl + argsfile).Replace("--username", "&").Split('&')[0];
-                                    versionargsp2 = "--username" + webClientmks.DownloadString(depsurl + argsfile).Replace("--username", "&").Split('&')[1];
+
+                                    if (!offline)
+                                    {
+                                        webClientmks.DownloadFile(depsurl + argsfile, launcherdir + "\\" + argsfile);
+                                    }
+                                    versionname = name;
+                                    versionzip = line.Split(';')[1];
+                                    
+
+
+                                    versionargsp1 = File.ReadAllText(launcherdir + "\\" + argsfile).Replace("--username", "&").Split('&')[0];
+                                    versionargsp2 = "--username" + File.ReadAllText(launcherdir + "\\" + argsfile).Replace("--username", "&").Split('&')[1];
                                     string ram = comboBoxRAM.SelectedItem.ToString().Replace("M", "");
                                     versionargsp1 = versionargsp1.Replace("RAMMB", ram);
                                     versionargsp1 = versionargsp1.Replace("LAUNCHERPATHJAVA", launcherdir);
@@ -817,25 +894,69 @@ namespace byZyczu
             comboBoxmodpacks.Items.Clear();
             foreach (string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
             {
-                if (line.Contains(';'))
+                if (line.Contains("-"))
                 {
-                    string modpackname = line.Split(';')[0];
-                    comboBoxmodpacks.Items.Add(modpackname);
+                    if (line.Contains(';'))
+                    {
+                        if (url == "offline")
+                        {
+                            if (File.Exists(launcherdir + "\\" + line.Split(';')[2]))
+                            {
+                                string modpackname = line.Split(';')[0];
+                                comboBoxmodpacks.Items.Add(modpackname);
+                            }
+                        }
+                        else
+                        {
+                            string modpackname = line.Split(';')[0];
+                            comboBoxmodpacks.Items.Add(modpackname);
+                        }
+
+                    }
                 }
             }
             comboBox1.Items.Clear();
-            webClientmks.DownloadFile(depsurl + "relases.txt", launcherdir + "\\relases.list");
+            if (url != "offline")
+            {
+                webClientmks.DownloadFile(depsurl + "relases.txt", launcherdir + "\\relases.list");
+            }
             foreach (var line in File.ReadLines(launcherdir + "\\relases.list"))
             {
-                string name = line.Split(';')[0];
-                comboBox1.Items.Add(name);
+                if (url == "offline")
+                {
+                    if (File.Exists(launcherdir + "\\" + line.Split(';')[2]))
+                    {
+                        string name = line.Split(';')[0];
+                        comboBox1.Items.Add(name);
+                    }
+                }
+                else
+                {
+                    string name = line.Split(';')[0];
+                    comboBox1.Items.Add(name);
+                }
             }
             foreach (var line in File.ReadLines(launcherdir + "\\usermodpacks.mks"))
             {
                 if (line.Contains("-"))
                 {
-                    string name = line.Split(';')[0];
-                    comboBox1.Items.Add(name);
+                    if (line.Contains(';'))
+                    {
+                        if (url == "offline")
+                        {
+                            if (File.Exists(launcherdir + "\\" + line.Split(';')[2]))
+                            {
+                                string modpackname = line.Split(';')[0];
+                                comboBox1.Items.Add(modpackname);
+                            }
+                        }
+                        else
+                        {
+                            string modpackname = line.Split(';')[0];
+                            comboBox1.Items.Add(modpackname);
+                        }
+
+                    }
                 }
             }
             try
@@ -1017,7 +1138,17 @@ namespace byZyczu
                 {
                     if (Directory.Exists(launcherdir + "\\" + line.Split(';')[1].Replace(".zip", "")))
                     {
-                        comboBoxmodpackcreate.Items.Add(line.Split(';')[0]);
+                        if (url == "offline")
+                        {
+                            if (File.Exists(launcherdir + "\\" + line.Split(';')[2]))
+                            {
+                                comboBoxmodpackcreate.Items.Add(line.Split(';')[0]);
+                            }
+                        }
+                        else
+                        {
+                            comboBoxmodpackcreate.Items.Add(line.Split(';')[0]);
+                        }
                     }
                 }
             }
