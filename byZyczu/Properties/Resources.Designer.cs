@@ -61,6 +61,16 @@ namespace byZyczu.Properties {
         }
         
         /// <summary>
+        ///   Wyszukuje zlokalizowany zasób typu System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap _2000px_User_icon_2_svg_2723136580 {
+            get {
+                object obj = ResourceManager.GetObject("2000px-User_icon_2.svg-2723136580", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Wyszukuje zlokalizowany zasób typu System.Byte[].
         /// </summary>
         public static byte[] minecraftzyczu {

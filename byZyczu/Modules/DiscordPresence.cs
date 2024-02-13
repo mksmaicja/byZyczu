@@ -31,7 +31,7 @@ namespace byZyczu.Modules
                 client.Initialize();
                 client.SetPresence(new RichPresence
                 {
-                    Details = "Minecraft By Zyczu | V " + Form1.version,
+                    Details = "byZyczu | " + Form1.version,
                     State = stejt,
                     Timestamps = sprmawdupie,
                     Assets = new Assets
@@ -59,11 +59,11 @@ namespace byZyczu.Modules
             }
         }
 
-        public static void SetPresence(string stejt)
+        public static void SetPresence(string stejt, string details)
         {
             client.SetPresence(new RichPresence
             {
-                Details = "Minecraft By Zyczu | V " + Form1.version,
+                Details = details,
                 State = stejt,
                 Timestamps = sprmawdupie,
                 Assets = new Assets

@@ -1,4 +1,5 @@
 ﻿using byZyczu.Properties;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +23,7 @@ using System.Windows.Forms;
 using static System.Windows.Forms.LinkLabel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace byZyczu
 {
@@ -44,15 +46,18 @@ namespace byZyczu
             panel1.BackColor = Color.FromArgb(180, Color.White);
             panelconsole.BackColor = Color.FromArgb(160, Color.White);
             panelsettings.BackColor = Color.FromArgb(150, Color.White);
+            panelaccounts.BackColor = Color.FromArgb(150, Color.White);
             buttonownmods.BackColor = Color.FromArgb(5, Color.White);
             buttonlaunch.BackColor = Color.FromArgb(5, Color.White);
             buttonsettings.BackColor = Color.FromArgb(5, Color.White);
             panelsettings.Visible = false;
+            panelaccounts.Location = new Point(22, 66);
             panelsettings.Location = new Point(22, 66);
             paneldownload.Visible = false;
             paneldownload.Location = new Point(22, 66);
             paneldownload.BackColor = Color.FromArgb(150, Color.White);
             panelmodsmain.Visible = false;
+            panelaccounts.Visible = false;
             panelmodsmain.Location = new Point(22, 66);
             panelmodsmain.BackColor = Color.FromArgb(150, Color.White);
             panelmodpacks.BackColor = Color.FromArgb(180, Color.White);
@@ -93,7 +98,7 @@ namespace byZyczu
         Random rand = new Random();
         bool downloaded = false;
         public static bool premiumlaunchwait = true;
-        public static string version = "1.5";
+        public static string version = "1.6";
 
         public void DownloadFile(string urlAddress, string location)
         {
@@ -162,6 +167,8 @@ namespace byZyczu
                     progressBar1.Value = 0;
                     progressBar1.Visible = false;
 
+
+
                     Thread.Sleep(100);
                     if (File.Exists(launcherdir + "\\temp.zip"))
                     {
@@ -174,86 +181,7 @@ namespace byZyczu
                         File.Delete(launcherdir + "\\temp.zip");
                         downloadlabel.Text = "";
                         downloaded = true;
-                        buttonlaunch.Text = "Uruchamianie!";
-                        if (false) //kopiowanie java args
-                        {
-                            MessageBox.Show(javapath, "JAVA PATH");
-                            MessageBox.Show(versionargsp1 + versionargsp2, "GAME ARGS");
-                            Clipboard.SetText(javapath + " " + versionargsp1 + versionargsp2);
-                            MessageBox.Show("java + args copied to clipboard!", "CLIPBOARD");
-                        }
-                        if (checkBoxnoverify.Checked)
-                        {
-                            versionargsp1 = "-noverify " + versionargsp1;
-                        }
                         
-
-                            if (File.Exists(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391"))
-                            {
-                                string ddd = File.ReadAllText(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391");
-                                if (ddd.Contains("LAUNCHERPATH"))
-                                {
-                                    string fixedfor1122optifine = launcherdir + "\\" + versionzip.Split('.')[0];
-                                    fixedfor1122optifine = fixedfor1122optifine.Replace("\\", "\\\\");
-                                    ddd = ddd.Replace("LAUNCHERPATH", fixedfor1122optifine);
-
-                                    File.WriteAllText(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391", ddd);
-                                }
-                                else
-                                {
-                                    string libspath = ddd.Replace("{\"repositoryRoot\":\"absolute:", "").Replace("\",\"modRef\":[\"optifine:OptiFine:1.12.2_HD_U_G5\"]}", "");
-                                    if (!Directory.Exists(libspath))
-                                    {
-                                        ddd = ddd.Replace(libspath, "LAUNCHERPATH" + "\\game\\libraries");
-                                        string fixedfor1122optifine = launcherdir + "\\" + versionzip.Split('.')[0];
-                                        fixedfor1122optifine = fixedfor1122optifine.Replace("\\", "\\\\");
-                                        ddd = ddd.Replace("LAUNCHERPATH", fixedfor1122optifine);
-                                        File.WriteAllText(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391", ddd);
-                                    }
-                                }
-                            }
-                        
-
-                        System.Diagnostics.ProcessStartInfo startinfo = new System.Diagnostics.ProcessStartInfo
-                        {
-                            FileName = javapath,
-                            Arguments = versionargsp1 + versionargsp2,
-                            ErrorDialog = true,
-                            RedirectStandardError = true,
-                            RedirectStandardOutput = true,
-                            UseShellExecute = false,
-                            WorkingDirectory = launcherdir + "\\" + versionzip.Split('.')[0]
-
-                        };
-                        using (Process myProcess = Process.Start(startinfo))
-                        {
-                            stream = myProcess.StandardOutput;
-
-                            Modules.DiscordPresence.SetPresence("Gra w " + versionname);
-                            paneldownload.Visible = false;
-                            buttonlaunch.Text = "Gra uruchomiona!";
-                            Task.Run(() => {
-                                readstream();
-                            });
-                            while (!deatach)
-                            {
-                                if (!myProcess.HasExited)
-                                {
-                                    mclaunched = true;
-                                    myProcess.Refresh();
-
-                                }
-                                else
-                                {
-                                    deatach = true;
-                                }
-                                await Task.Delay(1000);
-                            }
-                        }
-                        //TU PO DEATACH/EXIT
-                        Modules.DiscordPresence.SetPresence("W Launcherze");
-                        mclaunched = false;
-                        buttonlaunch.Text = "Uruchom grę";
                     }
                     else if (File.Exists(launcherdir + "\\tempjava.zip"))
                     {
@@ -316,8 +244,30 @@ namespace byZyczu
 
         private async void Form1_Load(object sender, EventArgs e)
         {
+            textBoxnick.Text = "ŁADOWANIE KONT PREMIUM";
             HttpClient clienthttp = new HttpClient();
-
+            if (!Directory.Exists(launcherdir + "\\accounts"))
+            {
+                Directory.CreateDirectory(launcherdir + "\\accounts");
+            }
+            if (!File.Exists(launcherdir + "\\accounts\\accsprem.mks"))
+            {
+                using (FileStream fs = File.Create(launcherdir + "\\accounts\\accsprem.mks"))
+                {
+                }
+            }
+            if (!File.Exists(launcherdir + "\\accounts\\accsoff.mks"))
+            {
+                using (FileStream fs = File.Create(launcherdir + "\\accounts\\accsoff.mks"))
+                {
+                }
+            }
+            if (!File.Exists(launcherdir + "\\accounts\\selectedacc.mks"))
+            {
+                using (FileStream fs = File.Create(launcherdir + "\\accounts\\selectedacc.mks"))
+                {
+                }
+            }
             try
             {
                 clienthttp.Timeout = TimeSpan.FromSeconds(2);
@@ -350,12 +300,7 @@ namespace byZyczu
                 }
                 label1.Text = version + " C# version by maicja";
 
-                if (File.Exists(configsdir + "\\lastversion.mks"))
-                {
-                    comboBox1.SelectedItem = File.ReadAllText(configsdir + "\\lastversion.mks").Split(';')[0];
-                    await Task.Delay(100);
-                    textBoxnick.Text = File.ReadAllText(configsdir + "\\lastversion.mks").Split(';')[1];
-                }
+
                 comboBox1.Items.Clear();
                 if (url != "offline")
                 {
@@ -378,6 +323,7 @@ namespace byZyczu
                     }
                     
                 }
+
                 foreach (var line in File.ReadLines(launcherdir + "\\usermodpacks.mks"))
                 {
                     if (line.Contains("-"))
@@ -401,14 +347,8 @@ namespace byZyczu
                         }
                     }
                 }
-                if (File.Exists(launcherdir + "\\custom\\versions.list"))
-                {
-                    foreach (var line in File.ReadLines(launcherdir + "\\custom\\versions.list"))
-                    {
-                        string name = line.Split(';')[0];
-                        comboBox1.Items.Add(name);
-                    }
-                }
+               
+                
                 if (!File.Exists(".\\DiscordRPC.dll"))
                 {
                     DownloadFile("http://" + url + "/minecraft/DiscordRPC.dll", ".\\DiscordRPC.dll");
@@ -439,6 +379,11 @@ namespace byZyczu
                     await Task.Delay(100);
                 }
                 await Task.Delay(10);
+                /*
+                
+                discordaviable = true;
+                newtowsonaviable = true;
+                */
                 Modules.DiscordPresence.initializediscord("W Launcherze");
                 if (File.Exists(configsdir + "\\settings.mks"))
                 {
@@ -467,10 +412,75 @@ namespace byZyczu
                     comboBoxRAM.SelectedItem = ram;
                     checkBoxnoverify.Checked = noverify;
                 }
+                else
+                {
+                    comboBoxRAM.SelectedItem = "2048M";
+                }
+                
+                try
+                {
+                    RefreshMSAccsList();
+                    if (File.Exists(launcherdir + "\\accounts\\selectedacc.mks"))
+                    {
+                        string data = File.ReadAllText(launcherdir + "\\accounts\\selectedacc.mks");
+                        if (data.Contains(">"))
+                        {
 
 
+                            if (data.Contains(">cracked"))
+                            {
+                                mcusername = data.Split('>')[0];
+                                textBoxnick.Text = mcusername;
+                                mcuuid = "cracked";
+                                mctoken = "cracked";
+                            }
+                            else
+                            {
+                                string uuid = data.Split('>')[1];
+                                foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsprem.mks"))
+                                {
+                                    if (line.Contains($">{uuid}>"))
+                                    {
+                                        mcusername = line.Split('>')[0];
+                                        mcuuid = line.Split('>')[1];
+                                        mctoken = RefreshAccountData(line.Split('>')[2]).Split('<')[1];
+                                        comboBoxpremiumaccounts.SelectedItem = mcusername;
+                                        textBoxnick.Text = mcusername;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            textBoxnick.Text = "";
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("BŁĄD PRZY ODŚWIERZANIU KONT PREMIUM: " + ex.Message, "BŁĄD");
+                }
+                comboBoxloginoffline.Items.Clear();
+                foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsoff.mks"))
+                {
+                    if (line.Contains(">"))
+                    {
+                        comboBoxloginoffline.Items.Add(line.Split('>')[0]);
 
-                comboBox1.SelectedItem = File.ReadAllText(configsdir + "\\lastversion.mks").Split(';')[0];
+                    }
+                }
+                if (File.Exists(configsdir + "\\lastversion.mks"))
+                {
+                    try
+                    {
+                        string takk = File.ReadAllText(configsdir + "\\lastversion.mks");
+                        comboBox1.SelectedItem = takk;
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Failed to load last used version");
+                    }
+                }
                 while (true)
                 {
                     if (mclaunched)
@@ -487,6 +497,8 @@ namespace byZyczu
                             }
                             panelconsole.Visible = true;
                             richTextBoxconsole.Text = richTextBoxconsole.Text + "\r\n" + stream2;
+                            
+                            
                             stream2 = " ";
                             richTextBoxconsole.SelectionStart = richTextBoxconsole.TextLength;
                             richTextBoxconsole.ScrollToCaret();
@@ -516,6 +528,35 @@ namespace byZyczu
         {
             try
             {
+                bool cancontinue = true;
+                string username = textBoxnick.Text;
+
+                if (username.Length > 13)
+                {
+                    cancontinue = false;
+                    MessageBox.Show("Masz za długi nick!");
+
+                }
+                else if (username.Length < 3)
+                {
+                    cancontinue = false;
+                    MessageBox.Show("Masz za krótki nick!");
+                }
+                string allowedChars = "1234567890qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM_";
+                foreach (char c in username)
+                {
+                    if (!allowedChars.Contains(c))
+                    {
+                        cancontinue = false;
+                        MessageBox.Show($"Nick zawiera niedozwolony znak: \"{c}\"");
+                    }
+                }
+
+                if (!cancontinue)
+                {
+                    return;
+                }
+
                 bool offline = false;
                 if (url == "offline")
                 {
@@ -523,20 +564,9 @@ namespace byZyczu
                 }
                 if (!offline)
                 {
-                    int rel = rand.Next(0, 3);
-                    switch (rel)
-                    {
-                        case 0:
-                            webBrowserdownload.Url = new Uri("http://minecraft.zyczu.pl/");
-                            break;
-                        case 1:
-                            webBrowserdownload.Url = new Uri("https://classic.minecraft.net/");
-                            break;
-                        case 2:
-                            webBrowserdownload.Url = new Uri("https://kypello.itch.io/kill-the-ice-age-baby-adventure-the-game/");
-                            break;
+                    
+                            webBrowserdownload.Url = new Uri("https://mksteam.ovh/");
 
-                    }
                 }
                 
                 
@@ -545,14 +575,14 @@ namespace byZyczu
                 {
                     using (FileStream fs = File.Create(configsdir + "\\lastversion.mks"))
                     {
-                        byte[] info = new UTF8Encoding(true).GetBytes(versionselected + ";" + textBoxnick.Text);
+                        byte[] info = new UTF8Encoding(true).GetBytes(versionselected);
                         // Add some information to the file.
                         fs.Write(info, 0, info.Length);
                     }
                 }
                 else
                 {
-                    File.WriteAllText(configsdir + "\\lastversion.mks", versionselected + ";" + textBoxnick.Text);
+                    File.WriteAllText(configsdir + "\\lastversion.mks", versionselected);
                 }
 
                 if (mclaunched)
@@ -566,19 +596,11 @@ namespace byZyczu
                     deatach = false;
                     downloaded = false;
                     javadwnld = true;
-                    if (textBoxnick.Text == "")
-                    {
-                        MessageBox.Show("Wpisz nick!");
-                    }
-                    else if (textBoxnick.Text.Contains(" "))
-                    {
-                        MessageBox.Show("Nick nie może zawierać spacji!");
-                    }
-                    else
+                    
                     {
 
                         bool iscustom = true;
-
+                        string mcvertemp = comboBox1.SelectedItem.ToString();
                         foreach (var line in File.ReadAllLines(launcherdir + "\\relases.list"))
                         {
                             string name = line.Split(';')[0];
@@ -598,8 +620,12 @@ namespace byZyczu
                                 versionargsp1 = versionargsp1.Replace("LAUNCHERPATHJAVA", launcherdir);
                                 versionargsp1 = versionargsp1.Replace("LAUNCHERPATH", launcherdir + "\\" + versionzip.Split('.')[0]);
                                 versionargsp2 = versionargsp2.Replace("LAUNCHERPATH", launcherdir + "\\" + versionzip.Split('.')[0]);
-                                versionargsp2 = versionargsp2.Replace("USERNAMEMOD", textBoxnick.Text);
-                                
+
+
+
+                                    versionargsp2 = versionargsp2.Replace("USERNAMEMOD", textBoxnick.Text);
+
+
                                 if (File.Exists(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391"))
                                 {
                                     string ddd = File.ReadAllText(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391");
@@ -633,8 +659,26 @@ namespace byZyczu
                                 }
 
                                 premiumlaunchwait = false;
-                                versionargsp2 = versionargsp2.Replace("UUID32", uuid);
-                                versionargsp2 = versionargsp2.Replace("TOKEN32", token);
+                                if (mctoken != "cracked")
+                                {
+                                    versionargsp2 = versionargsp2.Replace("UUID32", mcuuid);
+                                    versionargsp2 = versionargsp2.Replace("TOKEN32", mctoken);
+                                    
+                                    if (mcvertemp.Contains("R 1.18.2") || mcvertemp.Contains("R 1.20.4") || mcvertemp.Contains("R 1.16.5") || mcvertemp.Contains("R 1.19.2"))
+                                    {
+                                        versionargsp2 = versionargsp2.Replace("--userType legacy", "--userType mojang");
+                                    }
+                                    else
+                                    {
+                                        versionargsp2 = versionargsp2.Replace("--userType legacy", "--userType msa");
+                                    }
+                                    
+                                }
+                                else
+                                {
+                                    versionargsp2 = versionargsp2.Replace("UUID32", uuid);
+                                    versionargsp2 = versionargsp2.Replace("TOKEN32", token);
+                                }
 
 
                                 javapath = versionargsp1.Split('|')[0];
@@ -677,7 +721,12 @@ namespace byZyczu
                                     versionargsp1 = versionargsp1.Replace("LAUNCHERPATHJAVA", launcherdir);
                                     versionargsp1 = versionargsp1.Replace("LAUNCHERPATH", launcherdir + "\\" + versionzip);
                                     versionargsp2 = versionargsp2.Replace("LAUNCHERPATH", launcherdir + "\\" + versionzip);
-                                    versionargsp2 = versionargsp2.Replace("USERNAMEMOD", textBoxnick.Text);
+
+
+                                        versionargsp2 = versionargsp2.Replace("USERNAMEMOD", textBoxnick.Text);
+
+
+
                                     if (File.Exists(launcherdir + "\\" + versionzip + "\\game\\tempModList-1703628101391"))
                                     {
                                         string ddd = File.ReadAllText(launcherdir + "\\" + versionzip + "\\game\\tempModList-1703628101391");
@@ -711,8 +760,24 @@ namespace byZyczu
                                     }
 
                                     premiumlaunchwait = false;
-                                    versionargsp2 = versionargsp2.Replace("UUID32", uuid);
-                                    versionargsp2 = versionargsp2.Replace("TOKEN32", token);
+                                    if (mctoken != "cracked")
+                                    {
+                                        versionargsp2 = versionargsp2.Replace("UUID32", mcuuid);
+                                        versionargsp2 = versionargsp2.Replace("TOKEN32", mctoken);
+                                        if (mcvertemp.Contains("R 1.18.2") || mcvertemp.Contains("R 1.20.4") || mcvertemp.Contains("R 1.16.5") || mcvertemp.Contains("R 1.19.2"))
+                                        {
+                                            versionargsp2 = versionargsp2.Replace("--userType legacy", "--userType mojang");
+                                        }
+                                        else
+                                        {
+                                            versionargsp2 = versionargsp2.Replace("--userType legacy", "--userType msa");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        versionargsp2 = versionargsp2.Replace("UUID32", uuid);
+                                        versionargsp2 = versionargsp2.Replace("TOKEN32", token);
+                                    }
 
                                     javapath = versionargsp1.Split('|')[0];
                                     versionargsp1 = versionargsp1.Split('|')[1];
@@ -758,6 +823,7 @@ namespace byZyczu
                         {
                             if (!Directory.Exists(launcherdir + "\\" + versionzip.Split('.')[0]))
                             {
+                                downloaded = false;
                                 DownloadFile(depsurl + versionzip, launcherdir + "\\temp.zip");
                             }
                             else
@@ -768,6 +834,11 @@ namespace byZyczu
                         else
                         {
                             downloaded = true;
+                        }
+
+                        while (!downloaded)
+                        {
+                            await Task.Delay(1000);
                         }
 
                         if (downloaded)
@@ -805,7 +876,7 @@ namespace byZyczu
                             {
                                 stream = myProcess.StandardOutput;
 
-                                Modules.DiscordPresence.SetPresence("Gra w " + versionname);
+                                Modules.DiscordPresence.SetPresence("Nick: " + textBoxnick.Text, "Gra w " + versionname);
                                 paneldownload.Visible = false;
                                 buttonlaunch.Text = "Gra uruchomiona!";
                                 Task.Run(() => {
@@ -827,7 +898,7 @@ namespace byZyczu
                                 }
                             }
                             //TU PO DEATACH/EXIT
-                            Modules.DiscordPresence.SetPresence("W Launcherze");
+                            Modules.DiscordPresence.SetPresence("W Launcherze", "byZyczu | " + Form1.version);
                             mclaunched = false;
                             buttonlaunch.Text = "Uruchom grę";
                         }
@@ -838,7 +909,7 @@ namespace byZyczu
             {
                 deatach = true;
                 MessageBox.Show("Paczka z którą chcesz włączyć grę prawdopodobnie została przez ciebie usunięta! Jeżeli uważasz, że gre wywala z winy programu wyślij screena tego błędu na naszego discorda!\r\nSzczegółowy błąd: " + ex.Message, "BŁĄD PODCZAS WŁĄCZANIA GRY!");
-                Modules.DiscordPresence.SetPresence("W Launcherze");
+                Modules.DiscordPresence.SetPresence("W Launcherze", "byZyczu | " + Form1.version);
                 paneldownload.Visible = false;
                 mclaunched = false;
                 buttonlaunch.Text = "Uruchom grę";
@@ -1184,14 +1255,14 @@ namespace byZyczu
             {
                 using (FileStream fs = File.Create(configsdir + "\\lastversion.mks"))
                 {
-                    byte[] info = new UTF8Encoding(true).GetBytes(versionselected + ";" + textBoxnick.Text);
+                    byte[] info = new UTF8Encoding(true).GetBytes(versionselected);
                     // Add some information to the file.
                     fs.Write(info, 0, info.Length);
                 }
             }
             else
             {
-                File.WriteAllText(configsdir + "\\lastversion.mks", versionselected + ";" + textBoxnick.Text);
+                File.WriteAllText(configsdir + "\\lastversion.mks", versionselected);
             }
         }
 
@@ -1268,6 +1339,546 @@ namespace byZyczu
                 {
                     comboBoxmanageversions.Items.Add(name);
                 }
+            }
+        }
+        WebClient premiumweb = new WebClient();
+        
+
+
+
+
+
+        void premiumlogin()
+        {
+            try
+            { 
+            string coderesponse = premiumweb.DownloadString("https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode?client_id=499546d9-bbfe-4b9b-a086-eb3d75afb78f&scope=XboxLive.signin%20offline_access");
+
+            string usercode = coderesponse.Replace("\"user_code\":\"", ">").Split('>')[1].Split('"')[0];
+            string verifyurl = coderesponse.Replace("\"verification_uri\":\"", ">").Split('>')[1].Split('"')[0];
+            string devicecode = coderesponse.Replace("\"device_code\":\"", ">").Split('>')[1].Split('"')[0];
+
+            Clipboard.SetText(usercode);
+
+            MessageBox.Show($"Wejdź na {verifyurl} na swojej przeglądarce i wpisz kod {usercode} aby kontynuować logowanie\r\n(kod skopiowany do schowka)\r\nMOŻESZ ZAMKNĄĆ TE OKIENKO DOPIERO PO ZALOGOWANIU SIĘ W PRZEGLĄDARCE, INACZEJ LOGOWANIE SIE NIE UDA!");
+
+
+
+
+
+            string spamrequest = $"client_id=499546d9-bbfe-4b9b-a086-eb3d75afb78f&code={devicecode}&grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Adevice_code";
+            WebRequest webRequest = WebRequest.Create("https://login.microsoftonline.com/consumers/oauth2/v2.0/token");
+            webRequest.Timeout = 5000;
+            webRequest.Method = "POST";
+            webRequest.Headers.Add("Cookie", "esctx=PAQABAAEAAAAmoFfGtYxvRrNriQdPKIZ-N1P_MEcnyzSjOqDSJiFM7mL9hTzkvRZDiQnF8oxfy0UDFCE9QVbyMFtCPdcO7LTrN_eGz0Fuk4sXL38g7azDkEZ82a4qVcU6FQsDj0wGq0tu4dHlTuSQU_n5UY5vnjtNLyvxkfvQixzDk-GA7-flAXkwJhTHDb-gnlM60MPN54sgAA; stsservicecookie=estsfd; fpc=Aq7Yu-WVxD9KsIRK63eSKH1jHbnPFAAAALiBXN0OAAAA; x-ms-gateway-slice=estsfd");
+            webRequest.ContentLength = (long)spamrequest.Length;
+            StreamWriter streamWriter = new StreamWriter(webRequest.GetRequestStream());
+            streamWriter.Write(spamrequest.ToCharArray(), 0, spamrequest.Length);
+            streamWriter.Close();
+            StreamReader streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream());
+            //richTextBoxconsole.Text = richTextBoxconsole.Text + streamReader.ReadToEnd() + "\r\n";
+            //if (streamReader.ReadToEnd().Length < 2)
+
+            string spamresponse = streamReader.ReadToEnd();
+
+
+
+
+            string tokenspam = spamresponse.Replace("\"access_token\":\"", ">").Split('>')[1].Split('"')[0];
+            string refreshtokenspam = spamresponse.Replace("\"refresh_token\":\"", ">").Split('>')[1].Split('"')[0];
+            //MessageBox.Show("Twój \"spam token\": " + tokenspam);
+
+
+            string authrequest = $"{{\r\n   \"Properties\" : {{\r\n      \"AuthMethod\" : \"RPS\",\r\n      \"RpsTicket\" : \"d={tokenspam}\",\r\n      \"SiteName\" : \"user.auth.xboxlive.com\"\r\n   }},\r\n   \"RelyingParty\" : \"http://auth.xboxlive.com\",\r\n   \"TokenType\" : \"JWT\"\r\n}}";
+            WebRequest authwebRequest = WebRequest.Create("https://user.auth.xboxlive.com/user/authenticate");
+            authwebRequest.Timeout = 5000;
+            authwebRequest.Method = "POST";
+            authwebRequest.ContentType = "application/json";
+            authwebRequest.ContentLength = (long)authrequest.Length;
+            StreamWriter authstreamWriter = new StreamWriter(authwebRequest.GetRequestStream());
+            authstreamWriter.Write(authrequest.ToCharArray(), 0, authrequest.Length);
+            authstreamWriter.Close();
+            StreamReader authstreamReader = new StreamReader(authwebRequest.GetResponse().GetResponseStream());
+
+
+            string authresponse = authstreamReader.ReadToEnd();
+
+
+            string authtoken = authresponse.Replace("\"Token\":\"", ">").Split('>')[1].Split('"')[0];
+            //MessageBox.Show("auth token "+authtoken);
+
+
+
+
+
+
+
+
+
+
+
+            string authorizerequest = $"{{\r\n   \"Properties\" : {{\r\n      \"SandboxId\" : \"RETAIL\",\r\n      \"UserTokens\" : [\r\n         \"{authtoken}\"\r\n      ]\r\n   }},\r\n   \"RelyingParty\" : \"rp://api.minecraftservices.com/\",\r\n   \"TokenType\" : \"JWT\"\r\n}}";
+            WebRequest authorizewebRequest = WebRequest.Create("https://xsts.auth.xboxlive.com/xsts/authorize");
+            authorizewebRequest.Timeout = 5000;
+            authorizewebRequest.Method = "POST";
+            authorizewebRequest.ContentType = "application/json";
+            authorizewebRequest.ContentLength = (long)authorizerequest.Length;
+            StreamWriter authorizestreamWriter = new StreamWriter(authorizewebRequest.GetRequestStream());
+            authorizestreamWriter.Write(authorizerequest.ToCharArray(), 0, authorizerequest.Length);
+            authorizestreamWriter.Close();
+            StreamReader authorizestreamReader = new StreamReader(authorizewebRequest.GetResponse().GetResponseStream());
+
+            string authorizeresponse = authorizestreamReader.ReadToEnd();
+
+            string authorizetoken = authorizeresponse.Replace("\"Token\":\"", ">").Split('>')[1].Split('"')[0];
+            string uhs = authorizeresponse.Replace("\"uhs\":\"", ">").Split('>')[1].Split('"')[0];
+            //MessageBox.Show("authorize token: " + authorizetoken + "\r\nuhs: " + uhs);
+
+
+
+
+
+
+
+
+
+
+
+            string loginreqrequest = $"{{\r\n   \"platform\" : \"PC_LAUNCHER\",\r\n   \"xtoken\" : \"XBL3.0 x={uhs};{authorizetoken}\"\r\n}}";
+            WebRequest loginreqwebRequest = WebRequest.Create("https://api.minecraftservices.com/launcher/login");
+            loginreqwebRequest.Timeout = 5000;
+            loginreqwebRequest.Method = "POST";
+            loginreqwebRequest.ContentType = "application/json";
+            loginreqwebRequest.ContentLength = (long)loginreqrequest.Length;
+            StreamWriter loginreqstreamWriter = new StreamWriter(loginreqwebRequest.GetRequestStream());
+            loginreqstreamWriter.Write(loginreqrequest.ToCharArray(), 0, loginreqrequest.Length);
+            loginreqstreamWriter.Close();
+            StreamReader loginreqstreamReader = new StreamReader(loginreqwebRequest.GetResponse().GetResponseStream());
+
+            string loginreqresponse = loginreqstreamReader.ReadToEnd();
+            Clipboard.SetText(loginreqresponse);
+            //MessageBox.Show(loginreqresponse);
+            string mcaccesstoken = loginreqresponse.Replace("\"access_token\" : \"", ">").Split('>')[1].Split('"')[0];
+
+
+
+
+
+
+
+            WebClient premiumprofileweb = new WebClient();
+            premiumprofileweb.Headers.Add("Authorization", $"Bearer {mcaccesstoken}");
+            string getprofileresponse = premiumprofileweb.DownloadString("https://api.minecraftservices.com/minecraft/profile");
+            Clipboard.SetText(getprofileresponse);
+            //MessageBox.Show(getprofileresponse);
+            string username = getprofileresponse.Replace("\"name\" : \"", ">").Split('>')[1].Split('"')[0];
+
+            string uuid = getprofileresponse.Split('[')[0].Replace("\"id\" : \"", ">").Split('>')[1].Split('"')[0];
+
+
+            if (mcaccesstoken.Length > 1)
+            {
+                if (username.Length > 1)
+                {
+                    if (uuid.Length > 1)
+                    {
+
+                        AddAccountPremium(username, uuid, refreshtokenspam);
+                        MessageBox.Show($"Account added:\r\nusername: {username}\r\nuuid: {uuid}");
+                    }
+                }
+            }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("BŁĄD PRZY DODAWANIU KONTA PREMIUM: " + ex.Message, "BŁĄD");
+                }
+        }
+
+        void AddAccountPremium(string username, string uuid, string refreshtoken)
+        {
+            if (!Directory.Exists(launcherdir + "\\accounts"))
+            {
+                Directory.CreateDirectory(launcherdir + "\\accounts");
+            }
+            if (!File.Exists(launcherdir + "\\accounts\\accsprem.mks"))
+            {
+                using (FileStream fs = File.Create(launcherdir + "\\accounts\\accsprem.mks"))
+                {
+                }
+            }
+            RefreshMSAccsList();
+            string tosave = "";
+            foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsprem.mks"))
+            {
+                if (line.Contains(">"))
+                {
+                    tosave = tosave + "\r\n" + line;
+                }
+            }
+            tosave = tosave + "\r\n" + $"{username}>{uuid}>{refreshtoken}";
+            File.WriteAllText(launcherdir + "\\accounts\\accsprem.mks", tosave);
+        }
+
+        void RefreshMSAccsList()
+        {
+            comboBoxpremiumaccounts.Items.Clear();
+            foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsprem.mks"))
+            {
+                if (line.Contains(">"))
+                {
+
+                    comboBoxpremiumaccounts.Items.Add(RefreshAccountData(line.Split('>')[2]).Split('>')[0]);
+                }
+            }
+        }
+
+
+        string RefreshAccountData(string refreshtoken)
+        {
+            try
+            { 
+            string spamrequest = $"client_id=499546d9-bbfe-4b9b-a086-eb3d75afb78f&grant_type=refresh_token&refresh_token={refreshtoken}";
+            WebRequest webRequest = WebRequest.Create("https://login.microsoftonline.com/consumers/oauth2/v2.0/token");
+            webRequest.Timeout = 5000;
+            webRequest.Method = "POST";
+            webRequest.ContentLength = (long)spamrequest.Length;
+            StreamWriter streamWriter = new StreamWriter(webRequest.GetRequestStream());
+            streamWriter.Write(spamrequest.ToCharArray(), 0, spamrequest.Length);
+            streamWriter.Close();
+            StreamReader streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream());
+            //richTextBoxconsole.Text = richTextBoxconsole.Text + streamReader.ReadToEnd() + "\r\n";
+            //if (streamReader.ReadToEnd().Length < 2)
+
+            string spamresponse = streamReader.ReadToEnd();
+
+
+
+
+            string tokenspam = spamresponse.Replace("\"access_token\":\"", ">").Split('>')[1].Split('"')[0];
+            string refreshtokenspam = spamresponse.Replace("\"refresh_token\":\"", ">").Split('>')[1].Split('"')[0];
+            //MessageBox.Show("Twój \"spam token\": " + tokenspam);
+
+
+            string authrequest = $"{{\r\n   \"Properties\" : {{\r\n      \"AuthMethod\" : \"RPS\",\r\n      \"RpsTicket\" : \"d={tokenspam}\",\r\n      \"SiteName\" : \"user.auth.xboxlive.com\"\r\n   }},\r\n   \"RelyingParty\" : \"http://auth.xboxlive.com\",\r\n   \"TokenType\" : \"JWT\"\r\n}}";
+            WebRequest authwebRequest = WebRequest.Create("https://user.auth.xboxlive.com/user/authenticate");
+            authwebRequest.Timeout = 5000;
+            authwebRequest.Method = "POST";
+            authwebRequest.ContentType = "application/json";
+            authwebRequest.ContentLength = (long)authrequest.Length;
+            StreamWriter authstreamWriter = new StreamWriter(authwebRequest.GetRequestStream());
+            authstreamWriter.Write(authrequest.ToCharArray(), 0, authrequest.Length);
+            authstreamWriter.Close();
+            StreamReader authstreamReader = new StreamReader(authwebRequest.GetResponse().GetResponseStream());
+
+
+            string authresponse = authstreamReader.ReadToEnd();
+
+
+            string authtoken = authresponse.Replace("\"Token\":\"", ">").Split('>')[1].Split('"')[0];
+            //MessageBox.Show("auth token "+authtoken);
+
+
+
+
+
+
+
+
+
+
+
+            string authorizerequest = $"{{\r\n   \"Properties\" : {{\r\n      \"SandboxId\" : \"RETAIL\",\r\n      \"UserTokens\" : [\r\n         \"{authtoken}\"\r\n      ]\r\n   }},\r\n   \"RelyingParty\" : \"rp://api.minecraftservices.com/\",\r\n   \"TokenType\" : \"JWT\"\r\n}}";
+            WebRequest authorizewebRequest = WebRequest.Create("https://xsts.auth.xboxlive.com/xsts/authorize");
+            authorizewebRequest.Timeout = 5000;
+            authorizewebRequest.Method = "POST";
+            authorizewebRequest.ContentType = "application/json";
+            authorizewebRequest.ContentLength = (long)authorizerequest.Length;
+            StreamWriter authorizestreamWriter = new StreamWriter(authorizewebRequest.GetRequestStream());
+            authorizestreamWriter.Write(authorizerequest.ToCharArray(), 0, authorizerequest.Length);
+            authorizestreamWriter.Close();
+            StreamReader authorizestreamReader = new StreamReader(authorizewebRequest.GetResponse().GetResponseStream());
+
+            string authorizeresponse = authorizestreamReader.ReadToEnd();
+
+            string authorizetoken = authorizeresponse.Replace("\"Token\":\"", ">").Split('>')[1].Split('"')[0];
+            string uhs = authorizeresponse.Replace("\"uhs\":\"", ">").Split('>')[1].Split('"')[0];
+       
+
+
+
+
+
+
+
+
+
+
+
+            string loginreqrequest = $"{{\r\n   \"platform\" : \"PC_LAUNCHER\",\r\n   \"xtoken\" : \"XBL3.0 x={uhs};{authorizetoken}\"\r\n}}";
+            WebRequest loginreqwebRequest = WebRequest.Create("https://api.minecraftservices.com/launcher/login");
+            loginreqwebRequest.Timeout = 5000;
+            loginreqwebRequest.Method = "POST";
+            loginreqwebRequest.ContentType = "application/json";
+            loginreqwebRequest.ContentLength = (long)loginreqrequest.Length;
+            StreamWriter loginreqstreamWriter = new StreamWriter(loginreqwebRequest.GetRequestStream());
+            loginreqstreamWriter.Write(loginreqrequest.ToCharArray(), 0, loginreqrequest.Length);
+            loginreqstreamWriter.Close();
+            StreamReader loginreqstreamReader = new StreamReader(loginreqwebRequest.GetResponse().GetResponseStream());
+
+            string loginreqresponse = loginreqstreamReader.ReadToEnd();
+            Clipboard.SetText(loginreqresponse);
+            //MessageBox.Show(loginreqresponse);
+            string mcaccesstoken = loginreqresponse.Replace("\"access_token\" : \"", ">").Split('>')[1].Split('"')[0];
+
+
+
+
+
+
+
+            WebClient premiumprofileweb = new WebClient();
+            premiumprofileweb.Headers.Add("Authorization", $"Bearer {mcaccesstoken}");
+            string getprofileresponse = premiumprofileweb.DownloadString("https://api.minecraftservices.com/minecraft/profile");
+            Clipboard.SetText(getprofileresponse);
+            //MessageBox.Show(getprofileresponse);
+            string username = getprofileresponse.Replace("\"name\" : \"", ">").Split('>')[1].Split('"')[0];
+
+            string uuid = getprofileresponse.Split('[')[0].Replace("\"id\" : \"", ">").Split('>')[1].Split('"')[0];
+
+            return $"{username}>{uuid}>{refreshtokenspam}<{mcaccesstoken}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("BŁĄD PRZY ODŚWIERZANIU KONTA PREMIUM: " + ex.Message, "BŁĄD");
+                return "error>error>error>error";
+            }
+        }
+
+        string mctoken = "cracked";
+        string mcusername = "N";
+        string mcuuid = "cracked";
+
+        private void buttonaccounts_Click(object sender, EventArgs e)
+        {
+            panelaccounts.Visible = true;
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            panelaccounts.Visible = false;  
+        }
+
+        private void buttonaddaccountpremium_Click(object sender, EventArgs e)
+        {
+            premiumlogin();
+            comboBoxpremiumaccounts.Items.Clear();
+            foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsprem.mks"))
+            {
+                if (line.Contains(">"))
+                {
+                    comboBoxpremiumaccounts.Items.Add(RefreshAccountData(line.Split('>')[2]).Split('>')[0]);
+                }
+            }
+        }
+
+        private void buttonloginpremium_Click(object sender, EventArgs e)
+        {
+            try
+            { 
+            string accountdata = GetDataViaUsername(comboBoxpremiumaccounts.SelectedItem.ToString());
+            mcusername = accountdata.Split('>')[0];
+            mcuuid = accountdata.Split('>')[1];
+            mctoken = RefreshAccountData(accountdata.Split('>')[2]).Split('<')[1];
+            if (!File.Exists(launcherdir + "\\accounts\\selectedacc.mks"))
+            {
+                using (FileStream fs = File.Create(launcherdir + "\\accounts\\selectedacc.mks"))
+                {
+                }
+            }
+            Task.Delay(500);
+            File.WriteAllText(launcherdir + "\\accounts\\selectedacc.mks", $"{mcusername}>{mcuuid}");
+            textBoxnick.Text = mcusername;
+            MessageBox.Show("Zalogowano do:\r\n" + mcusername);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("BŁĄD PRZY LOGOWANIU NA KONTO PREMIUM: " + ex.Message, "BŁĄD");
+            }
+        }
+
+        string GetDataViaUsername(string username)
+        {
+            try
+            {
+                foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsprem.mks"))
+                {
+                    if (line.Contains($"{username}>"))
+                    {
+                        return line;
+                    }
+                }
+                return "NOTFOUND";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("BŁĄD PRZY WCZYTYWANIU ZAPISANYCH INFORMACJI KONTA: " + ex.Message, "BŁĄD");
+                return "error";
+            }
+
+        }
+
+        void AddOfflineAccount(string username)
+        {
+            try
+            { 
+            if (!Directory.Exists(launcherdir + "\\accounts"))
+            {
+                Directory.CreateDirectory(launcherdir + "\\accounts");
+            }
+            if (!File.Exists(launcherdir + "\\accounts\\accsoff.mks"))
+            {
+                using (FileStream fs = File.Create(launcherdir + "\\accounts\\accsoff.mks"))
+                {
+                }
+            }
+            string tosave = "";
+            foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsoff.mks"))
+            {
+                if (line.Contains(">"))
+                {
+                    tosave = tosave + "\r\n" + line;
+                }
+            }
+            tosave = tosave + "\r\n" + $"{username}>cracked>cracked";
+            File.WriteAllText(launcherdir + "\\accounts\\accsoff.mks", tosave);
+            Task.Delay(300);
+            comboBoxloginoffline.Items.Clear();
+            foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsoff.mks"))
+            {
+                if(line.Contains(">"))
+                {
+                    comboBoxloginoffline.Items.Add(line.Split('>')[0]);
+
+                }
+            }
+            MessageBox.Show("Dodano konto!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("BŁĄD PRZY DODAWANIU KONTA OFFLINE: " + ex.Message, "BŁĄD");
+            }
+        }
+
+        private void buttonaddaccountoffline_Click(object sender, EventArgs e)
+        {
+            AddOfflineAccount(textBoxaddnick.Text);
+        }
+
+        private void buttonloginoffline_Click(object sender, EventArgs e)
+        {
+            mcusername = comboBoxloginoffline.SelectedItem.ToString();
+            File.WriteAllText(launcherdir + "\\accounts\\selectedacc.mks", $"{mcusername}>cracked");
+            mcuuid = "cracked";
+            mctoken = "cracked";
+            textBoxnick.Text = mcusername;
+            MessageBox.Show("Zalogowano na: " + mcusername);
+        }
+
+        private void buttondeleteoffline_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                
+                string tosave = "";
+                foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsoff.mks"))
+                {
+                    if (line.Contains(">"))
+                    {
+                        if (line.Contains(comboBoxloginoffline.SelectedItem.ToString()+">cracked>cracked"))
+                        {
+
+                        }
+                        else
+                        {
+                            tosave = tosave + "\r\n" + line;
+                        }
+                        
+                    }
+                }
+                File.WriteAllText(launcherdir + "\\accounts\\accsoff.mks", tosave);
+                
+                
+                string temp = File.ReadAllText(launcherdir + "\\accounts\\selectedacc.mks");
+                if (temp.Contains(comboBoxloginoffline.SelectedItem.ToString() + ">cracked"))
+                {
+                    File.WriteAllText(launcherdir + "\\accounts\\selectedacc.mks", "");
+                    textBoxnick.Text = "";
+                }
+
+                comboBoxloginoffline.Items.Clear();
+                foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsoff.mks"))
+                {
+                    if (line.Contains(">"))
+                    {
+                        comboBoxloginoffline.Items.Add(line.Split('>')[0]);
+                        
+                    }
+                }
+                MessageBox.Show("Usunięto konto!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("BŁĄD PRZY USUWANIU KONTA OFFLINE: " + ex.Message, "BŁĄD");
+            }
+        }
+
+        private void buttondeleteonline_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                string tosave = "";
+                foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsprem.mks"))
+                {
+                    if (line.Contains(">"))
+                    {
+                        if (line.StartsWith(comboBoxpremiumaccounts.SelectedItem.ToString() + ">"))
+                        {
+
+                        }
+                        else
+                        {
+                            tosave = tosave + "\r\n" + line;
+                        }
+
+                    }
+                }
+                File.WriteAllText(launcherdir + "\\accounts\\accsprem.mks", tosave);
+                
+                
+                if (File.ReadAllText(launcherdir + "\\accounts\\selectedacc.mks").Contains(comboBoxpremiumaccounts.SelectedItem.ToString() + ">"))
+                {
+                    Task.Delay(200);
+                    File.WriteAllText(File.ReadAllText(launcherdir + "\\accounts\\selectedacc.mks"), "");
+                    textBoxnick.Text = "";
+                }
+
+                comboBoxpremiumaccounts.Items.Clear();
+                foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsprem.mks"))
+                {
+                    if (line.Contains(">"))
+                    {
+                        comboBoxpremiumaccounts.Items.Add(line.Split('>')[0]);
+
+                    }
+                }
+
+                MessageBox.Show("Usunięto konto!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("BŁĄD PRZY USUWANIU KONTA ONLINE: " + ex.Message, "BŁĄD");
             }
         }
     }
