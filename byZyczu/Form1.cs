@@ -98,7 +98,7 @@ namespace byZyczu
         Random rand = new Random();
         bool downloaded = false;
         public static bool premiumlaunchwait = true;
-        public static string version = "1.6";
+        public static string version = "1.7";
 
         public void DownloadFile(string urlAddress, string location)
         {
@@ -127,10 +127,7 @@ namespace byZyczu
         Stopwatch sw = new Stopwatch();
         private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            downloadlabel.Text = string.Format("{0} kb/s", (e.BytesReceived / 1024d / sw.Elapsed.TotalSeconds).ToString("0.00")) + string.Format("\r\n{0} MB's / {1} MB's",
-                (e.BytesReceived / 1024d / 1024d).ToString("0.00"),
-                (e.TotalBytesToReceive / 1024d / 1024d).ToString("0.00"));
-
+            downloadlabel.Text = $"{(e.BytesReceived / 1024d / sw.Elapsed.TotalSeconds).ToString("0.0")} kb/s\r\n{(e.BytesReceived / 1024d / 1024d).ToString("0.0")} MB / {(e.TotalBytesToReceive / 1024d / 1024d).ToString("0.0")} MB";
             progressBar1.Value = e.ProgressPercentage;
         }
 
@@ -244,7 +241,7 @@ namespace byZyczu
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            textBoxnick.Text = "ŁADOWANIE KONT PREMIUM";
+            textBoxnick.Text = "ODŚWIERZANIE KONT PREMIUM";
             HttpClient clienthttp = new HttpClient();
             if (!Directory.Exists(launcherdir + "\\accounts"))
             {
@@ -416,7 +413,15 @@ namespace byZyczu
                 {
                     comboBoxRAM.SelectedItem = "2048M";
                 }
-                
+                comboBoxloginoffline.Items.Clear();
+                foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsoff.mks"))
+                {
+                    if (line.Contains(">"))
+                    {
+                        comboBoxloginoffline.Items.Add(line.Split('>')[0]);
+
+                    }
+                }
                 try
                 {
                     RefreshMSAccsList();
@@ -430,6 +435,7 @@ namespace byZyczu
                             if (data.Contains(">cracked"))
                             {
                                 mcusername = data.Split('>')[0];
+                                comboBoxloginoffline.SelectedItem = mcusername;
                                 textBoxnick.Text = mcusername;
                                 mcuuid = "cracked";
                                 mctoken = "cracked";
@@ -455,20 +461,16 @@ namespace byZyczu
                             textBoxnick.Text = "";
                         }
                     }
+                    else
+                    {
+                        textBoxnick.Text = "";
+                    }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("BŁĄD PRZY ODŚWIERZANIU KONT PREMIUM: " + ex.Message, "BŁĄD");
                 }
-                comboBoxloginoffline.Items.Clear();
-                foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsoff.mks"))
-                {
-                    if (line.Contains(">"))
-                    {
-                        comboBoxloginoffline.Items.Add(line.Split('>')[0]);
-
-                    }
-                }
+                
                 if (File.Exists(configsdir + "\\lastversion.mks"))
                 {
                     try
@@ -531,7 +533,7 @@ namespace byZyczu
                 bool cancontinue = true;
                 string username = textBoxnick.Text;
 
-                if (username.Length > 13)
+                if (username.Length > 16)
                 {
                     cancontinue = false;
                     MessageBox.Show("Masz za długi nick!");
@@ -587,7 +589,7 @@ namespace byZyczu
 
                 if (mclaunched)
                 {
-                    deatach = true;
+                    java.Kill();
                 }
                 else
                 {
@@ -872,31 +874,36 @@ namespace byZyczu
 
                                 WorkingDirectory = launcherdir + "\\" + wersjaczycosnwm
                             };
-                            using (Process myProcess = Process.Start(startinfo))
-                            {
-                                stream = myProcess.StandardOutput;
+                            java = Process.Start(startinfo);
 
-                                Modules.DiscordPresence.SetPresence("Nick: " + textBoxnick.Text, "Gra w " + versionname);
-                                paneldownload.Visible = false;
-                                buttonlaunch.Text = "Gra uruchomiona!";
-                                Task.Run(() => {
-                                    readstream();
-                                });
-                                while (!deatach)
-                                {
-                                    if (!myProcess.HasExited)
-                                    {
-                                        mclaunched = true;
-                                        myProcess.Refresh();
-                                        
-                                    }
-                                    else
-                                    {
-                                        deatach = true;
-                                    }
-                                    await Task.Delay(1000);
-                                }
+                            stream = java.StandardOutput;
+
+                            Modules.DiscordPresence.SetPresence("Nick: " + textBoxnick.Text, "Gra w " + versionname);
+                            paneldownload.Visible = false;
+                            buttonlaunch.Text = "Zabij gre";
+                            Task.Run(() => {
+                                readstream();
+                            });
+
+                            if (comboBox1.SelectedItem.ToString().Contains("Rise 6.0.24"))
+                            {
+                                Process.Start(launcherdir + "\\" + wersjaczycosnwm + "\\game\\Start.bat");
                             }
+                            while (!deatach)
+                            {
+                                if (!java.HasExited)
+                                {
+                                    mclaunched = true;
+                                    java.Refresh();
+
+                                }
+                                else
+                                {
+                                    deatach = true;
+                                }
+                                await Task.Delay(1000);
+                            }
+
                             //TU PO DEATACH/EXIT
                             Modules.DiscordPresence.SetPresence("W Launcherze", "byZyczu | " + Form1.version);
                             mclaunched = false;
@@ -1225,6 +1232,9 @@ namespace byZyczu
             }
         }
 
+        Process java;
+
+
         private void comboBoxmodpackcreate_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -1353,6 +1363,8 @@ namespace byZyczu
             try
             { 
             string coderesponse = premiumweb.DownloadString("https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode?client_id=499546d9-bbfe-4b9b-a086-eb3d75afb78f&scope=XboxLive.signin%20offline_access");
+
+                //string coderesponse = premiumweb.DownloadString("https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode?client_id=0d6f50b1-57fc-4714-a5c3-5a43c7068442&scope=XboxLive.signin%20offline_access");
 
             string usercode = coderesponse.Replace("\"user_code\":\"", ">").Split('>')[1].Split('"')[0];
             string verifyurl = coderesponse.Replace("\"verification_uri\":\"", ">").Split('>')[1].Split('"')[0];
@@ -1860,7 +1872,7 @@ namespace byZyczu
                 if (File.ReadAllText(launcherdir + "\\accounts\\selectedacc.mks").Contains(comboBoxpremiumaccounts.SelectedItem.ToString() + ">"))
                 {
                     Task.Delay(200);
-                    File.WriteAllText(File.ReadAllText(launcherdir + "\\accounts\\selectedacc.mks"), "");
+                    File.WriteAllText(launcherdir + "\\accounts\\selectedacc.mks", "");
                     textBoxnick.Text = "";
                 }
 

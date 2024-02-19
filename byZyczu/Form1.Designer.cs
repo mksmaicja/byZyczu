@@ -93,25 +93,25 @@ namespace byZyczu
             this.panelconsole = new System.Windows.Forms.Panel();
             this.richTextBoxconsole = new System.Windows.Forms.RichTextBox();
             this.panelaccounts = new System.Windows.Forms.Panel();
+            this.buttondeleteonline = new System.Windows.Forms.Button();
+            this.buttondeleteoffline = new System.Windows.Forms.Button();
+            this.comboBoxpremiumaccounts = new System.Windows.Forms.ComboBox();
+            this.buttonloginpremium = new System.Windows.Forms.Button();
+            this.label27 = new System.Windows.Forms.Label();
+            this.buttonaddaccountpremium = new System.Windows.Forms.Button();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.comboBoxloginoffline = new System.Windows.Forms.ComboBox();
+            this.buttonloginoffline = new System.Windows.Forms.Button();
+            this.label22 = new System.Windows.Forms.Label();
+            this.buttonaddaccountoffline = new System.Windows.Forms.Button();
+            this.textBoxaddnick = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.button9 = new System.Windows.Forms.Button();
             this.label18 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
-            this.button9 = new System.Windows.Forms.Button();
-            this.label21 = new System.Windows.Forms.Label();
-            this.textBoxaddnick = new System.Windows.Forms.TextBox();
-            this.buttonaddaccountoffline = new System.Windows.Forms.Button();
-            this.buttonloginoffline = new System.Windows.Forms.Button();
-            this.label22 = new System.Windows.Forms.Label();
-            this.comboBoxloginoffline = new System.Windows.Forms.ComboBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.buttonaddaccountpremium = new System.Windows.Forms.Button();
-            this.comboBoxpremiumaccounts = new System.Windows.Forms.ComboBox();
-            this.buttonloginpremium = new System.Windows.Forms.Button();
-            this.label27 = new System.Windows.Forms.Label();
-            this.buttondeleteoffline = new System.Windows.Forms.Button();
-            this.buttondeleteonline = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panelsettings.SuspendLayout();
             this.paneldownload.SuspendLayout();
@@ -207,9 +207,9 @@ namespace byZyczu
             this.label2.Location = new System.Drawing.Point(8, 9);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(231, 16);
+            this.label2.Size = new System.Drawing.Size(228, 16);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Minecraft Launcher by maicja";
+            this.label2.Text = "Minecraft Launcher by zyczu";
             // 
             // buttonsettings
             // 
@@ -271,7 +271,7 @@ namespace byZyczu
             this.panelsettings.Controls.Add(this.buttonsavechanges);
             this.panelsettings.Controls.Add(this.label6);
             this.panelsettings.Controls.Add(this.label5);
-            this.panelsettings.Location = new System.Drawing.Point(13, 460);
+            this.panelsettings.Location = new System.Drawing.Point(55, 460);
             this.panelsettings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelsettings.Name = "panelsettings";
             this.panelsettings.Size = new System.Drawing.Size(805, 405);
@@ -412,7 +412,7 @@ namespace byZyczu
             this.paneldownload.Controls.Add(this.progressBar1);
             this.paneldownload.Controls.Add(this.downloadlabel);
             this.paneldownload.Controls.Add(this.label9);
-            this.paneldownload.Location = new System.Drawing.Point(836, 12);
+            this.paneldownload.Location = new System.Drawing.Point(826, 12);
             this.paneldownload.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.paneldownload.Name = "paneldownload";
             this.paneldownload.Size = new System.Drawing.Size(805, 405);
@@ -448,7 +448,7 @@ namespace byZyczu
             this.downloadlabel.Name = "downloadlabel";
             this.downloadlabel.Size = new System.Drawing.Size(114, 13);
             this.downloadlabel.TabIndex = 1;
-            this.downloadlabel.Text = "Ukończono 69 % ";
+            this.downloadlabel.Text = "Pobieranie gry...";
             this.downloadlabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label9
@@ -473,7 +473,7 @@ namespace byZyczu
             this.panelmodsmain.Controls.Add(this.buttonmodpacks);
             this.panelmodsmain.Controls.Add(this.buttonmanagemods);
             this.panelmodsmain.Controls.Add(this.label16);
-            this.panelmodsmain.Location = new System.Drawing.Point(8, 467);
+            this.panelmodsmain.Location = new System.Drawing.Point(11, 463);
             this.panelmodsmain.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelmodsmain.Name = "panelmodsmain";
             this.panelmodsmain.Size = new System.Drawing.Size(805, 405);
@@ -801,11 +801,171 @@ namespace byZyczu
             this.panelaccounts.Controls.Add(this.label20);
             this.panelaccounts.Controls.Add(this.label24);
             this.panelaccounts.Controls.Add(this.label25);
-            this.panelaccounts.Location = new System.Drawing.Point(23, 38);
+            this.panelaccounts.Location = new System.Drawing.Point(738, 23);
             this.panelaccounts.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelaccounts.Name = "panelaccounts";
             this.panelaccounts.Size = new System.Drawing.Size(805, 405);
             this.panelaccounts.TabIndex = 12;
+            // 
+            // buttondeleteonline
+            // 
+            this.buttondeleteonline.Location = new System.Drawing.Point(460, 331);
+            this.buttondeleteonline.Name = "buttondeleteonline";
+            this.buttondeleteonline.Size = new System.Drawing.Size(75, 29);
+            this.buttondeleteonline.TabIndex = 27;
+            this.buttondeleteonline.Text = "Usuń";
+            this.buttondeleteonline.UseVisualStyleBackColor = true;
+            this.buttondeleteonline.Click += new System.EventHandler(this.buttondeleteonline_Click);
+            // 
+            // buttondeleteoffline
+            // 
+            this.buttondeleteoffline.Location = new System.Drawing.Point(460, 158);
+            this.buttondeleteoffline.Name = "buttondeleteoffline";
+            this.buttondeleteoffline.Size = new System.Drawing.Size(75, 29);
+            this.buttondeleteoffline.TabIndex = 26;
+            this.buttondeleteoffline.Text = "Usuń";
+            this.buttondeleteoffline.UseVisualStyleBackColor = true;
+            this.buttondeleteoffline.Click += new System.EventHandler(this.buttondeleteoffline_Click);
+            // 
+            // comboBoxpremiumaccounts
+            // 
+            this.comboBoxpremiumaccounts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxpremiumaccounts.FormattingEnabled = true;
+            this.comboBoxpremiumaccounts.Location = new System.Drawing.Point(103, 336);
+            this.comboBoxpremiumaccounts.Name = "comboBoxpremiumaccounts";
+            this.comboBoxpremiumaccounts.Size = new System.Drawing.Size(186, 21);
+            this.comboBoxpremiumaccounts.TabIndex = 25;
+            // 
+            // buttonloginpremium
+            // 
+            this.buttonloginpremium.Location = new System.Drawing.Point(315, 332);
+            this.buttonloginpremium.Name = "buttonloginpremium";
+            this.buttonloginpremium.Size = new System.Drawing.Size(133, 29);
+            this.buttonloginpremium.TabIndex = 24;
+            this.buttonloginpremium.Text = "Zaloguj się";
+            this.buttonloginpremium.UseVisualStyleBackColor = true;
+            this.buttonloginpremium.Click += new System.EventHandler(this.buttonloginpremium_Click);
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.BackColor = System.Drawing.Color.Transparent;
+            this.label27.Font = new System.Drawing.Font("MinecraftZyczu", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label27.Location = new System.Drawing.Point(49, 337);
+            this.label27.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(39, 16);
+            this.label27.TabIndex = 23;
+            this.label27.Text = "Nick:";
+            // 
+            // buttonaddaccountpremium
+            // 
+            this.buttonaddaccountpremium.Location = new System.Drawing.Point(51, 301);
+            this.buttonaddaccountpremium.Name = "buttonaddaccountpremium";
+            this.buttonaddaccountpremium.Size = new System.Drawing.Size(133, 29);
+            this.buttonaddaccountpremium.TabIndex = 22;
+            this.buttonaddaccountpremium.Text = "Dodaj konto";
+            this.buttonaddaccountpremium.UseVisualStyleBackColor = true;
+            this.buttonaddaccountpremium.Click += new System.EventHandler(this.buttonaddaccountpremium_Click);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.BackColor = System.Drawing.Color.Transparent;
+            this.label23.Font = new System.Drawing.Font("MinecraftZyczu", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label23.Location = new System.Drawing.Point(48, 241);
+            this.label23.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(646, 48);
+            this.label23.TabIndex = 21;
+            this.label23.Text = "Aby dodać konto premium do listy, kliknij przycisk \"dodaj konto\" i postępuj zgodn" +
+    "ie z \r\ndalszymi instrukcjami.\r\nAby zalagować się na konto wybierz je z listy i k" +
+    "liknij \"zaloguj się\"";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.BackColor = System.Drawing.Color.Transparent;
+            this.label26.Font = new System.Drawing.Font("MinecraftZyczu", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label26.Location = new System.Drawing.Point(12, 209);
+            this.label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(147, 20);
+            this.label26.TabIndex = 20;
+            this.label26.Text = "Konta premium";
+            // 
+            // comboBoxloginoffline
+            // 
+            this.comboBoxloginoffline.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxloginoffline.FormattingEnabled = true;
+            this.comboBoxloginoffline.Location = new System.Drawing.Point(103, 162);
+            this.comboBoxloginoffline.Name = "comboBoxloginoffline";
+            this.comboBoxloginoffline.Size = new System.Drawing.Size(186, 21);
+            this.comboBoxloginoffline.TabIndex = 19;
+            // 
+            // buttonloginoffline
+            // 
+            this.buttonloginoffline.Location = new System.Drawing.Point(315, 158);
+            this.buttonloginoffline.Name = "buttonloginoffline";
+            this.buttonloginoffline.Size = new System.Drawing.Size(133, 29);
+            this.buttonloginoffline.TabIndex = 18;
+            this.buttonloginoffline.Text = "Zaloguj się";
+            this.buttonloginoffline.UseVisualStyleBackColor = true;
+            this.buttonloginoffline.Click += new System.EventHandler(this.buttonloginoffline_Click);
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.BackColor = System.Drawing.Color.Transparent;
+            this.label22.Font = new System.Drawing.Font("MinecraftZyczu", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label22.Location = new System.Drawing.Point(49, 163);
+            this.label22.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(39, 16);
+            this.label22.TabIndex = 16;
+            this.label22.Text = "Nick:";
+            // 
+            // buttonaddaccountoffline
+            // 
+            this.buttonaddaccountoffline.Location = new System.Drawing.Point(315, 124);
+            this.buttonaddaccountoffline.Name = "buttonaddaccountoffline";
+            this.buttonaddaccountoffline.Size = new System.Drawing.Size(133, 29);
+            this.buttonaddaccountoffline.TabIndex = 15;
+            this.buttonaddaccountoffline.Text = "Dodaj konto";
+            this.buttonaddaccountoffline.UseVisualStyleBackColor = true;
+            this.buttonaddaccountoffline.Click += new System.EventHandler(this.buttonaddaccountoffline_Click);
+            // 
+            // textBoxaddnick
+            // 
+            this.textBoxaddnick.Location = new System.Drawing.Point(103, 128);
+            this.textBoxaddnick.Name = "textBoxaddnick";
+            this.textBoxaddnick.Size = new System.Drawing.Size(186, 21);
+            this.textBoxaddnick.TabIndex = 14;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.BackColor = System.Drawing.Color.Transparent;
+            this.label21.Font = new System.Drawing.Font("MinecraftZyczu", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.Location = new System.Drawing.Point(49, 129);
+            this.label21.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(39, 16);
+            this.label21.TabIndex = 13;
+            this.label21.Text = "Nick:";
+            // 
+            // button9
+            // 
+            this.button9.BackColor = System.Drawing.Color.Transparent;
+            this.button9.BackgroundImage = global::byZyczu.Properties.Resources.zamknij;
+            this.button9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button9.Location = new System.Drawing.Point(771, 6);
+            this.button9.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(27, 26);
+            this.button9.TabIndex = 12;
+            this.button9.UseVisualStyleBackColor = false;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // label18
             // 
@@ -855,166 +1015,6 @@ namespace byZyczu
             this.label25.Size = new System.Drawing.Size(195, 20);
             this.label25.TabIndex = 0;
             this.label25.Text = "Konta non-premium";
-            // 
-            // button9
-            // 
-            this.button9.BackColor = System.Drawing.Color.Transparent;
-            this.button9.BackgroundImage = global::byZyczu.Properties.Resources.zamknij;
-            this.button9.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button9.Location = new System.Drawing.Point(771, 6);
-            this.button9.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(27, 26);
-            this.button9.TabIndex = 12;
-            this.button9.UseVisualStyleBackColor = false;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.BackColor = System.Drawing.Color.Transparent;
-            this.label21.Font = new System.Drawing.Font("MinecraftZyczu", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(49, 129);
-            this.label21.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(39, 16);
-            this.label21.TabIndex = 13;
-            this.label21.Text = "Nick:";
-            // 
-            // textBoxaddnick
-            // 
-            this.textBoxaddnick.Location = new System.Drawing.Point(103, 128);
-            this.textBoxaddnick.Name = "textBoxaddnick";
-            this.textBoxaddnick.Size = new System.Drawing.Size(186, 21);
-            this.textBoxaddnick.TabIndex = 14;
-            // 
-            // buttonaddaccountoffline
-            // 
-            this.buttonaddaccountoffline.Location = new System.Drawing.Point(315, 124);
-            this.buttonaddaccountoffline.Name = "buttonaddaccountoffline";
-            this.buttonaddaccountoffline.Size = new System.Drawing.Size(133, 29);
-            this.buttonaddaccountoffline.TabIndex = 15;
-            this.buttonaddaccountoffline.Text = "Dodaj konto";
-            this.buttonaddaccountoffline.UseVisualStyleBackColor = true;
-            this.buttonaddaccountoffline.Click += new System.EventHandler(this.buttonaddaccountoffline_Click);
-            // 
-            // buttonloginoffline
-            // 
-            this.buttonloginoffline.Location = new System.Drawing.Point(315, 158);
-            this.buttonloginoffline.Name = "buttonloginoffline";
-            this.buttonloginoffline.Size = new System.Drawing.Size(133, 29);
-            this.buttonloginoffline.TabIndex = 18;
-            this.buttonloginoffline.Text = "Zaloguj się";
-            this.buttonloginoffline.UseVisualStyleBackColor = true;
-            this.buttonloginoffline.Click += new System.EventHandler(this.buttonloginoffline_Click);
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.BackColor = System.Drawing.Color.Transparent;
-            this.label22.Font = new System.Drawing.Font("MinecraftZyczu", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(49, 163);
-            this.label22.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(39, 16);
-            this.label22.TabIndex = 16;
-            this.label22.Text = "Nick:";
-            // 
-            // comboBoxloginoffline
-            // 
-            this.comboBoxloginoffline.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxloginoffline.FormattingEnabled = true;
-            this.comboBoxloginoffline.Location = new System.Drawing.Point(103, 162);
-            this.comboBoxloginoffline.Name = "comboBoxloginoffline";
-            this.comboBoxloginoffline.Size = new System.Drawing.Size(186, 21);
-            this.comboBoxloginoffline.TabIndex = 19;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.BackColor = System.Drawing.Color.Transparent;
-            this.label23.Font = new System.Drawing.Font("MinecraftZyczu", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(48, 241);
-            this.label23.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(646, 48);
-            this.label23.TabIndex = 21;
-            this.label23.Text = "Aby dodać konto premium do listy, kliknij przycisk \"dodaj konto\" i postępuj zgodn" +
-    "ie z \r\ndalszymi instrukcjami.\r\nAby zalagować się na konto wybierz je z listy i k" +
-    "liknij \"zaloguj się\"";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.BackColor = System.Drawing.Color.Transparent;
-            this.label26.Font = new System.Drawing.Font("MinecraftZyczu", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.Location = new System.Drawing.Point(12, 209);
-            this.label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(147, 20);
-            this.label26.TabIndex = 20;
-            this.label26.Text = "Konta premium";
-            // 
-            // buttonaddaccountpremium
-            // 
-            this.buttonaddaccountpremium.Location = new System.Drawing.Point(51, 301);
-            this.buttonaddaccountpremium.Name = "buttonaddaccountpremium";
-            this.buttonaddaccountpremium.Size = new System.Drawing.Size(133, 29);
-            this.buttonaddaccountpremium.TabIndex = 22;
-            this.buttonaddaccountpremium.Text = "Dodaj konto";
-            this.buttonaddaccountpremium.UseVisualStyleBackColor = true;
-            this.buttonaddaccountpremium.Click += new System.EventHandler(this.buttonaddaccountpremium_Click);
-            // 
-            // comboBoxpremiumaccounts
-            // 
-            this.comboBoxpremiumaccounts.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxpremiumaccounts.FormattingEnabled = true;
-            this.comboBoxpremiumaccounts.Location = new System.Drawing.Point(103, 336);
-            this.comboBoxpremiumaccounts.Name = "comboBoxpremiumaccounts";
-            this.comboBoxpremiumaccounts.Size = new System.Drawing.Size(186, 21);
-            this.comboBoxpremiumaccounts.TabIndex = 25;
-            // 
-            // buttonloginpremium
-            // 
-            this.buttonloginpremium.Location = new System.Drawing.Point(315, 332);
-            this.buttonloginpremium.Name = "buttonloginpremium";
-            this.buttonloginpremium.Size = new System.Drawing.Size(133, 29);
-            this.buttonloginpremium.TabIndex = 24;
-            this.buttonloginpremium.Text = "Zaloguj się";
-            this.buttonloginpremium.UseVisualStyleBackColor = true;
-            this.buttonloginpremium.Click += new System.EventHandler(this.buttonloginpremium_Click);
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.BackColor = System.Drawing.Color.Transparent;
-            this.label27.Font = new System.Drawing.Font("MinecraftZyczu", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label27.Location = new System.Drawing.Point(49, 337);
-            this.label27.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(39, 16);
-            this.label27.TabIndex = 23;
-            this.label27.Text = "Nick:";
-            // 
-            // buttondeleteoffline
-            // 
-            this.buttondeleteoffline.Location = new System.Drawing.Point(460, 158);
-            this.buttondeleteoffline.Name = "buttondeleteoffline";
-            this.buttondeleteoffline.Size = new System.Drawing.Size(75, 29);
-            this.buttondeleteoffline.TabIndex = 26;
-            this.buttondeleteoffline.Text = "Usuń";
-            this.buttondeleteoffline.UseVisualStyleBackColor = true;
-            this.buttondeleteoffline.Click += new System.EventHandler(this.buttondeleteoffline_Click);
-            // 
-            // buttondeleteonline
-            // 
-            this.buttondeleteonline.Location = new System.Drawing.Point(460, 332);
-            this.buttondeleteonline.Name = "buttondeleteonline";
-            this.buttondeleteonline.Size = new System.Drawing.Size(75, 29);
-            this.buttondeleteonline.TabIndex = 27;
-            this.buttondeleteonline.Text = "Usuń";
-            this.buttondeleteonline.UseVisualStyleBackColor = true;
-            this.buttondeleteonline.Click += new System.EventHandler(this.buttondeleteonline_Click);
             // 
             // Form1
             // 
