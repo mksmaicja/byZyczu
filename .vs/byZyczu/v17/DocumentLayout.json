@@ -3,11 +3,11 @@
   "WorkspaceRootPath": "C:\\projects\\byZyczu\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6749D8C7-9CAE-4978-B249-47D3B7E6B3E0}|byZyczu\\byZyczu.csproj|C:\\projects\\byZyczu\\byzyczu\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{6749D8C7-9CAE-4978-B249-47D3B7E6B3E0}|byZyczu\\byZyczu.csproj|c:\\projects\\byzyczu\\byzyczu\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{6749D8C7-9CAE-4978-B249-47D3B7E6B3E0}|byZyczu\\byZyczu.csproj|solutionrelative:byzyczu\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6749D8C7-9CAE-4978-B249-47D3B7E6B3E0}|byZyczu\\byZyczu.csproj|c:\\projects\\byzyczu\\byzyczu\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{6749D8C7-9CAE-4978-B249-47D3B7E6B3E0}|byZyczu\\byZyczu.csproj|C:\\projects\\byZyczu\\byzyczu\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6749D8C7-9CAE-4978-B249-47D3B7E6B3E0}|byZyczu\\byZyczu.csproj|solutionrelative:byzyczu\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -145,8 +145,7 @@
               "RelativeToolTip": "byZyczu\\Form1.Designer.cs",
               "ViewState": "AQIAALECAAAAAAAAAAASwMQCAAA0AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-15T22:05:31.625Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-02-15T22:05:31.625Z"
             },
             {
               "$type": "Document",
