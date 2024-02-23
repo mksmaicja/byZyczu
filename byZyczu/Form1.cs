@@ -33,12 +33,12 @@ namespace byZyczu
         public static string url = "mksteam.ovh";
         public static string launcherdir = "C:\\maicjadir\\byzyczu";
         public static string configsdir = "C:\\maicjadir\\byzyczu\\configs";
-        
+
         public Form1()
         {
             InitializeComponent();
-            
-            
+
+
             if (!Directory.Exists(configsdir))
             {
                 Directory.CreateDirectory(configsdir);
@@ -83,8 +83,8 @@ namespace byZyczu
             comboBoxmodpacks.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxRAM.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxmanageversions.DropDownStyle = ComboBoxStyle.DropDownList;
-            
-            
+
+
         }
 
         public static string depsurl = "";
@@ -178,7 +178,7 @@ namespace byZyczu
                         File.Delete(launcherdir + "\\temp.zip");
                         downloadlabel.Text = "";
                         downloaded = true;
-                        
+
                     }
                     else if (File.Exists(launcherdir + "\\tempjava.zip"))
                     {
@@ -195,7 +195,7 @@ namespace byZyczu
         {
             Console.WriteLine(outLine.Data);
         }
-        public static bool javadwnld = false; 
+        public static bool javadwnld = false;
         public static bool deatach = false;
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
@@ -241,7 +241,7 @@ namespace byZyczu
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            textBoxnick.Text = "ODŚWIERZANIE KONT PREMIUM";
+            textBoxnick.Text = "ODŚWIERZANIE KONT, CZEKAJ!";
             HttpClient clienthttp = new HttpClient();
             if (!Directory.Exists(launcherdir + "\\accounts"))
             {
@@ -267,7 +267,7 @@ namespace byZyczu
             }
             try
             {
-                clienthttp.Timeout = TimeSpan.FromSeconds(2);
+                clienthttp.Timeout = TimeSpan.FromSeconds(4);
                 await clienthttp.GetAsync("http://" + url + "/index.html");
             }
             catch (Exception ex)
@@ -318,7 +318,7 @@ namespace byZyczu
                         string name = line.Split(';')[0];
                         comboBox1.Items.Add(name);
                     }
-                    
+
                 }
 
                 foreach (var line in File.ReadLines(launcherdir + "\\usermodpacks.mks"))
@@ -344,8 +344,8 @@ namespace byZyczu
                         }
                     }
                 }
-               
-                
+
+
                 if (!File.Exists(".\\DiscordRPC.dll"))
                 {
                     DownloadFile("http://" + url + "/minecraft/DiscordRPC.dll", ".\\DiscordRPC.dll");
@@ -443,15 +443,29 @@ namespace byZyczu
                             else
                             {
                                 string uuid = data.Split('>')[1];
+
+
+
+
+
+
+                                string tosave = "\r\n";
                                 foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsprem.mks"))
                                 {
                                     if (line.Contains($">{uuid}>"))
                                     {
-                                        mcusername = line.Split('>')[0];
-                                        mcuuid = line.Split('>')[1];
-                                        mctoken = RefreshAccountData(line.Split('>')[2]).Split('<')[1];
+
+                                        string newdata = RefreshAccountData(line.Split('>')[2]);
+                                        mctoken = newdata.Split('<')[1];
+                                        mcusername = newdata.Split('>')[0];
+                                        mcuuid = newdata.Split('>')[1];
+                                        tosave = tosave + $"{mcusername}>{mcuuid}>{newdata.Split('<')[0].Split('>')[2]}" + "\r\n";
                                         comboBoxpremiumaccounts.SelectedItem = mcusername;
                                         textBoxnick.Text = mcusername;
+                                    }
+                                    else
+                                    {
+                                        tosave = tosave + "\r\n";
                                     }
                                 }
                             }
@@ -470,7 +484,7 @@ namespace byZyczu
                 {
                     MessageBox.Show("BŁĄD PRZY ODŚWIERZANIU KONT PREMIUM: " + ex.Message, "BŁĄD");
                 }
-                
+
                 if (File.Exists(configsdir + "\\lastversion.mks"))
                 {
                     try
@@ -499,8 +513,8 @@ namespace byZyczu
                             }
                             panelconsole.Visible = true;
                             richTextBoxconsole.Text = richTextBoxconsole.Text + "\r\n" + stream2;
-                            
-                            
+
+
                             stream2 = " ";
                             richTextBoxconsole.SelectionStart = richTextBoxconsole.TextLength;
                             richTextBoxconsole.ScrollToCaret();
@@ -566,12 +580,10 @@ namespace byZyczu
                 }
                 if (!offline)
                 {
-                    
-                            webBrowserdownload.Url = new Uri("https://mksteam.ovh/");
-
+                    webBrowserdownload.Url = new Uri("https://mksteam.ovh/");
                 }
-                
-                
+
+
                 string versionselected = comboBox1.SelectedItem.ToString();
                 if (!File.Exists(configsdir + "\\lastversion.mks"))
                 {
@@ -598,7 +610,7 @@ namespace byZyczu
                     deatach = false;
                     downloaded = false;
                     javadwnld = true;
-                    
+
                     {
 
                         bool iscustom = true;
@@ -625,7 +637,7 @@ namespace byZyczu
 
 
 
-                                    versionargsp2 = versionargsp2.Replace("USERNAMEMOD", textBoxnick.Text);
+                                versionargsp2 = versionargsp2.Replace("USERNAMEMOD", textBoxnick.Text);
 
 
                                 if (File.Exists(launcherdir + "\\" + versionzip.Split('.')[0] + "\\game\\tempModList-1703628101391"))
@@ -665,7 +677,7 @@ namespace byZyczu
                                 {
                                     versionargsp2 = versionargsp2.Replace("UUID32", mcuuid);
                                     versionargsp2 = versionargsp2.Replace("TOKEN32", mctoken);
-                                    
+
                                     if (mcvertemp.Contains("R 1.18.2") || mcvertemp.Contains("R 1.20.4") || mcvertemp.Contains("R 1.16.5") || mcvertemp.Contains("R 1.19.2"))
                                     {
                                         versionargsp2 = versionargsp2.Replace("--userType legacy", "--userType mojang");
@@ -674,7 +686,7 @@ namespace byZyczu
                                     {
                                         versionargsp2 = versionargsp2.Replace("--userType legacy", "--userType msa");
                                     }
-                                    
+
                                 }
                                 else
                                 {
@@ -713,7 +725,7 @@ namespace byZyczu
                                     }
                                     versionname = name;
                                     versionzip = line.Split(';')[1];
-                                    
+
 
 
                                     versionargsp1 = File.ReadAllText(launcherdir + "\\" + argsfile).Replace("--username", "&").Split('&')[0];
@@ -725,7 +737,7 @@ namespace byZyczu
                                     versionargsp2 = versionargsp2.Replace("LAUNCHERPATH", launcherdir + "\\" + versionzip);
 
 
-                                        versionargsp2 = versionargsp2.Replace("USERNAMEMOD", textBoxnick.Text);
+                                    versionargsp2 = versionargsp2.Replace("USERNAMEMOD", textBoxnick.Text);
 
 
 
@@ -737,7 +749,7 @@ namespace byZyczu
                                             string fixedfor1122optifine = launcherdir + "\\" + versionzip;
                                             fixedfor1122optifine = fixedfor1122optifine.Replace("\\", "\\\\");
                                             ddd = ddd.Replace("LAUNCHERPATH", fixedfor1122optifine);
-                                            
+
                                             File.WriteAllText(launcherdir + "\\" + versionzip + "\\game\\tempModList-1703628101391", ddd);
                                         }
                                         else
@@ -788,8 +800,10 @@ namespace byZyczu
                                 }
                             }
                         }
-                        if (false) //to do reinstallu javy
+                        
+                        if (checkBoxreinstalljava.Checked) //to do reinstallu javy 
                         {
+                            checkBoxreinstalljava.Checked = false;
                             if (Directory.Exists(launcherdir + "\\jre"))
                             {
                                 Directory.Delete(launcherdir + "\\jre", true);
@@ -802,7 +816,6 @@ namespace byZyczu
                                 Directory.Delete(launcherdir + "\\" + versionzip.Split('.')[0], true);
                             }
                         }
-
                         if (!Directory.Exists(launcherdir + "\\" + "jre"))
                         {
                             javadwnld = true;
@@ -845,7 +858,7 @@ namespace byZyczu
 
                         if (downloaded)
                         {
-                            
+
                             string wersjaczycosnwm = versionzip.Split('.')[0];
                             if (iscustom)
                             {
@@ -884,11 +897,6 @@ namespace byZyczu
                             Task.Run(() => {
                                 readstream();
                             });
-
-                            if (comboBox1.SelectedItem.ToString().Contains("Rise 6.0.24"))
-                            {
-                                Process.Start(launcherdir + "\\" + wersjaczycosnwm + "\\game\\Start.bat");
-                            }
                             while (!deatach)
                             {
                                 if (!java.HasExited)
@@ -943,11 +951,11 @@ namespace byZyczu
             if (File.Exists(configsdir + "\\lastmodpack.mks"))
             {
                 try
-                { 
-                if (comboBoxmodpacks.SelectedItem.ToString().Length > 1)
                 {
-                    File.WriteAllText(configsdir + "\\lastmodpack.mks", comboBoxmodpacks.SelectedItem.ToString());
-                }
+                    if (comboBoxmodpacks.SelectedItem.ToString().Length > 1)
+                    {
+                        File.WriteAllText(configsdir + "\\lastmodpack.mks", comboBoxmodpacks.SelectedItem.ToString());
+                    }
                 }
                 catch (Exception) { }
             }
@@ -1049,7 +1057,7 @@ namespace byZyczu
                     textboxmodpackname.Text = mcver;
                 }
             }
-            catch (Exception){ }
+            catch (Exception) { }
         }
 
         private void buttonownmods_Click(object sender, EventArgs e)
@@ -1086,7 +1094,7 @@ namespace byZyczu
                 }
                 else
                 {
-                    
+
                     string newfile = "";
                     foreach (string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
                     {
@@ -1121,7 +1129,7 @@ namespace byZyczu
 
         private async void button2_Click(object sender, EventArgs e) //chyba delete modpack 
         {
-            
+
             string newfile = "";
             foreach (string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
             {
@@ -1136,7 +1144,7 @@ namespace byZyczu
                     newfile = newfile + "\r\n" + fr;
                 }
             }
-            
+
             File.WriteAllText(launcherdir + "\\usermodpacks.mks", newfile);
 
             comboBoxmodpacks.Items.Clear();
@@ -1168,7 +1176,7 @@ namespace byZyczu
             else
             {
                 panelcreatenewmodpack.Visible = false;
-                
+
                 foreach (string line in File.ReadAllLines(launcherdir + "\\relases.list"))
                 {
                     if (line.Contains(modpackver + ";"))
@@ -1234,17 +1242,11 @@ namespace byZyczu
 
         Process java;
 
-
-        private void comboBoxmodpackcreate_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttonmanagemods_Click(object sender, EventArgs e)
         {
             try
             {
-                foreach(string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
+                foreach (string line in File.ReadAllLines(launcherdir + "\\usermodpacks.mks"))
                 {
                     if (line.Split(';')[0] == comboBoxmodpacks.SelectedItem.ToString())
                     {
@@ -1331,7 +1333,7 @@ namespace byZyczu
                                     return;
                                 }
                             }
-                            
+
                         }
                         if (shoulddel)
                         {
@@ -1352,159 +1354,107 @@ namespace byZyczu
             }
         }
         WebClient premiumweb = new WebClient();
-        
-
-
-
-
-
         void premiumlogin()
         {
             try
-            { 
-            string coderesponse = premiumweb.DownloadString("https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode?client_id=499546d9-bbfe-4b9b-a086-eb3d75afb78f&scope=XboxLive.signin%20offline_access");
-
-                //string coderesponse = premiumweb.DownloadString("https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode?client_id=0d6f50b1-57fc-4714-a5c3-5a43c7068442&scope=XboxLive.signin%20offline_access");
-
-            string usercode = coderesponse.Replace("\"user_code\":\"", ">").Split('>')[1].Split('"')[0];
-            string verifyurl = coderesponse.Replace("\"verification_uri\":\"", ">").Split('>')[1].Split('"')[0];
-            string devicecode = coderesponse.Replace("\"device_code\":\"", ">").Split('>')[1].Split('"')[0];
-
-            Clipboard.SetText(usercode);
-
-            MessageBox.Show($"Wejdź na {verifyurl} na swojej przeglądarce i wpisz kod {usercode} aby kontynuować logowanie\r\n(kod skopiowany do schowka)\r\nMOŻESZ ZAMKNĄĆ TE OKIENKO DOPIERO PO ZALOGOWANIU SIĘ W PRZEGLĄDARCE, INACZEJ LOGOWANIE SIE NIE UDA!");
-
-
-
-
-
-            string spamrequest = $"client_id=499546d9-bbfe-4b9b-a086-eb3d75afb78f&code={devicecode}&grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Adevice_code";
-            WebRequest webRequest = WebRequest.Create("https://login.microsoftonline.com/consumers/oauth2/v2.0/token");
-            webRequest.Timeout = 5000;
-            webRequest.Method = "POST";
-            webRequest.Headers.Add("Cookie", "esctx=PAQABAAEAAAAmoFfGtYxvRrNriQdPKIZ-N1P_MEcnyzSjOqDSJiFM7mL9hTzkvRZDiQnF8oxfy0UDFCE9QVbyMFtCPdcO7LTrN_eGz0Fuk4sXL38g7azDkEZ82a4qVcU6FQsDj0wGq0tu4dHlTuSQU_n5UY5vnjtNLyvxkfvQixzDk-GA7-flAXkwJhTHDb-gnlM60MPN54sgAA; stsservicecookie=estsfd; fpc=Aq7Yu-WVxD9KsIRK63eSKH1jHbnPFAAAALiBXN0OAAAA; x-ms-gateway-slice=estsfd");
-            webRequest.ContentLength = (long)spamrequest.Length;
-            StreamWriter streamWriter = new StreamWriter(webRequest.GetRequestStream());
-            streamWriter.Write(spamrequest.ToCharArray(), 0, spamrequest.Length);
-            streamWriter.Close();
-            StreamReader streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream());
-            //richTextBoxconsole.Text = richTextBoxconsole.Text + streamReader.ReadToEnd() + "\r\n";
-            //if (streamReader.ReadToEnd().Length < 2)
-
-            string spamresponse = streamReader.ReadToEnd();
-
-
-
-
-            string tokenspam = spamresponse.Replace("\"access_token\":\"", ">").Split('>')[1].Split('"')[0];
-            string refreshtokenspam = spamresponse.Replace("\"refresh_token\":\"", ">").Split('>')[1].Split('"')[0];
-            //MessageBox.Show("Twój \"spam token\": " + tokenspam);
-
-
-            string authrequest = $"{{\r\n   \"Properties\" : {{\r\n      \"AuthMethod\" : \"RPS\",\r\n      \"RpsTicket\" : \"d={tokenspam}\",\r\n      \"SiteName\" : \"user.auth.xboxlive.com\"\r\n   }},\r\n   \"RelyingParty\" : \"http://auth.xboxlive.com\",\r\n   \"TokenType\" : \"JWT\"\r\n}}";
-            WebRequest authwebRequest = WebRequest.Create("https://user.auth.xboxlive.com/user/authenticate");
-            authwebRequest.Timeout = 5000;
-            authwebRequest.Method = "POST";
-            authwebRequest.ContentType = "application/json";
-            authwebRequest.ContentLength = (long)authrequest.Length;
-            StreamWriter authstreamWriter = new StreamWriter(authwebRequest.GetRequestStream());
-            authstreamWriter.Write(authrequest.ToCharArray(), 0, authrequest.Length);
-            authstreamWriter.Close();
-            StreamReader authstreamReader = new StreamReader(authwebRequest.GetResponse().GetResponseStream());
-
-
-            string authresponse = authstreamReader.ReadToEnd();
-
-
-            string authtoken = authresponse.Replace("\"Token\":\"", ">").Split('>')[1].Split('"')[0];
-            //MessageBox.Show("auth token "+authtoken);
-
-
-
-
-
-
-
-
-
-
-
-            string authorizerequest = $"{{\r\n   \"Properties\" : {{\r\n      \"SandboxId\" : \"RETAIL\",\r\n      \"UserTokens\" : [\r\n         \"{authtoken}\"\r\n      ]\r\n   }},\r\n   \"RelyingParty\" : \"rp://api.minecraftservices.com/\",\r\n   \"TokenType\" : \"JWT\"\r\n}}";
-            WebRequest authorizewebRequest = WebRequest.Create("https://xsts.auth.xboxlive.com/xsts/authorize");
-            authorizewebRequest.Timeout = 5000;
-            authorizewebRequest.Method = "POST";
-            authorizewebRequest.ContentType = "application/json";
-            authorizewebRequest.ContentLength = (long)authorizerequest.Length;
-            StreamWriter authorizestreamWriter = new StreamWriter(authorizewebRequest.GetRequestStream());
-            authorizestreamWriter.Write(authorizerequest.ToCharArray(), 0, authorizerequest.Length);
-            authorizestreamWriter.Close();
-            StreamReader authorizestreamReader = new StreamReader(authorizewebRequest.GetResponse().GetResponseStream());
-
-            string authorizeresponse = authorizestreamReader.ReadToEnd();
-
-            string authorizetoken = authorizeresponse.Replace("\"Token\":\"", ">").Split('>')[1].Split('"')[0];
-            string uhs = authorizeresponse.Replace("\"uhs\":\"", ">").Split('>')[1].Split('"')[0];
-            //MessageBox.Show("authorize token: " + authorizetoken + "\r\nuhs: " + uhs);
-
-
-
-
-
-
-
-
-
-
-
-            string loginreqrequest = $"{{\r\n   \"platform\" : \"PC_LAUNCHER\",\r\n   \"xtoken\" : \"XBL3.0 x={uhs};{authorizetoken}\"\r\n}}";
-            WebRequest loginreqwebRequest = WebRequest.Create("https://api.minecraftservices.com/launcher/login");
-            loginreqwebRequest.Timeout = 5000;
-            loginreqwebRequest.Method = "POST";
-            loginreqwebRequest.ContentType = "application/json";
-            loginreqwebRequest.ContentLength = (long)loginreqrequest.Length;
-            StreamWriter loginreqstreamWriter = new StreamWriter(loginreqwebRequest.GetRequestStream());
-            loginreqstreamWriter.Write(loginreqrequest.ToCharArray(), 0, loginreqrequest.Length);
-            loginreqstreamWriter.Close();
-            StreamReader loginreqstreamReader = new StreamReader(loginreqwebRequest.GetResponse().GetResponseStream());
-
-            string loginreqresponse = loginreqstreamReader.ReadToEnd();
-            Clipboard.SetText(loginreqresponse);
-            //MessageBox.Show(loginreqresponse);
-            string mcaccesstoken = loginreqresponse.Replace("\"access_token\" : \"", ">").Split('>')[1].Split('"')[0];
-
-
-
-
-
-
-
-            WebClient premiumprofileweb = new WebClient();
-            premiumprofileweb.Headers.Add("Authorization", $"Bearer {mcaccesstoken}");
-            string getprofileresponse = premiumprofileweb.DownloadString("https://api.minecraftservices.com/minecraft/profile");
-            Clipboard.SetText(getprofileresponse);
-            //MessageBox.Show(getprofileresponse);
-            string username = getprofileresponse.Replace("\"name\" : \"", ">").Split('>')[1].Split('"')[0];
-
-            string uuid = getprofileresponse.Split('[')[0].Replace("\"id\" : \"", ">").Split('>')[1].Split('"')[0];
-
-
-            if (mcaccesstoken.Length > 1)
             {
-                if (username.Length > 1)
-                {
-                    if (uuid.Length > 1)
-                    {
+                //logging in to microsoft account
+                string coderesponse = premiumweb.DownloadString("https://login.microsoftonline.com/consumers/oauth2/v2.0/devicecode?client_id=499546d9-bbfe-4b9b-a086-eb3d75afb78f&scope=XboxLive.signin%20offline_access");
+                string usercode = coderesponse.Replace("\"user_code\":\"", ">").Split('>')[1].Split('"')[0];
+                string verifyurl = coderesponse.Replace("\"verification_uri\":\"", ">").Split('>')[1].Split('"')[0];
+                string devicecode = coderesponse.Replace("\"device_code\":\"", ">").Split('>')[1].Split('"')[0];
+                Clipboard.SetText(usercode);
+                MessageBox.Show($"Wejdź na {verifyurl} na swojej przeglądarce i wpisz kod {usercode} aby kontynuować logowanie\r\n(kod skopiowany do schowka)\r\nMOŻESZ ZAMKNĄĆ TE OKIENKO DOPIERO PO ZALOGOWANIU SIĘ W PRZEGLĄDARCE, INACZEJ LOGOWANIE SIE NIE UDA!");
 
-                        AddAccountPremium(username, uuid, refreshtokenspam);
-                        MessageBox.Show($"Account added:\r\nusername: {username}\r\nuuid: {uuid}");
+                //getting mstoken + refreshtoken
+                string spamrequest = $"client_id=499546d9-bbfe-4b9b-a086-eb3d75afb78f&code={devicecode}&grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Adevice_code";
+                WebRequest webRequest = WebRequest.Create("https://login.microsoftonline.com/consumers/oauth2/v2.0/token");
+                webRequest.Timeout = 5000;
+                webRequest.Method = "POST";
+                webRequest.Headers.Add("Cookie", "esctx=PAQABAAEAAAAmoFfGtYxvRrNriQdPKIZ-N1P_MEcnyzSjOqDSJiFM7mL9hTzkvRZDiQnF8oxfy0UDFCE9QVbyMFtCPdcO7LTrN_eGz0Fuk4sXL38g7azDkEZ82a4qVcU6FQsDj0wGq0tu4dHlTuSQU_n5UY5vnjtNLyvxkfvQixzDk-GA7-flAXkwJhTHDb-gnlM60MPN54sgAA; stsservicecookie=estsfd; fpc=Aq7Yu-WVxD9KsIRK63eSKH1jHbnPFAAAALiBXN0OAAAA; x-ms-gateway-slice=estsfd");
+                webRequest.ContentLength = (long)spamrequest.Length;
+                StreamWriter streamWriter = new StreamWriter(webRequest.GetRequestStream());
+                streamWriter.Write(spamrequest.ToCharArray(), 0, spamrequest.Length);
+                streamWriter.Close();
+                StreamReader streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream());
+                string spamresponse = streamReader.ReadToEnd();
+                string tokenspam = spamresponse.Replace("\"access_token\":\"", ">").Split('>')[1].Split('"')[0];
+                string refreshtokenspam = spamresponse.Replace("\"refresh_token\":\"", ">").Split('>')[1].Split('"')[0];
+
+                //getting authenticate token
+                string authrequest = $"{{\r\n   \"Properties\" : {{\r\n      \"AuthMethod\" : \"RPS\",\r\n      \"RpsTicket\" : \"d={tokenspam}\",\r\n      \"SiteName\" : \"user.auth.xboxlive.com\"\r\n   }},\r\n   \"RelyingParty\" : \"http://auth.xboxlive.com\",\r\n   \"TokenType\" : \"JWT\"\r\n}}";
+                WebRequest authwebRequest = WebRequest.Create("https://user.auth.xboxlive.com/user/authenticate");
+                authwebRequest.Timeout = 5000;
+                authwebRequest.Method = "POST";
+                authwebRequest.ContentType = "application/json";
+                authwebRequest.ContentLength = (long)authrequest.Length;
+                StreamWriter authstreamWriter = new StreamWriter(authwebRequest.GetRequestStream());
+                authstreamWriter.Write(authrequest.ToCharArray(), 0, authrequest.Length);
+                authstreamWriter.Close();
+                StreamReader authstreamReader = new StreamReader(authwebRequest.GetResponse().GetResponseStream());
+                string authresponse = authstreamReader.ReadToEnd();
+                string authtoken = authresponse.Replace("\"Token\":\"", ">").Split('>')[1].Split('"')[0];
+
+                //getting authorizetoken + uhs
+                string authorizerequest = $"{{\r\n   \"Properties\" : {{\r\n      \"SandboxId\" : \"RETAIL\",\r\n      \"UserTokens\" : [\r\n         \"{authtoken}\"\r\n      ]\r\n   }},\r\n   \"RelyingParty\" : \"rp://api.minecraftservices.com/\",\r\n   \"TokenType\" : \"JWT\"\r\n}}";
+                WebRequest authorizewebRequest = WebRequest.Create("https://xsts.auth.xboxlive.com/xsts/authorize");
+                authorizewebRequest.Timeout = 5000;
+                authorizewebRequest.Method = "POST";
+                authorizewebRequest.ContentType = "application/json";
+                authorizewebRequest.ContentLength = (long)authorizerequest.Length;
+                StreamWriter authorizestreamWriter = new StreamWriter(authorizewebRequest.GetRequestStream());
+                authorizestreamWriter.Write(authorizerequest.ToCharArray(), 0, authorizerequest.Length);
+                authorizestreamWriter.Close();
+                StreamReader authorizestreamReader = new StreamReader(authorizewebRequest.GetResponse().GetResponseStream());
+                string authorizeresponse = authorizestreamReader.ReadToEnd();
+                string authorizetoken = authorizeresponse.Replace("\"Token\":\"", ">").Split('>')[1].Split('"')[0];
+                string uhs = authorizeresponse.Replace("\"uhs\":\"", ">").Split('>')[1].Split('"')[0];
+
+                //getting minecraft accesstoken
+                string loginreqrequest = $"{{\r\n   \"platform\" : \"PC_LAUNCHER\",\r\n   \"xtoken\" : \"XBL3.0 x={uhs};{authorizetoken}\"\r\n}}";
+                WebRequest loginreqwebRequest = WebRequest.Create("https://api.minecraftservices.com/launcher/login");
+                loginreqwebRequest.Timeout = 5000;
+                loginreqwebRequest.Method = "POST";
+                loginreqwebRequest.ContentType = "application/json";
+                loginreqwebRequest.ContentLength = (long)loginreqrequest.Length;
+                StreamWriter loginreqstreamWriter = new StreamWriter(loginreqwebRequest.GetRequestStream());
+                loginreqstreamWriter.Write(loginreqrequest.ToCharArray(), 0, loginreqrequest.Length);
+                loginreqstreamWriter.Close();
+                StreamReader loginreqstreamReader = new StreamReader(loginreqwebRequest.GetResponse().GetResponseStream());
+                string loginreqresponse = loginreqstreamReader.ReadToEnd();
+                Clipboard.SetText(loginreqresponse);
+                string mcaccesstoken = loginreqresponse.Replace("\"access_token\" : \"", ">").Split('>')[1].Split('"')[0];
+
+                //gettings username + uuid
+                WebClient premiumprofileweb = new WebClient();
+                premiumprofileweb.Headers.Add("Authorization", $"Bearer {mcaccesstoken}");
+                string getprofileresponse = premiumprofileweb.DownloadString("https://api.minecraftservices.com/minecraft/profile");
+                string username = getprofileresponse.Replace("\"name\" : \"", ">").Split('>')[1].Split('"')[0];
+                string uuid = getprofileresponse.Split('[')[0].Replace("\"id\" : \"", ">").Split('>')[1].Split('"')[0];
+
+
+                bool isadded = false;
+                if (mcaccesstoken.Length > 1)
+                {
+                    if (username.Length > 1)
+                    {
+                        if (uuid.Length > 1)
+                        {
+                            isadded = true;
+                            AddAccountPremium(username, uuid, refreshtokenspam);
+                            MessageBox.Show($"Account added:\r\nusername: {username}\r\nuuid: {uuid}");
+                        }
                     }
                 }
-            }
+                if (!isadded)
+                {
+                    MessageBox.Show($"Error adding mc account! Collected account info:\r\nusername: {username}\r\nUUID: {uuid}\r\ntoken: {mcaccesstoken}");
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("BŁĄD PRZY DODAWANIU KONTA PREMIUM: " + ex.Message, "BŁĄD");
-                }
+            }
         }
 
         void AddAccountPremium(string username, string uuid, string refreshtoken)
@@ -1539,131 +1489,85 @@ namespace byZyczu
             {
                 if (line.Contains(">"))
                 {
-
                     comboBoxpremiumaccounts.Items.Add(RefreshAccountData(line.Split('>')[2]).Split('>')[0]);
                 }
             }
         }
-
-
         string RefreshAccountData(string refreshtoken)
         {
             try
-            { 
-            string spamrequest = $"client_id=499546d9-bbfe-4b9b-a086-eb3d75afb78f&grant_type=refresh_token&refresh_token={refreshtoken}";
-            WebRequest webRequest = WebRequest.Create("https://login.microsoftonline.com/consumers/oauth2/v2.0/token");
-            webRequest.Timeout = 5000;
-            webRequest.Method = "POST";
-            webRequest.ContentLength = (long)spamrequest.Length;
-            StreamWriter streamWriter = new StreamWriter(webRequest.GetRequestStream());
-            streamWriter.Write(spamrequest.ToCharArray(), 0, spamrequest.Length);
-            streamWriter.Close();
-            StreamReader streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream());
-            //richTextBoxconsole.Text = richTextBoxconsole.Text + streamReader.ReadToEnd() + "\r\n";
-            //if (streamReader.ReadToEnd().Length < 2)
+            {
+                //getting mstoken + refreshtoken
+                string spamrequest = $"client_id=499546d9-bbfe-4b9b-a086-eb3d75afb78f&grant_type=refresh_token&refresh_token={refreshtoken}";
+                WebRequest webRequest = WebRequest.Create("https://login.microsoftonline.com/consumers/oauth2/v2.0/token");
+                webRequest.Timeout = 5000;
+                webRequest.Method = "POST";
+                webRequest.ContentLength = (long)spamrequest.Length;
+                StreamWriter streamWriter = new StreamWriter(webRequest.GetRequestStream());
+                streamWriter.Write(spamrequest.ToCharArray(), 0, spamrequest.Length);
+                streamWriter.Close();
+                StreamReader streamReader = new StreamReader(webRequest.GetResponse().GetResponseStream());
+                string spamresponse = streamReader.ReadToEnd();
+                string tokenspam = spamresponse.Replace("\"access_token\":\"", ">").Split('>')[1].Split('"')[0];
+                string refreshtokenspam = spamresponse.Replace("\"refresh_token\":\"", ">").Split('>')[1].Split('"')[0];
 
-            string spamresponse = streamReader.ReadToEnd();
+                //getting authenticate token
+                string authrequest = $"{{\r\n   \"Properties\" : {{\r\n      \"AuthMethod\" : \"RPS\",\r\n      \"RpsTicket\" : \"d={tokenspam}\",\r\n      \"SiteName\" : \"user.auth.xboxlive.com\"\r\n   }},\r\n   \"RelyingParty\" : \"http://auth.xboxlive.com\",\r\n   \"TokenType\" : \"JWT\"\r\n}}";
+                WebRequest authwebRequest = WebRequest.Create("https://user.auth.xboxlive.com/user/authenticate");
+                authwebRequest.Timeout = 5000;
+                authwebRequest.Method = "POST";
+                authwebRequest.ContentType = "application/json";
+                authwebRequest.ContentLength = (long)authrequest.Length;
+                StreamWriter authstreamWriter = new StreamWriter(authwebRequest.GetRequestStream());
+                authstreamWriter.Write(authrequest.ToCharArray(), 0, authrequest.Length);
+                authstreamWriter.Close();
+                StreamReader authstreamReader = new StreamReader(authwebRequest.GetResponse().GetResponseStream());
+                string authresponse = authstreamReader.ReadToEnd();
+                string authtoken = authresponse.Replace("\"Token\":\"", ">").Split('>')[1].Split('"')[0];
 
+                //getting authorizetoken + uhs
+                string authorizerequest = $"{{\r\n   \"Properties\" : {{\r\n      \"SandboxId\" : \"RETAIL\",\r\n      \"UserTokens\" : [\r\n         \"{authtoken}\"\r\n      ]\r\n   }},\r\n   \"RelyingParty\" : \"rp://api.minecraftservices.com/\",\r\n   \"TokenType\" : \"JWT\"\r\n}}";
+                WebRequest authorizewebRequest = WebRequest.Create("https://xsts.auth.xboxlive.com/xsts/authorize");
+                authorizewebRequest.Timeout = 5000;
+                authorizewebRequest.Method = "POST";
+                authorizewebRequest.ContentType = "application/json";
+                authorizewebRequest.ContentLength = (long)authorizerequest.Length;
+                StreamWriter authorizestreamWriter = new StreamWriter(authorizewebRequest.GetRequestStream());
+                authorizestreamWriter.Write(authorizerequest.ToCharArray(), 0, authorizerequest.Length);
+                authorizestreamWriter.Close();
+                StreamReader authorizestreamReader = new StreamReader(authorizewebRequest.GetResponse().GetResponseStream());
+                string authorizeresponse = authorizestreamReader.ReadToEnd();
+                string authorizetoken = authorizeresponse.Replace("\"Token\":\"", ">").Split('>')[1].Split('"')[0];
+                string uhs = authorizeresponse.Replace("\"uhs\":\"", ">").Split('>')[1].Split('"')[0];
 
+                //getting mcaccesstoken
+                string loginreqrequest = $"{{\r\n   \"platform\" : \"PC_LAUNCHER\",\r\n   \"xtoken\" : \"XBL3.0 x={uhs};{authorizetoken}\"\r\n}}";
+                WebRequest loginreqwebRequest = WebRequest.Create("https://api.minecraftservices.com/launcher/login");
+                loginreqwebRequest.Timeout = 5000;
+                loginreqwebRequest.Method = "POST";
+                loginreqwebRequest.ContentType = "application/json";
+                loginreqwebRequest.ContentLength = (long)loginreqrequest.Length;
+                StreamWriter loginreqstreamWriter = new StreamWriter(loginreqwebRequest.GetRequestStream());
+                loginreqstreamWriter.Write(loginreqrequest.ToCharArray(), 0, loginreqrequest.Length);
+                loginreqstreamWriter.Close();
+                StreamReader loginreqstreamReader = new StreamReader(loginreqwebRequest.GetResponse().GetResponseStream());
+                string loginreqresponse = loginreqstreamReader.ReadToEnd();
+                string mcaccesstoken = loginreqresponse.Replace("\"access_token\" : \"", ">").Split('>')[1].Split('"')[0];
 
-
-            string tokenspam = spamresponse.Replace("\"access_token\":\"", ">").Split('>')[1].Split('"')[0];
-            string refreshtokenspam = spamresponse.Replace("\"refresh_token\":\"", ">").Split('>')[1].Split('"')[0];
-            //MessageBox.Show("Twój \"spam token\": " + tokenspam);
-
-
-            string authrequest = $"{{\r\n   \"Properties\" : {{\r\n      \"AuthMethod\" : \"RPS\",\r\n      \"RpsTicket\" : \"d={tokenspam}\",\r\n      \"SiteName\" : \"user.auth.xboxlive.com\"\r\n   }},\r\n   \"RelyingParty\" : \"http://auth.xboxlive.com\",\r\n   \"TokenType\" : \"JWT\"\r\n}}";
-            WebRequest authwebRequest = WebRequest.Create("https://user.auth.xboxlive.com/user/authenticate");
-            authwebRequest.Timeout = 5000;
-            authwebRequest.Method = "POST";
-            authwebRequest.ContentType = "application/json";
-            authwebRequest.ContentLength = (long)authrequest.Length;
-            StreamWriter authstreamWriter = new StreamWriter(authwebRequest.GetRequestStream());
-            authstreamWriter.Write(authrequest.ToCharArray(), 0, authrequest.Length);
-            authstreamWriter.Close();
-            StreamReader authstreamReader = new StreamReader(authwebRequest.GetResponse().GetResponseStream());
-
-
-            string authresponse = authstreamReader.ReadToEnd();
-
-
-            string authtoken = authresponse.Replace("\"Token\":\"", ">").Split('>')[1].Split('"')[0];
-            //MessageBox.Show("auth token "+authtoken);
-
-
-
-
-
-
-
-
-
-
-
-            string authorizerequest = $"{{\r\n   \"Properties\" : {{\r\n      \"SandboxId\" : \"RETAIL\",\r\n      \"UserTokens\" : [\r\n         \"{authtoken}\"\r\n      ]\r\n   }},\r\n   \"RelyingParty\" : \"rp://api.minecraftservices.com/\",\r\n   \"TokenType\" : \"JWT\"\r\n}}";
-            WebRequest authorizewebRequest = WebRequest.Create("https://xsts.auth.xboxlive.com/xsts/authorize");
-            authorizewebRequest.Timeout = 5000;
-            authorizewebRequest.Method = "POST";
-            authorizewebRequest.ContentType = "application/json";
-            authorizewebRequest.ContentLength = (long)authorizerequest.Length;
-            StreamWriter authorizestreamWriter = new StreamWriter(authorizewebRequest.GetRequestStream());
-            authorizestreamWriter.Write(authorizerequest.ToCharArray(), 0, authorizerequest.Length);
-            authorizestreamWriter.Close();
-            StreamReader authorizestreamReader = new StreamReader(authorizewebRequest.GetResponse().GetResponseStream());
-
-            string authorizeresponse = authorizestreamReader.ReadToEnd();
-
-            string authorizetoken = authorizeresponse.Replace("\"Token\":\"", ">").Split('>')[1].Split('"')[0];
-            string uhs = authorizeresponse.Replace("\"uhs\":\"", ">").Split('>')[1].Split('"')[0];
-       
-
-
-
-
-
-
-
-
-
-
-
-            string loginreqrequest = $"{{\r\n   \"platform\" : \"PC_LAUNCHER\",\r\n   \"xtoken\" : \"XBL3.0 x={uhs};{authorizetoken}\"\r\n}}";
-            WebRequest loginreqwebRequest = WebRequest.Create("https://api.minecraftservices.com/launcher/login");
-            loginreqwebRequest.Timeout = 5000;
-            loginreqwebRequest.Method = "POST";
-            loginreqwebRequest.ContentType = "application/json";
-            loginreqwebRequest.ContentLength = (long)loginreqrequest.Length;
-            StreamWriter loginreqstreamWriter = new StreamWriter(loginreqwebRequest.GetRequestStream());
-            loginreqstreamWriter.Write(loginreqrequest.ToCharArray(), 0, loginreqrequest.Length);
-            loginreqstreamWriter.Close();
-            StreamReader loginreqstreamReader = new StreamReader(loginreqwebRequest.GetResponse().GetResponseStream());
-
-            string loginreqresponse = loginreqstreamReader.ReadToEnd();
-            Clipboard.SetText(loginreqresponse);
-            //MessageBox.Show(loginreqresponse);
-            string mcaccesstoken = loginreqresponse.Replace("\"access_token\" : \"", ">").Split('>')[1].Split('"')[0];
-
-
-
-
-
-
-
-            WebClient premiumprofileweb = new WebClient();
-            premiumprofileweb.Headers.Add("Authorization", $"Bearer {mcaccesstoken}");
-            string getprofileresponse = premiumprofileweb.DownloadString("https://api.minecraftservices.com/minecraft/profile");
-            Clipboard.SetText(getprofileresponse);
-            //MessageBox.Show(getprofileresponse);
-            string username = getprofileresponse.Replace("\"name\" : \"", ">").Split('>')[1].Split('"')[0];
-
-            string uuid = getprofileresponse.Split('[')[0].Replace("\"id\" : \"", ">").Split('>')[1].Split('"')[0];
-
-            return $"{username}>{uuid}>{refreshtokenspam}<{mcaccesstoken}";
+                //getting username + UUID
+                WebClient premiumprofileweb = new WebClient();
+                premiumprofileweb.Headers.Add("Authorization", $"Bearer {mcaccesstoken}");
+                string getprofileresponse = premiumprofileweb.DownloadString("https://api.minecraftservices.com/minecraft/profile");
+                Clipboard.SetText(getprofileresponse);
+                //MessageBox.Show(getprofileresponse);
+                string username = getprofileresponse.Replace("\"name\" : \"", ">").Split('>')[1].Split('"')[0];
+                string uuid = getprofileresponse.Split('[')[0].Replace("\"id\" : \"", ">").Split('>')[1].Split('"')[0];
+                return $"{username}>{uuid}>{refreshtokenspam}<{mcaccesstoken}";
             }
             catch (Exception ex)
             {
                 MessageBox.Show("BŁĄD PRZY ODŚWIERZANIU KONTA PREMIUM: " + ex.Message, "BŁĄD");
-                return "error>error>error>error";
+                return "error>error>error<error";
             }
         }
 
@@ -1678,7 +1582,7 @@ namespace byZyczu
 
         private void button9_Click(object sender, EventArgs e)
         {
-            panelaccounts.Visible = false;  
+            panelaccounts.Visible = false;
         }
 
         private void buttonaddaccountpremium_Click(object sender, EventArgs e)
@@ -1697,21 +1601,42 @@ namespace byZyczu
         private void buttonloginpremium_Click(object sender, EventArgs e)
         {
             try
-            { 
-            string accountdata = GetDataViaUsername(comboBoxpremiumaccounts.SelectedItem.ToString());
-            mcusername = accountdata.Split('>')[0];
-            mcuuid = accountdata.Split('>')[1];
-            mctoken = RefreshAccountData(accountdata.Split('>')[2]).Split('<')[1];
-            if (!File.Exists(launcherdir + "\\accounts\\selectedacc.mks"))
             {
-                using (FileStream fs = File.Create(launcherdir + "\\accounts\\selectedacc.mks"))
+                string accountdata = GetDataViaUsername(comboBoxpremiumaccounts.SelectedItem.ToString());
+                //mcusername = accountdata.Split('>')[0];
+                string newdata = RefreshAccountData(accountdata.Split('>')[2]);
+                mctoken = newdata.Split('<')[1];
+                mcusername = newdata.Split('>')[0];
+                mcuuid = newdata.Split('>')[1];
+
+
+
+                string towrite = "\r\n";
+                foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsprem.mks"))
                 {
+
+                    if (line.Contains($"{mcuuid}>"))
+                    {
+                        towrite = towrite + $"{mcusername}>{mcuuid}>{newdata.Split('<')[0].Split('>')[2]}" + "\r\n";
+                    }
+                    else
+                    {
+                        towrite = towrite + line + "'\r\n";
+                    }
                 }
-            }
-            Task.Delay(500);
-            File.WriteAllText(launcherdir + "\\accounts\\selectedacc.mks", $"{mcusername}>{mcuuid}");
-            textBoxnick.Text = mcusername;
-            MessageBox.Show("Zalogowano do:\r\n" + mcusername);
+
+
+
+                if (!File.Exists(launcherdir + "\\accounts\\selectedacc.mks"))
+                {
+                    using (FileStream fs = File.Create(launcherdir + "\\accounts\\selectedacc.mks"))
+                    {
+                    }
+                }
+                Task.Delay(500);
+                File.WriteAllText(launcherdir + "\\accounts\\selectedacc.mks", $"{mcusername}>{mcuuid}");
+                textBoxnick.Text = mcusername;
+                MessageBox.Show("Zalogowano do:\r\n" + mcusername);
             }
             catch (Exception ex)
             {
@@ -1743,38 +1668,38 @@ namespace byZyczu
         void AddOfflineAccount(string username)
         {
             try
-            { 
-            if (!Directory.Exists(launcherdir + "\\accounts"))
             {
-                Directory.CreateDirectory(launcherdir + "\\accounts");
-            }
-            if (!File.Exists(launcherdir + "\\accounts\\accsoff.mks"))
-            {
-                using (FileStream fs = File.Create(launcherdir + "\\accounts\\accsoff.mks"))
+                if (!Directory.Exists(launcherdir + "\\accounts"))
                 {
+                    Directory.CreateDirectory(launcherdir + "\\accounts");
                 }
-            }
-            string tosave = "";
-            foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsoff.mks"))
-            {
-                if (line.Contains(">"))
+                if (!File.Exists(launcherdir + "\\accounts\\accsoff.mks"))
                 {
-                    tosave = tosave + "\r\n" + line;
+                    using (FileStream fs = File.Create(launcherdir + "\\accounts\\accsoff.mks"))
+                    {
+                    }
                 }
-            }
-            tosave = tosave + "\r\n" + $"{username}>cracked>cracked";
-            File.WriteAllText(launcherdir + "\\accounts\\accsoff.mks", tosave);
-            Task.Delay(300);
-            comboBoxloginoffline.Items.Clear();
-            foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsoff.mks"))
-            {
-                if(line.Contains(">"))
+                string tosave = "";
+                foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsoff.mks"))
                 {
-                    comboBoxloginoffline.Items.Add(line.Split('>')[0]);
+                    if (line.Contains(">"))
+                    {
+                        tosave = tosave + "\r\n" + line;
+                    }
+                }
+                tosave = tosave + "\r\n" + $"{username}>cracked>cracked";
+                File.WriteAllText(launcherdir + "\\accounts\\accsoff.mks", tosave);
+                Task.Delay(300);
+                comboBoxloginoffline.Items.Clear();
+                foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsoff.mks"))
+                {
+                    if (line.Contains(">"))
+                    {
+                        comboBoxloginoffline.Items.Add(line.Split('>')[0]);
 
+                    }
                 }
-            }
-            MessageBox.Show("Dodano konto!");
+                MessageBox.Show("Dodano konto!");
             }
             catch (Exception ex)
             {
@@ -1801,13 +1726,13 @@ namespace byZyczu
         {
             try
             {
-                
+
                 string tosave = "";
                 foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsoff.mks"))
                 {
                     if (line.Contains(">"))
                     {
-                        if (line.Contains(comboBoxloginoffline.SelectedItem.ToString()+">cracked>cracked"))
+                        if (line.Contains(comboBoxloginoffline.SelectedItem.ToString() + ">cracked>cracked"))
                         {
 
                         }
@@ -1815,12 +1740,12 @@ namespace byZyczu
                         {
                             tosave = tosave + "\r\n" + line;
                         }
-                        
+
                     }
                 }
                 File.WriteAllText(launcherdir + "\\accounts\\accsoff.mks", tosave);
-                
-                
+
+
                 string temp = File.ReadAllText(launcherdir + "\\accounts\\selectedacc.mks");
                 if (temp.Contains(comboBoxloginoffline.SelectedItem.ToString() + ">cracked"))
                 {
@@ -1834,7 +1759,7 @@ namespace byZyczu
                     if (line.Contains(">"))
                     {
                         comboBoxloginoffline.Items.Add(line.Split('>')[0]);
-                        
+
                     }
                 }
                 MessageBox.Show("Usunięto konto!");
@@ -1849,7 +1774,6 @@ namespace byZyczu
         {
             try
             {
-
                 string tosave = "";
                 foreach (var line in File.ReadAllLines(launcherdir + "\\accounts\\accsprem.mks"))
                 {
@@ -1867,8 +1791,7 @@ namespace byZyczu
                     }
                 }
                 File.WriteAllText(launcherdir + "\\accounts\\accsprem.mks", tosave);
-                
-                
+
                 if (File.ReadAllText(launcherdir + "\\accounts\\selectedacc.mks").Contains(comboBoxpremiumaccounts.SelectedItem.ToString() + ">"))
                 {
                     Task.Delay(200);

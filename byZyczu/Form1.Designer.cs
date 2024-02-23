@@ -48,6 +48,9 @@ namespace byZyczu
             this.buttonlaunch = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panelsettings = new System.Windows.Forms.Panel();
+            this.checkBoxreinstalljava = new System.Windows.Forms.CheckBox();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.checkBoxnoverify = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -260,6 +263,9 @@ namespace byZyczu
             // 
             // panelsettings
             // 
+            this.panelsettings.Controls.Add(this.checkBoxreinstalljava);
+            this.panelsettings.Controls.Add(this.label28);
+            this.panelsettings.Controls.Add(this.label29);
             this.panelsettings.Controls.Add(this.label19);
             this.panelsettings.Controls.Add(this.checkBoxnoverify);
             this.panelsettings.Controls.Add(this.label10);
@@ -271,11 +277,48 @@ namespace byZyczu
             this.panelsettings.Controls.Add(this.buttonsavechanges);
             this.panelsettings.Controls.Add(this.label6);
             this.panelsettings.Controls.Add(this.label5);
-            this.panelsettings.Location = new System.Drawing.Point(55, 460);
+            this.panelsettings.Location = new System.Drawing.Point(701, 25);
             this.panelsettings.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelsettings.Name = "panelsettings";
             this.panelsettings.Size = new System.Drawing.Size(805, 405);
             this.panelsettings.TabIndex = 2;
+            // 
+            // checkBoxreinstalljava
+            // 
+            this.checkBoxreinstalljava.AutoSize = true;
+            this.checkBoxreinstalljava.BackColor = System.Drawing.Color.Transparent;
+            this.checkBoxreinstalljava.Location = new System.Drawing.Point(52, 320);
+            this.checkBoxreinstalljava.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.checkBoxreinstalljava.Name = "checkBoxreinstalljava";
+            this.checkBoxreinstalljava.Size = new System.Drawing.Size(122, 17);
+            this.checkBoxreinstalljava.TabIndex = 14;
+            this.checkBoxreinstalljava.Text = "ReInstall JAVA";
+            this.checkBoxreinstalljava.UseVisualStyleBackColor = false;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.BackColor = System.Drawing.Color.Transparent;
+            this.label28.Font = new System.Drawing.Font("MinecraftZyczu", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label28.Location = new System.Drawing.Point(48, 278);
+            this.label28.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(584, 32);
+            this.label28.TabIndex = 13;
+            this.label28.Text = "Jeżeli zaznaczysz tą opcję, JAVA zostanie przeinstalowana przy następnym \r\nurucho" +
+    "mieniu gry";
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.BackColor = System.Drawing.Color.Transparent;
+            this.label29.Font = new System.Drawing.Font("MinecraftZyczu", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label29.Location = new System.Drawing.Point(12, 253);
+            this.label29.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(151, 20);
+            this.label29.TabIndex = 12;
+            this.label29.Text = "ReInstall Javy";
             // 
             // label19
             // 
@@ -701,7 +744,6 @@ namespace byZyczu
             this.comboBoxmodpackcreate.Name = "comboBoxmodpackcreate";
             this.comboBoxmodpackcreate.Size = new System.Drawing.Size(348, 24);
             this.comboBoxmodpackcreate.TabIndex = 6;
-            this.comboBoxmodpackcreate.SelectedIndexChanged += new System.EventHandler(this.comboBoxmodpackcreate_SelectedIndexChanged);
             // 
             // label15
             // 
@@ -801,7 +843,7 @@ namespace byZyczu
             this.panelaccounts.Controls.Add(this.label20);
             this.panelaccounts.Controls.Add(this.label24);
             this.panelaccounts.Controls.Add(this.label25);
-            this.panelaccounts.Location = new System.Drawing.Point(738, 23);
+            this.panelaccounts.Location = new System.Drawing.Point(743, 15);
             this.panelaccounts.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelaccounts.Name = "panelaccounts";
             this.panelaccounts.Size = new System.Drawing.Size(805, 405);
@@ -1138,6 +1180,9 @@ namespace byZyczu
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Button buttondeleteonline;
         private System.Windows.Forms.Button buttondeleteoffline;
+        private System.Windows.Forms.CheckBox checkBoxreinstalljava;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label29;
     }
 }
 
