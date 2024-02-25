@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "C:\\projects\\byZyczu\\Launcher\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6749D8C7-9CAE-4978-B249-47D3B7E6B3E0}|byZyczu\\byZyczu.csproj|c:\\projects\\byzyczu\\launcher\\byzyczu\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6749D8C7-9CAE-4978-B249-47D3B7E6B3E0}|byZyczu\\byZyczu.csproj|solutionrelative:byzyczu\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{6749D8C7-9CAE-4978-B249-47D3B7E6B3E0}|byZyczu\\byZyczu.csproj|C:\\projects\\byZyczu\\Launcher\\byzyczu\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{6749D8C7-9CAE-4978-B249-47D3B7E6B3E0}|byZyczu\\byZyczu.csproj|solutionrelative:byzyczu\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6749D8C7-9CAE-4978-B249-47D3B7E6B3E0}|byZyczu\\byZyczu.csproj|c:\\projects\\byzyczu\\launcher\\byzyczu\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6749D8C7-9CAE-4978-B249-47D3B7E6B3E0}|byZyczu\\byZyczu.csproj|solutionrelative:byzyczu\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6749D8C7-9CAE-4978-B249-47D3B7E6B3E0}|byZyczu\\byZyczu.csproj|C:\\projects\\byZyczu\\Launcher\\byzyczu\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -48,24 +48,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\projects\\byZyczu\\Launcher\\byZyczu\\Form1.cs",
               "RelativeDocumentMoniker": "byZyczu\\Form1.cs",
               "ToolTip": "C:\\projects\\byZyczu\\Launcher\\byZyczu\\Form1.cs",
               "RelativeToolTip": "byZyczu\\Form1.cs",
-              "ViewState": "AQIAABEGAAAAAAAAAAAqwCIGAAANAAAA",
+              "ViewState": "AQIAAMAFAAAAAAAAAAAMwNwFAAAHAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-02-15T22:05:30.727Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Form1.cs [Projekt]",
               "DocumentMoniker": "C:\\projects\\byZyczu\\Launcher\\byZyczu\\Form1.cs",
               "RelativeDocumentMoniker": "byZyczu\\Form1.cs",
@@ -96,8 +96,7 @@
               "RelativeToolTip": "byZyczu\\Program.cs",
               "ViewState": "AQIAAA8AAAAAAAAAAAAlwBUAAAAsAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-15T22:05:31.62Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-02-15T22:05:31.62Z"
             },
             {
               "$type": "Document",
@@ -109,8 +108,7 @@
               "RelativeToolTip": "byZyczu\\Modules\\DiscordPresence.cs",
               "ViewState": "AQIAAAMAAAAAAAAAAAAqwBcAAAAoAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-15T22:05:31.621Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-02-15T22:05:31.621Z"
             },
             {
               "$type": "Document",
@@ -146,8 +144,7 @@
               "RelativeToolTip": "byZyczu\\Properties\\Settings.Designer.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-15T22:05:31.626Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-02-15T22:05:31.626Z"
             },
             {
               "$type": "Document",

@@ -1458,13 +1458,13 @@ namespace byZyczu
                         {
                             isadded = true;
                             AddAccountPremium(username, uuid, refreshtokenspam);
-                            MessageBox.Show($"Account added:\r\nusername: {username}\r\nuuid: {uuid}");
+                            MessageBox.Show($"Dodano konto:\r\nusername: {username}\r\nuuid: {uuid}");
                         }
                     }
                 }
                 if (!isadded)
                 {
-                    MessageBox.Show($"Error adding mc account! Collected account info:\r\nusername: {username}\r\nUUID: {uuid}\r\ntoken: {mcaccesstoken}");
+                    MessageBox.Show($"Błąd przy dodawaniu konto! Zebrane informacje:\r\nusername: {username}\r\nUUID: {uuid}\r\ntoken: {mcaccesstoken}");
                 }
             }
             catch (Exception ex)
@@ -1494,6 +1494,7 @@ namespace byZyczu
                 }
             }
             tosave = tosave + "\r\n" + $"{username}>{uuid}>{refreshtoken}";
+            comboBoxpremiumaccounts.Items.Add(username);
             File.WriteAllText(launcherdir + "\\accounts\\accsprem.mks", tosave);
         }
 
