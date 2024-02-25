@@ -40,3 +40,17 @@ C:\projects\byZyczu\byZyczu\obj\Release\byZyczu.csproj.CoreCompileInputs.cache
 C:\projects\byZyczu\byZyczu\obj\Release\byZyczu.csproj.Up2Date
 C:\projects\byZyczu\byZyczu\obj\Release\byZyczu.exe
 C:\projects\byZyczu\byZyczu\obj\Release\byZyczu.pdb
+C:\projects\byZyczu\Launcher\byZyczu\bin\Release\byZyczu.exe.config
+C:\projects\byZyczu\Launcher\byZyczu\bin\Release\byZyczu.exe
+C:\projects\byZyczu\Launcher\byZyczu\bin\Release\byZyczu.pdb
+C:\projects\byZyczu\Launcher\byZyczu\obj\Release\byZyczu.csproj.AssemblyReference.cache
+C:\projects\byZyczu\Launcher\byZyczu\obj\Release\Interop.Shell32.dll
+C:\projects\byZyczu\Launcher\byZyczu\obj\Release\byZyczu.csproj.ResolveComReference.cache
+C:\projects\byZyczu\Launcher\byZyczu\obj\Release\byZyczu.g.resources
+C:\projects\byZyczu\Launcher\byZyczu\obj\Release\byZyczu.Form1.resources
+C:\projects\byZyczu\Launcher\byZyczu\obj\Release\byZyczu.Properties.Resources.resources
+C:\projects\byZyczu\Launcher\byZyczu\obj\Release\byZyczu.csproj.GenerateResource.cache
+C:\projects\byZyczu\Launcher\byZyczu\obj\Release\byZyczu.csproj.CoreCompileInputs.cache
+C:\projects\byZyczu\Launcher\byZyczu\obj\Release\byZyczu.csproj.Up2Date
+C:\projects\byZyczu\Launcher\byZyczu\obj\Release\byZyczu.exe
+C:\projects\byZyczu\Launcher\byZyczu\obj\Release\byZyczu.pdb

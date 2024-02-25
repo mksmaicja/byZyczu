@@ -58,7 +58,7 @@
               "RelativeDocumentMoniker": "byZyczu\\Form1.cs",
               "ToolTip": "C:\\projects\\byZyczu\\Launcher\\byZyczu\\Form1.cs",
               "RelativeToolTip": "byZyczu\\Form1.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAAHwGAAANAAAA",
+              "ViewState": "AQIAABEGAAAAAAAAAAAqwCIGAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-02-15T22:05:30.727Z",
               "EditorCaption": ""
@@ -69,10 +69,11 @@
               "Title": "Form1.cs [Projekt]",
               "DocumentMoniker": "C:\\projects\\byZyczu\\Launcher\\byZyczu\\Form1.cs",
               "RelativeDocumentMoniker": "byZyczu\\Form1.cs",
-              "ToolTip": "C:\\projects\\byZyczu\\byZyczu\\Form1.cs [Projekt]",
-              "RelativeToolTip": "..\\byZyczu\\Form1.cs [Projekt]",
+              "ToolTip": "C:\\projects\\byZyczu\\Launcher\\byZyczu\\Form1.cs [Projekt]",
+              "RelativeToolTip": "byZyczu\\Form1.cs [Projekt]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-15T22:05:31.536Z"
+              "WhenOpened": "2024-02-15T22:05:31.536Z",
+              "EditorCaption": " [Projekt]"
             },
             {
               "$type": "Document",
@@ -95,7 +96,8 @@
               "RelativeToolTip": "byZyczu\\Program.cs",
               "ViewState": "AQIAAA8AAAAAAAAAAAAlwBUAAAAsAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-15T22:05:31.62Z"
+              "WhenOpened": "2024-02-15T22:05:31.62Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -107,7 +109,8 @@
               "RelativeToolTip": "byZyczu\\Modules\\DiscordPresence.cs",
               "ViewState": "AQIAAAMAAAAAAAAAAAAqwBcAAAAoAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-15T22:05:31.621Z"
+              "WhenOpened": "2024-02-15T22:05:31.621Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -128,9 +131,10 @@
               "RelativeDocumentMoniker": "byZyczu\\Form1.Designer.cs",
               "ToolTip": "C:\\projects\\byZyczu\\Launcher\\byZyczu\\Form1.Designer.cs",
               "RelativeToolTip": "byZyczu\\Form1.Designer.cs",
-              "ViewState": "AQIAALECAAAAAAAAAAASwMQCAAA0AAAA",
+              "ViewState": "AQIAABoAAAAAAAAAAABRwB0AAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-15T22:05:31.625Z"
+              "WhenOpened": "2024-02-15T22:05:31.625Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -142,7 +146,8 @@
               "RelativeToolTip": "byZyczu\\Properties\\Settings.Designer.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-02-15T22:05:31.626Z"
+              "WhenOpened": "2024-02-15T22:05:31.626Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -153,7 +158,8 @@
               "ToolTip": "C:\\projects\\byZyczu\\Launcher\\byZyczu\\Properties\\Settings.settings",
               "RelativeToolTip": "byZyczu\\Properties\\Settings.settings",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002767|",
-              "WhenOpened": "2024-02-15T22:05:31.627Z"
+              "WhenOpened": "2024-02-15T22:05:31.627Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -165,7 +171,8 @@
               "RelativeToolTip": "byZyczu\\App.config",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2024-02-15T22:05:31.628Z"
+              "WhenOpened": "2024-02-15T22:05:31.628Z",
+              "EditorCaption": ""
             }
           ]
         }

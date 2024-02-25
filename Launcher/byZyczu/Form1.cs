@@ -1571,7 +1571,7 @@ namespace byZyczu
             }
             catch (Exception ex)
             {
-                MessageBox.Show("BŁĄD PRZY ODŚWIERZANIU KONTA PREMIUM: " + ex.Message, "BŁĄD");
+                MessageBox.Show("BŁĄD PRZY ODŚWIEŻANIU KONTA PREMIUM: " + ex.Message, "BŁĄD");
                 return "error>error>error<error";
             }
         }
