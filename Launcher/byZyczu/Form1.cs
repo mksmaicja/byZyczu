@@ -30,7 +30,7 @@ namespace byZyczu
     public partial class Form1 : Form
     {
         //public static string url = "109.231.27.76";
-        public static string url = "mksteam.ovh";
+        public static string url = "109.231.30.222.koba.pl";
         public static string launcherdir = "C:\\maicjadir\\byzyczu";
         public static string configsdir = "C:\\maicjadir\\byzyczu\\configs";
 
