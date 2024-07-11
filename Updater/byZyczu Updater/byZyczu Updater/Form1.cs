@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -19,13 +20,25 @@ namespace byZyczu_Updater
             InitializeComponent();
         }
         WebClient client = new WebClient();
-        string exepath = "c:\\maicjadir\\byzyczu\\zyczumc.exe";
-        string dir = "c:\\maicjadir\\byzyczu";
+        string exepath = $"{System.IO.Directory.GetCurrentDirectory()}\\zyczumc\\zyczumc.exe";
+        string dir = $"{System.IO.Directory.GetCurrentDirectory()}\\zyczumc";
         private async void Form1_Load(object sender, EventArgs e)
         {
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
+
             await Task.Delay(100);
-            client.DownloadFile("https://github.com/mksmaicja/byZyczu/raw/master/Launcher/byZyczu/bin/Release/byZyczu.exe", exepath);
-            await Task.Delay(400);
+            try
+            {
+                byte[] zyczu = client.DownloadData("https://github.com/mksmaicja/byZyczu/raw/master/Launcher/byZyczu/bin/Release/byZyczu.exe");
+                File.WriteAllBytes(exepath, zyczu);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Launcher spróbuje uruchomić się z najnowszej pobranej wersji", "Błąd podczas aktualizacji!");
+            }
             System.Diagnostics.ProcessStartInfo startinfo = new System.Diagnostics.ProcessStartInfo
             {
                 FileName = exepath,

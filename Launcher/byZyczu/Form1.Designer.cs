@@ -516,7 +516,7 @@ namespace byZyczu
             this.panelmodsmain.Controls.Add(this.buttonmodpacks);
             this.panelmodsmain.Controls.Add(this.buttonmanagemods);
             this.panelmodsmain.Controls.Add(this.label16);
-            this.panelmodsmain.Location = new System.Drawing.Point(11, 463);
+            this.panelmodsmain.Location = new System.Drawing.Point(19, 45);
             this.panelmodsmain.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelmodsmain.Name = "panelmodsmain";
             this.panelmodsmain.Size = new System.Drawing.Size(805, 405);
@@ -575,6 +575,7 @@ namespace byZyczu
             this.comboBoxmodpacks.Name = "comboBoxmodpacks";
             this.comboBoxmodpacks.Size = new System.Drawing.Size(325, 21);
             this.comboBoxmodpacks.TabIndex = 5;
+            this.comboBoxmodpacks.SelectedIndexChanged += new System.EventHandler(this.comboBoxmodpacks_SelectedIndexChanged);
             this.comboBoxmodpacks.SelectionChangeCommitted += new System.EventHandler(this.comboBoxmodpacks_SelectionChangeCommitted);
             // 
             // panelmodpacks
@@ -843,7 +844,7 @@ namespace byZyczu
             this.panelaccounts.Controls.Add(this.label20);
             this.panelaccounts.Controls.Add(this.label24);
             this.panelaccounts.Controls.Add(this.label25);
-            this.panelaccounts.Location = new System.Drawing.Point(11, 14);
+            this.panelaccounts.Location = new System.Drawing.Point(441, 418);
             this.panelaccounts.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.panelaccounts.Name = "panelaccounts";
             this.panelaccounts.Size = new System.Drawing.Size(805, 405);

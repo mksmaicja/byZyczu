@@ -30,9 +30,9 @@ namespace byZyczu
     public partial class Form1 : Form
     {
         //public static string url = "109.231.27.76";
-        public static string url = "109.231.30.222.koba.pl";
-        public static string launcherdir = "C:\\maicjadir\\byzyczu";
-        public static string configsdir = "C:\\maicjadir\\byzyczu\\configs";
+        public static string url = "mksteam.ovh";
+        public static string launcherdir = System.IO.Directory.GetCurrentDirectory();
+        public static string configsdir = $"{System.IO.Directory.GetCurrentDirectory()}\\configs";
 
         public Form1()
         {
@@ -98,7 +98,7 @@ namespace byZyczu
         Random rand = new Random();
         bool downloaded = false;
         public static bool premiumlaunchwait = true;
-        public static string version = "1.8";
+        public static string version = "1.8.1";
 
         public void DownloadFile(string urlAddress, string location)
         {
@@ -1812,6 +1812,11 @@ namespace byZyczu
             {
                 MessageBox.Show("BŁĄD PRZY USUWANIU KONTA ONLINE: " + ex.Message, "BŁĄD");
             }
+        }
+
+        private void comboBoxmodpacks_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
